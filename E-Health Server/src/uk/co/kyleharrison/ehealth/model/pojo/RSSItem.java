@@ -6,6 +6,8 @@ import org.apache.tomcat.util.net.URL;
 
 public class RSSItem {
 	
+	private String UID;
+	private Date creaionDate;
 	private String title;
 	private URL link;
 	private Date pubDate;
@@ -30,6 +32,22 @@ public class RSSItem {
 		this.description = description;
 		this.commentRss = commentRss;
 		this.comments = comments;
+	}
+	
+	public String getUID() {
+		return UID;
+	}
+
+	public void setUID(String uID) {
+		UID = uID;
+	}
+
+	public Date getCreaionDate() {
+		return creaionDate;
+	}
+
+	public void setCreaionDate(Date creaionDate) {
+		this.creaionDate = creaionDate;
 	}
 
 	public String getTitle() {
