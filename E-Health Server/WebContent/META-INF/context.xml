@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/RhieHorn">
+<Context path="/E-Health-Server">
 
 	<Resource driverClassName="com.mysql.jdbc.Driver" maxActive="100"
 		maxIdle="30" maxWait="10000" name="jdbc/ubiquity" password=""
