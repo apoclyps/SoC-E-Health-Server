@@ -16,6 +16,7 @@ public class RSSItem {
 	private String description;
 	private URL commentRss;
 	private int comments;
+	private String xml;
 	
 	public RSSItem() {
 		super();
@@ -112,6 +113,14 @@ public class RSSItem {
 
 	public void setComments(int comments) {
 		this.comments = comments;
+	}
+
+	public String getXml() {
+		return xml;
+	}
+
+	public void setXml(String xml) {
+		this.xml = xml;
 	}
 	
 }
