@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import org.apache.tomcat.util.net.URL;
 
-public class RSSChannel {
+public class RSSChannel extends RSSBase {
 	
-	private String title;
+	private String title =null;
 	private URL link;
 	private String description;
 	private Date lastBuildDate;

@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.model.proxy;
 
 import uk.co.kyleharrison.ehealth.model.interfaces.RSSChannelInterface;
+import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
 
@@ -9,7 +10,7 @@ public class RSSChannelProxy implements RSSChannelInterface {
 	@Override
 	public void AddItem() {
 		// TODO Auto-generated method stub
-		
+		RSSChannel rc = new RSSChannel();
 	}
 
 	@Override

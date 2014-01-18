@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.apache.tomcat.util.net.URL;
 
-public class RSSItem {
+public class RSSItem extends RSSBase {
 	
 	private String UID;
 	private Date creaionDate;
