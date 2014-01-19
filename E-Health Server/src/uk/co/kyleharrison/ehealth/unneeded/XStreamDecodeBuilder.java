@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.xml;
+package uk.co.kyleharrison.ehealth.unneeded;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSGroup;
