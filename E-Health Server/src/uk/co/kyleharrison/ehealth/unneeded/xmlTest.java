@@ -26,10 +26,6 @@ public class xmlTest {
 		buildXMLDocument();
 	}
 
-	public static void readXMlFromURL(String URL) {
-
-	}
-
 	public static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
