@@ -3,14 +3,12 @@ package uk.co.jackgraham.ehealth.controller.rest;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.codehaus.jackson.map.util.JSONPObject;
 
 import uk.co.jackgraham.ehealth.controller.interfaces.RestInterface;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
 
 @Path("/feeds")
 public class GetFeeds implements RestInterface {
