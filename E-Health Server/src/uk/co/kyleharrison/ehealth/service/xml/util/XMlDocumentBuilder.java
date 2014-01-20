@@ -84,7 +84,7 @@ public class XMlDocumentBuilder {
 	
 	//Extracts information from XML Document
 	public void extractXMLData(Document doc){
-		new XMLChannel().parseChannelList(doc);
+		new XMLChannel().CreateChannelList(doc);
 		System.out.println("");
 		new XMLItem().parseItemList(doc);
 	}

@@ -1,9 +1,9 @@
 package uk.co.kyleharrison.ehealth.model.pojo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
-import org.apache.tomcat.util.net.URL;
+import java.net.URL;
 
 public class RSSChannel extends RSSBase {
 	
@@ -24,7 +24,7 @@ public class RSSChannel extends RSSBase {
 
 	public RSSChannel(String title, URL link, String description,
 			Date lastBuildDate, String language, String updatePeriod,
-			int updateFrequency, URL generator, ArrayList<RSSItem> item_list) {
+			int updateFrequency, URL generator) {
 		super();
 		this.title = title;
 		this.link = link;
@@ -34,7 +34,6 @@ public class RSSChannel extends RSSBase {
 		this.updatePeriod = updatePeriod;
 		this.updateFrequency = updateFrequency;
 		this.generator = generator;
-		this.item_list = item_list;
 	}
 
 	public String getTitle() {

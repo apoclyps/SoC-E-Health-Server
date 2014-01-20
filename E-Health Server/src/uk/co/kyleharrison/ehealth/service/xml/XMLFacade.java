@@ -90,7 +90,6 @@ public class XMLFacade {
 		return true;
 	}
 	
-
 	public static void main(String [] arugments){
 		
 		//Store in Init function perhaps? 
@@ -101,8 +100,8 @@ public class XMLFacade {
 		xmlf.DeconstructXMLToPojo();
 		
 		//New Query
-		xmlf.setUrl("https://mbchb.dundee.ac.uk/category/year2/feed");
-		xmlf.DeconstructXMLToPojo();
+		//xmlf.setUrl("https://mbchb.dundee.ac.uk/category/year2/feed");
+		//xmlf.DeconstructXMLToPojo();
 		
 	}
 	
