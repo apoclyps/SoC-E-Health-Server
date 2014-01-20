@@ -19,6 +19,7 @@ import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
 public class XMLChannel extends XMlDocumentBuilder {
 
 	RSSChannelProxy rcp = new RSSChannelProxy();
+	RSSChannel rc = new RSSChannel();
 	private String[] tags = {"title","link","description","lastBuildDate",
 			"language","sy:updatePeriod","sy:updateFrequency","generator"};
 	private String[] results = new String[8];
@@ -115,7 +116,13 @@ public class XMLChannel extends XMlDocumentBuilder {
 			e.printStackTrace();
 		}
 		
-		rc.AddItem(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
+		this.rc = rc.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
+		testRC();
+	}
+	
+	private void testRC(){
+		System.out.println("Testing RC");
+		System.out.println(""+rc.getTitle());
 	}
 	
 	private Date StringToDate(String lastBuildDate){

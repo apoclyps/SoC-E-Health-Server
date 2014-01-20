@@ -18,9 +18,8 @@ public class RSSChannelProxy implements RSSChannelInterface {
 		return rc;
 	}
 	
-	public void AddItem(String title, URL _link, String _description, Date _lastBuildDate, String language, String updatePeriod, int _updateFrequency, URL _generator) {
+	public void AddItem(RSSItem rsi) {
 		// TODO Auto-generated method stub
-		RSSChannel rc = new RSSChannel();
 	}
 
 	@Override
