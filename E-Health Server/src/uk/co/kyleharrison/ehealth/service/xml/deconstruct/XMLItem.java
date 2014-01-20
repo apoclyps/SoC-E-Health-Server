@@ -1,10 +1,13 @@
 package uk.co.kyleharrison.ehealth.service.xml.deconstruct;
 
+import java.util.ArrayList;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSItemProxy;
 import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
 
@@ -27,7 +30,23 @@ public class XMLItem extends XMlDocumentBuilder {
 			}
 		}
 	}
+
+	public ArrayList<RSSItem> CreateItemList(Document doc) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
+	public void DeconstruxtXML(Document doc){
+		
+	}
+	
+	public void MapToPojo(){
+		
+	}
+	
+	public void RSSItemToString(){
+		
+	}
 	
 	
 }

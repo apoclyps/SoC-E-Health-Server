@@ -15,11 +15,12 @@ import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSChannelProxy;
 import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
+import uk.co.kyleharrison.ehealth.services.util.DateConverter;
 
 public class XMLChannel extends XMlDocumentBuilder {
 
 	RSSChannelProxy rcp = new RSSChannelProxy();
-	RSSChannel rc = new RSSChannel();
+	private RSSChannel rc = new RSSChannel();
 	private String[] tags = {"title","link","description","lastBuildDate",
 			"language","sy:updatePeriod","sy:updateFrequency","generator"};
 	private String[] results = new String[8];
@@ -28,6 +29,10 @@ public class XMLChannel extends XMlDocumentBuilder {
 	public XMLChannel() {
 		super();
 		this.setHtmlParser(new HTMLParser());
+	}
+	
+	public RSSChannel getRSSChannel(){
+		return this.rc;
 	}
 	
 	public void getChannelList(Document doc){
@@ -61,9 +66,8 @@ public class XMLChannel extends XMlDocumentBuilder {
 				for(int j=0; j<tags.length; j++){
 					try{
 						// Debugging Comment
-						System.out.println(tags[j] + " \t\t" +getTagValue(tags[j], eElement));
-						results[j] = getTagValue(tags[j], eElement);
-						
+						//System.out.println(tags[j] + " \t\t" +getTagValue(tags[j], eElement));
+						results[j] = getTagValue(tags[j], eElement);			
 					}catch(NullPointerException e){
 						e.getMessage();
 					}
@@ -96,7 +100,9 @@ public class XMLChannel extends XMlDocumentBuilder {
 			_description = this.htmlParser.cleanHTML(description);
 		}
 		//Convert to Date
-		Date _lastBuildDate = StringToDate(lastBuildDate);
+		DateConverter DC = new DateConverter();
+		Date _lastBuildDate = DC.convertStringToDate(lastBuildDate);
+
 		//Convert lastBuildDate to Date
 		//convert updateFrequency to int
 		
@@ -117,7 +123,7 @@ public class XMLChannel extends XMlDocumentBuilder {
 		}
 		
 		this.rc = rc.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
-		testRC();
+		//testRC();
 	}
 	
 	private void testRC(){

@@ -7,7 +7,6 @@ import uk.co.kyleharrison.ehealth.model.interfaces.RSSChannelInterface;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
-
 public class RSSChannelProxy implements RSSChannelInterface {
 
 	RSSChannel rc = null;
@@ -15,6 +14,7 @@ public class RSSChannelProxy implements RSSChannelInterface {
 	public RSSChannel CreateChannel(String title, URL link, String description, Date lastBuildDate, String language, 
 			String updatePeriod, int updateFrequency, URL generator) {
 		this.rc = new RSSChannel(title,link,description, lastBuildDate,language, updatePeriod,updateFrequency, generator);
+		System.out.println("Channel Created : " +rc.getTitle());
 		return rc;
 	}
 	

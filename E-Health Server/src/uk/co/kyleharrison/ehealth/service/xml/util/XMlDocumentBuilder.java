@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.service.xml.util;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,6 +12,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLChannel;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLGroup;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLItem;
@@ -84,8 +87,11 @@ public class XMlDocumentBuilder {
 	
 	//Extracts information from XML Document
 	public void extractXMLData(Document doc){
-		new XMLChannel().CreateChannelList(doc);
+		XMLChannel xmlC = new XMLChannel();
+		xmlC.CreateChannelList(doc);
+		RSSChannel rc = xmlC.getRSSChannel();
 		System.out.println("");
+		ArrayList<RSSItem> rsiA = new XMLItem().CreateItemList(doc);
 		new XMLItem().parseItemList(doc);
 	}
 	
