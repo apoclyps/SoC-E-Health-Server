@@ -2,10 +2,11 @@ package uk.co.kyleharrison.ehealth.model.pojo;
 
 import java.util.ArrayList;
 
-public class RSSGroup {
+public class RSSGroup extends RSSBase {
 
 	private ArrayList<RSSChannel> rss_channel_groups = new ArrayList<RSSChannel>();
-
+	private String channelXML;
+	
 	public RSSGroup() {
 		super();
 	}
@@ -21,6 +22,14 @@ public class RSSGroup {
 
 	public void setRss_channel_groups(ArrayList<RSSChannel> rss_channel_groups) {
 		this.rss_channel_groups = rss_channel_groups;
+	}
+
+	public String getChannelXML() {
+		return channelXML;
+	}
+
+	public void setChannelXML(String channelXML) {
+		this.channelXML = channelXML;
 	}
 	
 }

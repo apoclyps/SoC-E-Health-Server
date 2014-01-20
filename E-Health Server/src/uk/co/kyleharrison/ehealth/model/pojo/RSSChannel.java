@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 import org.apache.tomcat.util.net.URL;
 
-public class RSSChannel {
+public class RSSChannel extends RSSBase {
 	
-	private String title;
+	private String title =null;
 	private URL link;
 	private String description;
 	private Date lastBuildDate;
@@ -16,6 +16,7 @@ public class RSSChannel {
 	private int updateFrequency;
 	private URL generator;
 	private ArrayList <RSSItem> item_list = new ArrayList<RSSItem>();
+	private String itemsXML;
 	
 	public RSSChannel() {
 		super();
@@ -106,6 +107,14 @@ public class RSSChannel {
 
 	public void setItem_list(ArrayList<RSSItem> item_list) {
 		this.item_list = item_list;
+	}
+
+	public String getItemsXML() {
+		return itemsXML;
+	}
+
+	public void setItemsXML(String itemsXML) {
+		this.itemsXML = itemsXML;
 	}
 	
 }
