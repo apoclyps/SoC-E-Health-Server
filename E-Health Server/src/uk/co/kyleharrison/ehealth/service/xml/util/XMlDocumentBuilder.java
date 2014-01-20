@@ -64,7 +64,7 @@ public class XMlDocumentBuilder {
 	}
 
 
-	public void buildXMLDocument() {
+	public Document buildXMLDocument() {
 		try {
 			String xmlFile = this.xmlContent;
 
@@ -74,14 +74,19 @@ public class XMlDocumentBuilder {
 			Document doc = dBuilder.parse(new InputSource(new StringReader(
 					xmlFile)));
 			doc.getDocumentElement().normalize();
-
-			new XMLChannel().parseChannelList(doc);
-			System.out.println("");
-			new XMLItem().parseItemList(doc);
-
+			
+			return doc;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
+	}
+	
+	//Extracts information from XML Document
+	public void extractXMLData(Document doc){
+		new XMLChannel().parseChannelList(doc);
+		System.out.println("");
+		new XMLItem().parseItemList(doc);
 	}
 	
 	// Gets string value from an element tag
