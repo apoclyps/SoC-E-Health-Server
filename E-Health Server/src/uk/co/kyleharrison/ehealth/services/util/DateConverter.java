@@ -15,8 +15,8 @@ public class DateConverter {
 
 	public DateConverter(String dateString, Date date) {
 		super();
-		this.dateString = dateString;
-		this.date = date;
+		this.setDateString(dateString);
+		this.setDate(date);
 	}
 
 	public Date convertStringToDate(String lastBuildDate){
@@ -30,6 +30,22 @@ public class DateConverter {
 			e.printStackTrace();
 		}
 		return date;
+	}
+
+	public String getDateString() {
+		return dateString;
+	}
+
+	public void setDateString(String dateString) {
+		this.dateString = dateString;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 	
 }
