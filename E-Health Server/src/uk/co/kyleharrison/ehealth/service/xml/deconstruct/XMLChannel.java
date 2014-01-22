@@ -3,9 +3,6 @@ package uk.co.kyleharrison.ehealth.service.xml.deconstruct;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,7 +12,6 @@ import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSChannelProxy;
 import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
-import uk.co.kyleharrison.ehealth.services.util.DateConverter;
 
 public class XMLChannel extends XMlDocumentBuilder {
 
@@ -51,13 +47,11 @@ public class XMLChannel extends XMlDocumentBuilder {
 	}
 	
 	public RSSChannel CreateChannelList(Document doc){
-
 		DeconstructXML(doc);
-
-		return null;
+		return this.rc;
 	}
 	
-	public void DeconstructXML(Document doc){
+	private void DeconstructXML(Document doc){
 		this.rc = new RSSChannel();
 		NodeList nList2 = doc.getElementsByTagName("channel");
 		
@@ -90,13 +84,8 @@ public class XMLChannel extends XMlDocumentBuilder {
 		rcp = new RSSChannelProxy();
 		
 		// String to URL
-		URL _link = null;
-		try{
-			_link = new URL("https://mbchb.dundee.ac.uk");
-		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			System.out.println( " " +e1.getMessage());
-		}
+		URL _link = this.castStringToURL(link);
+
 		//Clean Description
 		String _description = null;
 		if(description!=null){
@@ -104,8 +93,8 @@ public class XMLChannel extends XMlDocumentBuilder {
 			
 		}
 		//Convert to Date
-		DateConverter DC = new DateConverter();
-		Date _lastBuildDate = DC.convertStringToDate(lastBuildDate);
+		
+		Date _lastBuildDate = this.DC.convertStringToDate(lastBuildDate);
 
 		//Convert lastBuildDate to Date
 		//convert updateFrequency to int
@@ -126,9 +115,9 @@ public class XMLChannel extends XMlDocumentBuilder {
 			e.printStackTrace();
 		}
 		
-		this.rc = rcp.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
+		this.rc = rcp.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, 
+				_updateFrequency, _generator);
 		//testRC();
 	}
-	
 	
 }
