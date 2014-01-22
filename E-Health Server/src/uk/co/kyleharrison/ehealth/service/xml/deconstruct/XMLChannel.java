@@ -19,15 +19,19 @@ import uk.co.kyleharrison.ehealth.services.util.DateConverter;
 
 public class XMLChannel extends XMlDocumentBuilder {
 
-	private RSSChannelProxy rcp = new RSSChannelProxy();
-	private RSSChannel rc = new RSSChannel();
+	private RSSChannelProxy rcp;
+	private RSSChannel rc;
 	private String[] tags = {"title","link","description","lastBuildDate",
 			"language","sy:updatePeriod","sy:updateFrequency","generator"};
-	private String[] results = new String[8];
+	private String[] results;
 	
 	public XMLChannel() {
 		super();
 		this.setHtmlParser(new HTMLParser());
+		this.rcp = new RSSChannelProxy();
+		this.rc = new RSSChannel();
+		this.results = new String[8];
+		
 	}
 	
 	public RSSChannel getRSSChannel(){
@@ -54,7 +58,7 @@ public class XMLChannel extends XMlDocumentBuilder {
 	}
 	
 	public void DeconstructXML(Document doc){
-		RSSChannel rc = new RSSChannel();
+		this.rc = new RSSChannel();
 		NodeList nList2 = doc.getElementsByTagName("channel");
 		
 		for (int i = 0; i < nList2.getLength(); i++) {
