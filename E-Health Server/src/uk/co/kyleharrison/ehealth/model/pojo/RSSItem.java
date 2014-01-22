@@ -1,8 +1,7 @@
 package uk.co.kyleharrison.ehealth.model.pojo;
 
-import java.sql.Date;
-
-import org.apache.tomcat.util.net.URL;
+import java.net.URL;
+import java.util.Date;
 
 public class RSSItem extends RSSBase {
 	
@@ -14,27 +13,28 @@ public class RSSItem extends RSSBase {
 	private String creator;
 	private String catergory;
 	private String description;
-	private URL commentRss;
-	private int comments;
-	private String xml;
+	private URL comments;
+	private String contentEncoded;
+	private int slashComments;
 	
 	public RSSItem() {
 		super();
 	}
 
-	public RSSItem(String title, URL link, Date pubDate, String creator,
-			String catergory, String description, URL commentRss, int comments) {
-		super();
+	public RSSItem(String title, URL link, URL comments,
+			Date pubDate, String creator, String catergory,
+			String description, String contentEncoded, int slashComments) {
 		this.title = title;
 		this.link = link;
+		this.setComments(comments);
 		this.pubDate = pubDate;
 		this.creator = creator;
 		this.catergory = catergory;
 		this.description = description;
-		this.commentRss = commentRss;
-		this.comments = comments;
+		this.setContentEncoded(contentEncoded);
+		this.setSlashComments(slashComments);
 	}
-	
+
 	public String getUID() {
 		return UID;
 	}
@@ -99,28 +99,29 @@ public class RSSItem extends RSSBase {
 		this.description = description;
 	}
 
-	public URL getCommentRss() {
-		return commentRss;
-	}
-
-	public void setCommentRss(URL commentRss) {
-		this.commentRss = commentRss;
-	}
-
-	public int getComments() {
+	public URL getComments() {
 		return comments;
 	}
 
-	public void setComments(int comments) {
+	public void setComments(URL comments) {
 		this.comments = comments;
 	}
 
-	public String getXml() {
-		return xml;
+	public String getContentEncoded() {
+		return contentEncoded;
 	}
 
-	public void setXml(String xml) {
-		this.xml = xml;
+	public void setContentEncoded(String contentEncoded) {
+		this.contentEncoded = contentEncoded;
 	}
+
+	public int getSlashComments() {
+		return slashComments;
+	}
+
+	public void setSlashComments(int slashComments) {
+		this.slashComments = slashComments;
+	}
+
 	
 }
