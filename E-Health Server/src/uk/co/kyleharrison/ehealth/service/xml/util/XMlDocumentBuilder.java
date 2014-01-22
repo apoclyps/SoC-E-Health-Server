@@ -1,6 +1,8 @@
 package uk.co.kyleharrison.ehealth.service.xml.util;
 
 import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -18,6 +20,7 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLChannel;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLGroup;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLItem;
+import uk.co.kyleharrison.ehealth.services.util.DateConverter;
 
 public class XMlDocumentBuilder {
 
@@ -26,16 +29,19 @@ public class XMlDocumentBuilder {
 	private XMLItem xmlItem;
 	private XMLGroup xmlGroup;
 	private HTMLParser htmlParser;
+	protected DateConverter DC;
 
 	public XMlDocumentBuilder() {
 		super();
 		this.htmlParser = new HTMLParser();
+		this.DC = new DateConverter();
 	}
 	
 	public XMlDocumentBuilder(String xmlContent) {
 		super();
 		this.xmlContent = xmlContent;
-		htmlParser = new HTMLParser();
+		this.htmlParser = new HTMLParser();
+		this.DC = new DateConverter();
 	}
 	
 	public String getXmlContent() {
@@ -92,11 +98,16 @@ public class XMlDocumentBuilder {
 	//Extracts information from XML Document
 	public void extractXMLData(Document doc){
 		XMLChannel xmlC = new XMLChannel();
+		XMLItem xmlI = new XMLItem();
 		xmlC.CreateChannelList(doc);
 		RSSChannel rc = xmlC.getRSSChannel();
 		System.out.println("");
-		ArrayList<RSSItem> rsiA = new XMLItem().CreateItemList(doc);
-		new XMLItem().parseItemList(doc);
+
+		ArrayList<RSSItem> rsiA = xmlI.CreateItemList(doc);
+		System.out.println("\n\nSize of Item Array results = " +rsiA.size());
+		rc.setItem_list(rsiA);
+		System.out.println("Size of RSS Channel results = " +rc.getItem_list().get(0).getTitle());
+		
 	}
 	
 	// Gets string value from an element tag
@@ -112,6 +123,20 @@ public class XMlDocumentBuilder {
 
 	public void setHtmlParser(HTMLParser htmlParser) {
 		this.htmlParser = htmlParser;
+	}
+	
+	public URL castStringToURL(String url){
+		
+		URL _link = null;
+		if(url!=null){
+			try{
+				_link = new URL(url);
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				System.out.println( " " +e1.getMessage());
+			}
+		}
+		return _link;
 	}
 
 
