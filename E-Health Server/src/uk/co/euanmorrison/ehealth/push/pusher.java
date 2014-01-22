@@ -2,14 +2,13 @@ package uk.co.euanmorrison.ehealth.push;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
-
+// JSON object Libraries
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+// iOS push Libraries
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 
@@ -25,17 +24,24 @@ public class pusher {
 	}
 	
 	public static int post_iOS(JSONObject itemToBeSent) {
-		ApnsService service =
-			    APNS.newService()
-			    .withCert("/E-Health Server/resources/APNS.pem", "apnsCertificateForEuan")
-			    .withSandboxDestination()
-			    .build();
+		try {
+			ApnsService service =
+				    APNS.newService()
+				    // next line's arguments: (.PEM file location , password)
+				    .withCert("/E-Health Server/resources/APNS.pem", "apnsCertificateForEuan")
+				    .withSandboxDestination()
+				    .build();
+			
+			String payload = APNS.newPayload().alertBody("Test for Toby!").build();
+			String token = "fedfbcfb....";
+			service.push(token, payload);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 		
-		String payload = APNS.newPayload().alertBody("Test for Toby!").build();
-		String token = "fedfbcfb....";
-		service.push(token, payload);
-		
-		return 0;
+		return 1;
 	}
 	
 	public static int post_android(JSONObject itemToBeSent) {
