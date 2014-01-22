@@ -1,13 +1,11 @@
 package uk.co.kyleharrison.ehealth.unneeded;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 
@@ -69,7 +67,6 @@ public class xmlTest {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private static void parseChannelList(Document doc) {
 		NodeList nList2 = doc.getElementsByTagName("channel");
 
@@ -85,7 +82,6 @@ public class xmlTest {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private static void parseItemList(Document doc) {
 		NodeList nList = doc.getElementsByTagName("item");
 
