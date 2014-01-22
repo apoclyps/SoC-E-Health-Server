@@ -19,7 +19,7 @@ import uk.co.kyleharrison.ehealth.services.util.DateConverter;
 
 public class XMLChannel extends XMlDocumentBuilder {
 
-	RSSChannelProxy rcp = new RSSChannelProxy();
+	private RSSChannelProxy rcp = new RSSChannelProxy();
 	private RSSChannel rc = new RSSChannel();
 	private String[] tags = {"title","link","description","lastBuildDate",
 			"language","sy:updatePeriod","sy:updateFrequency","generator"};
@@ -84,7 +84,7 @@ public class XMLChannel extends XMlDocumentBuilder {
 			String lastBuildDate, String language, String updatePeriod,
 			String updateFrequency, String generator){
 
-		RSSChannelProxy rc = new RSSChannelProxy();
+		rcp = new RSSChannelProxy();
 		
 		// String to URL
 		URL _link = null;
@@ -122,32 +122,10 @@ public class XMLChannel extends XMlDocumentBuilder {
 			e.printStackTrace();
 		}
 		
-		this.rc = rc.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
+		this.rc = rcp.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, _updateFrequency, _generator);
 		//testRC();
 	}
 	
-	private void testRC(){
-		System.out.println("Testing RC");
-		System.out.println(""+rc.getTitle());
-	}
-	
-	private Date StringToDate(String lastBuildDate){
-		// Format 2008-11-11 13:23:44 - Mon, 20 Jan 2014 13:43:29 +0000
-		String subLastBuildData = lastBuildDate.substring(0, 25);
-	//	System.out.println("TEst "+test);
-	//	System.out.println("Last Build = "+lastBuildDate);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
-		java.util.Date date = null;
-		try {
-			date =  simpleDateFormat.parse(subLastBuildData);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//System.out.println("Date "+date.toString());
-		return date;
-	}
-
 	public HTMLParser getHtmlParser() {
 		return htmlParser;
 	}

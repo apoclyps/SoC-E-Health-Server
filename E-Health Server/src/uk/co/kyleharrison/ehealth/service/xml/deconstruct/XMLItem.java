@@ -14,6 +14,7 @@ import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
 public class XMLItem extends XMlDocumentBuilder {
 
 	private RSSItemProxy RIP = new RSSItemProxy();
+	
 
 	public XMLItem() {
 		super();
