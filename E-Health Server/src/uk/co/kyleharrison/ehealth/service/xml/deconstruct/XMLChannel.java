@@ -24,7 +24,6 @@ public class XMLChannel extends XMlDocumentBuilder {
 	private String[] tags = {"title","link","description","lastBuildDate",
 			"language","sy:updatePeriod","sy:updateFrequency","generator"};
 	private String[] results = new String[8];
-	private HTMLParser htmlParser = null;
 	
 	public XMLChannel() {
 		super();
@@ -97,7 +96,8 @@ public class XMLChannel extends XMlDocumentBuilder {
 		//Clean Description
 		String _description = null;
 		if(description!=null){
-			_description = this.htmlParser.cleanHTML(description);
+			_description = this.getHtmlParser().cleanHTML(description);
+			
 		}
 		//Convert to Date
 		DateConverter DC = new DateConverter();
@@ -126,12 +126,5 @@ public class XMLChannel extends XMlDocumentBuilder {
 		//testRC();
 	}
 	
-	public HTMLParser getHtmlParser() {
-		return htmlParser;
-	}
-
-	public void setHtmlParser(HTMLParser htmlParser) {
-		this.htmlParser = htmlParser;
-	}
 	
 }

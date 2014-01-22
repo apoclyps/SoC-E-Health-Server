@@ -12,6 +12,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLChannel;
@@ -24,14 +25,17 @@ public class XMlDocumentBuilder {
 	private XMLChannel xmlChannel;
 	private XMLItem xmlItem;
 	private XMLGroup xmlGroup;
+	private HTMLParser htmlParser;
 
 	public XMlDocumentBuilder() {
 		super();
+		this.htmlParser = new HTMLParser();
 	}
 	
 	public XMlDocumentBuilder(String xmlContent) {
 		super();
 		this.xmlContent = xmlContent;
+		htmlParser = new HTMLParser();
 	}
 	
 	public String getXmlContent() {
@@ -100,6 +104,14 @@ public class XMlDocumentBuilder {
 		NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
 		Node nValue = (Node) nlList.item(0);
 		return nValue.getNodeValue();
+	}
+
+	public HTMLParser getHtmlParser() {
+		return htmlParser;
+	}
+
+	public void setHtmlParser(HTMLParser htmlParser) {
+		this.htmlParser = htmlParser;
 	}
 
 

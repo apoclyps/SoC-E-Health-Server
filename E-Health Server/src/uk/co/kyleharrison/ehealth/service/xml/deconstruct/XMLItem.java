@@ -7,14 +7,18 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSItemProxy;
 import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
 
 public class XMLItem extends XMlDocumentBuilder {
 
-	private RSSItemProxy RIP = new RSSItemProxy();
-	
+	private RSSItemProxy rip = new RSSItemProxy();
+	private RSSItem ri = new RSSItem();
+	private String[] tags ={"title","link","comments","pubDate","dc:creator",
+			"catergory","description","content:encoded","wfw:commentRss","slash:comments"};
+	private String [] results = new String[10];
 
 	public XMLItem() {
 		super();
