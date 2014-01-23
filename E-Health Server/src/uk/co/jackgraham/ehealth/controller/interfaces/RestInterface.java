@@ -2,8 +2,11 @@ package uk.co.jackgraham.ehealth.controller.interfaces;
 
 import java.net.URL;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public interface RestInterface {
 
-	public URL getFeed(String feedID);
-	
+	public JSONObject[] getFeed(String feedID) throws JSONException;
+	public JSONObject[] getFeedJSON(URL url) throws JSONException;
 }

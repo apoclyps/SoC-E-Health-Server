@@ -15,12 +15,13 @@ public class JSONItem {
 	private String itemJSON = null;
 	private JSONObject itemOut;
 
-	public void writeToJson(RSSItem item) throws JSONException {
+	public JSONObject writeToJson(RSSItem item) throws JSONException {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 				setItemJSONString(mapper.writeValueAsString(item));
 				setItemOut(getItemJSONString());
+				
 			// mapper.writeValue(new File("uni-json.json"), item);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
@@ -32,6 +33,7 @@ public class JSONItem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return getItemOut();
 	}
 
 	public String getItemJSONString() {
