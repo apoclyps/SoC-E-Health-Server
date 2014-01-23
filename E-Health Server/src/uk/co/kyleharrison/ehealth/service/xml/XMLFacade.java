@@ -6,6 +6,8 @@ import java.net.URL;
 
 import org.w3c.dom.Document;
 
+import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.util.URLReader;
 import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
 
@@ -66,9 +68,9 @@ public class XMLFacade {
 		this.doc = doc;
 	}
 
-	public boolean DeconstructXMLToPojo(){
+	public RSSChannel DeconstructXMLToPojo(){
 		if(this.url==null){
-			return false;
+			return null;
 		}
 		this.urlReader = new URLReader();
 		this.urlReader.setUrl(this.url.toString());
@@ -87,7 +89,7 @@ public class XMLFacade {
 		if(doc!=null){
 			xmlDocB.extractXMLData(doc);
 		}
-		return true;
+		return xmlDocB.getRc();
 	}
 	
 	public static void main(String [] arugments){
@@ -97,7 +99,10 @@ public class XMLFacade {
 		// XMLFacade = new XMLFacade() in init method
 		//then set URL and call Deconstruct in a method.
 		XMLFacade xmlf = new XMLFacade("https://mbchb.dundee.ac.uk/category/year1/feed");
-		xmlf.DeconstructXMLToPojo();
+		RSSChannel rc = xmlf.DeconstructXMLToPojo();
+		
+		RSSItem ri = rc.getItem_list().get(9);
+		System.out.println("RI 0 : "+ri.getTitle());
 		
 		//New Query
 		//xmlf.setUrl("https://mbchb.dundee.ac.uk/category/year2/feed");

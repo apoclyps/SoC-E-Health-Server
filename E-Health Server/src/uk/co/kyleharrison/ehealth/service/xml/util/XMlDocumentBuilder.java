@@ -30,6 +30,7 @@ public class XMlDocumentBuilder {
 	private XMLGroup xmlGroup;
 	private HTMLParser htmlParser;
 	protected DateConverter DC;
+	private RSSChannel rc;
 
 	public XMlDocumentBuilder() {
 		super();
@@ -75,6 +76,14 @@ public class XMlDocumentBuilder {
 	public void setXmlGroup(XMLGroup xmlGroup) {
 		this.xmlGroup = xmlGroup;
 	}
+	
+	public RSSChannel getRc() {
+		return rc;
+	}
+
+	public void setRc(RSSChannel rc) {
+		this.rc = rc;
+	}
 
 
 	public Document buildXMLDocument() {
@@ -100,13 +109,13 @@ public class XMlDocumentBuilder {
 		XMLChannel xmlC = new XMLChannel();
 		XMLItem xmlI = new XMLItem();
 		xmlC.CreateChannelList(doc);
-		RSSChannel rc = xmlC.getRSSChannel();
+		this.rc = xmlC.getRSSChannel();
 		System.out.println("");
 
 		ArrayList<RSSItem> rsiA = xmlI.CreateItemList(doc);
 		System.out.println("\n\nSize of Item Array results = " +rsiA.size());
 		rc.setItem_list(rsiA);
-		System.out.println("Size of RSS Channel results = " +rc.getItem_list().get(0).getTitle());
+		System.out.println("Size of RSS Channel results = " +this.rc.getItem_list().get(0).getTitle());
 		
 	}
 	
