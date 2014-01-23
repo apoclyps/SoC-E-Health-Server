@@ -5,20 +5,30 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
 public class JSONItem {
 
-	
-private String itemJSON = null;
-	
-	public void writeToJson(RSSItem item)
-	{
+	private String itemJSON = null;
+	private JSONObject itemOut;
+
+	public void writeToJson(RSSItem item) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			setItemJSON(mapper.writeValueAsString(item));
-		//	mapper.writeValue(new File("uni-json.json"), item);
+			try {
+				setItemJSONString(mapper.writeValueAsString(item));
+
+				setItemOut(getItemJSONString());
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			// mapper.writeValue(new File("uni-json.json"), item);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -31,12 +41,20 @@ private String itemJSON = null;
 		}
 	}
 
-	public String getItemJSON() {
+	public String getItemJSONString() {
 		return itemJSON;
 	}
 
-	public void setItemJSON(String itemJSON) {
+	public void setItemJSONString(String itemJSON) {
 		this.itemJSON = itemJSON;
+	}
+
+	public JSONObject getItemOut() {
+		return itemOut;
+	}
+
+	public void setItemOut(String itemJSONString) throws JSONException {
+		this.itemOut = new JSONObject(itemJSONString);
 	}
 
 }
