@@ -30,22 +30,33 @@ public class GetFeeds implements RestInterface {
 	@Path("/{param}")
 	public JSONObject[] getFeed(@PathParam("param") String FeedID) throws JSONException {
 
+		int fID =0;
+		try{
+			if(FeedID.substring(4,5)=="A"){
+				fID=6;
+			}else{
+			fID= Integer.parseInt(FeedID.substring(4,5));
+			}
+		}catch(Exception e){
+			e.getMessage();
+		}
 		
-		
-		switch (FeedID) {
+		switch (fID) {
 
-		case "year1":
+		case 1:
 			// Get year 1 RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/year1/feed");
 				 return getFeedJSON(url);	 
-			} catch (MalformedURLException | JSONException e) {
+			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}catch (JSONException ex){
+				ex.printStackTrace();
 			}
 			
 			break;
-		case "year2":
+		case 2:
 			// Get year 2 RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/year2/feed"); 
@@ -55,7 +66,7 @@ public class GetFeeds implements RestInterface {
 				e.printStackTrace();
 			}
 			break;
-		case "year3":
+		case 3:
 			// Get year 3 RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/year3/feed");
@@ -65,7 +76,7 @@ public class GetFeeds implements RestInterface {
 				e.printStackTrace();
 			}
 			break;
-		case "year4":
+		case 4:
 			// Get year 4 RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/year4/feed");
@@ -75,7 +86,7 @@ public class GetFeeds implements RestInterface {
 				e.printStackTrace();
 			}
 			break;
-		case "year5":
+		case 5:
 			// Get year 5 RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/year5/feed");
@@ -85,7 +96,7 @@ public class GetFeeds implements RestInterface {
 				e.printStackTrace();
 			}
 			break;
-		case "yearALL":
+		case 6:
 			// Get all years RSS
 			try {
 				 url = new URL("https://mbchb.dundee.ac.uk/category/all-years/feed/");

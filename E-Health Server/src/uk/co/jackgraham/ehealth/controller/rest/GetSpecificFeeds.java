@@ -21,29 +21,41 @@ public class GetSpecificFeeds {
 		limit1 = Integer.getInteger(parts[1]);
 		limit2 = Integer.getInteger(parts[2]);
 		
-		switch (yearID) {
+		int fID =0;
+		try{
+			if(yearID.substring(4,5)=="A"){
+				fID=6;
+			}else{
+			fID= Integer.parseInt(yearID.substring(4,5));
+			}
+		}catch(Exception e){
+			e.getMessage();
+		}
+		
+		
+		switch (fID) {
 
-		case "year1":
+		case 1:
 			// Get year 1 from DB
 			
 			break;
-		case "year2":
+		case 2:
 			// Get year 2 from DB
 			
 			break;
-		case "year3":
+		case 3:
 			// Get year 3 from DB
 			
 			break;
-		case "year4":
+		case 4:
 			// Get year 4 from DB
 			
 			break;
-		case "year5":
+		case 5:
 			// Get year 5 from DB
 			
 			break;
-		case "yearALL":
+		case 6:
 			// Get all years from DB
 			
 			break;
