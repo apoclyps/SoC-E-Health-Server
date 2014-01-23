@@ -15,19 +15,12 @@ public class JSONItem {
 	private String itemJSON = null;
 	private JSONObject itemOut;
 
-	public void writeToJson(RSSItem item) {
+	public void writeToJson(RSSItem item) throws JSONException {
+		
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			try {
 				setItemJSONString(mapper.writeValueAsString(item));
-
 				setItemOut(getItemJSONString());
-
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			// mapper.writeValue(new File("uni-json.json"), item);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
