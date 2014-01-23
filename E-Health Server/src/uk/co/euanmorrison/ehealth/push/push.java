@@ -3,12 +3,8 @@ package uk.co.euanmorrison.ehealth.push;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-
-// JSON object Libraries
-import org.json.simple.JSONArray;
+// JSON 
 import org.json.simple.JSONObject;
-
 
 // iOS push Libraries
 import com.notnoop.apns.APNS;
@@ -97,8 +93,11 @@ public class push {
 	}
 	
 	public static JSONObject testJson() {
+		
+	
 		// from http://www.mkyong.com/java/json-simple-example-read-and-write-json/
 		JSONObject obj = new JSONObject();
+		/*
 		obj.put("key1", "value1");
 		obj.put("key2", "value2");
 		//obj.put("age", new Integer(100));
@@ -109,10 +108,12 @@ public class push {
 		list.add("msg3");
 	 
 		obj.put("messages", list);
-		
+		*/
 		return obj;
 		
 		//System.out.print(obj);
+		 
+		 
 	}
 
 }

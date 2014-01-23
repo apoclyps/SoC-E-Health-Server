@@ -2,9 +2,7 @@ package uk.co.kyleharrison.ehealth.service.jackson.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import org.apache.catalina.User;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -42,13 +40,13 @@ public class JSONDocumentBuilder {
 		
 		this.rssChannel=rssChannel;
 
-		JSONArray jsa = generateJSONItemArray();
+		//JSONArray jsa = generateJSONItemArray();
 		
 		return this.channelJsonData;
 	}
 	
 	public JSONArray generateJSONItemArray(){
-		ArrayList<RSSItem> rssItemArrayList = this.rssChannel.getItem_list();
+		//ArrayList<RSSItem> rssItemArrayList = this.rssChannel.getItem_list();
 		
 		//Convert ArrayList to JsonArray
 		
@@ -82,6 +80,54 @@ public class JSONDocumentBuilder {
 		JSONArray jsa = new JSONArray();
 		
 		return jsa;
+	}
+
+	public String getJSONContent() {
+		return JSONContent;
+	}
+
+	public void setJSONContent(String jSONContent) {
+		JSONContent = jSONContent;
+	}
+
+	public JSONChannel getJSONChannel() {
+		return JSONChannel;
+	}
+
+	public void setJSONChannel(JSONChannel jSONChannel) {
+		JSONChannel = jSONChannel;
+	}
+
+	public JSONItem getJSONItem() {
+		return JSONItem;
+	}
+
+	public void setJSONItem(JSONItem jSONItem) {
+		JSONItem = jSONItem;
+	}
+
+	public JSONGroup getJSONGroup() {
+		return JSONGroup;
+	}
+
+	public void setJSONGroup(JSONGroup jSONGroup) {
+		JSONGroup = jSONGroup;
+	}
+
+	public JSONObject getChannelJsonData() {
+		return channelJsonData;
+	}
+
+	public void setChannelJsonData(JSONObject channelJsonData) {
+		this.channelJsonData = channelJsonData;
+	}
+
+	public RSSChannel getRssChannel() {
+		return rssChannel;
+	}
+
+	public void setRssChannel(RSSChannel rssChannel) {
+		this.rssChannel = rssChannel;
 	}
 	
 }
