@@ -18,8 +18,8 @@ public class GetSpecificFeeds {
 		String[] parts = limits.split("-");
 		
 		yearID = parts[0];
-		limit1 = Integer.getInteger(parts[1]);
-		limit2 = Integer.getInteger(parts[2]);
+		setLimit1(Integer.getInteger(parts[1]));
+		setLimit2(Integer.getInteger(parts[2]));
 		
 		int fID =0;
 		try{
@@ -60,6 +60,22 @@ public class GetSpecificFeeds {
 			
 			break;
 		}
+	}
+
+	public int getLimit1() {
+		return limit1;
+	}
+
+	public void setLimit1(int limit1) {
+		this.limit1 = limit1;
+	}
+
+	public int getLimit2() {
+		return limit2;
+	}
+
+	public void setLimit2(int limit2) {
+		this.limit2 = limit2;
 	}
 	
 }
