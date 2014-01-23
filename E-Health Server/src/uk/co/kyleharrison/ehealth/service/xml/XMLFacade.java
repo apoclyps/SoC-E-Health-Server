@@ -39,7 +39,6 @@ public class XMLFacade {
 		try {
 			this.url = new URL(url);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -78,7 +77,6 @@ public class XMLFacade {
 		try {
 			this.response = urlReader.readxmlFromUrl();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Exception in XMLFacade trying to DeconstructXMLToPojo whilst reading XML from URL");
 			e.printStackTrace();
 		}
@@ -94,10 +92,6 @@ public class XMLFacade {
 	
 	public static void main(String [] arugments){
 		
-		//Store in Init function perhaps? 
-		//private  XMLFacade to null in controller
-		// XMLFacade = new XMLFacade() in init method
-		//then set URL and call Deconstruct in a method.
 		XMLFacade xmlf = new XMLFacade("https://mbchb.dundee.ac.uk/category/year1/feed");
 		RSSChannel rc = xmlf.DeconstructXMLToPojo();
 		
