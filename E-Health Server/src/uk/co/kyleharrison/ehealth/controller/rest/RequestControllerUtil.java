@@ -109,6 +109,11 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
 			JSONObject responseObject = new JSONObject();
 			responseObject.put("items",ConstructJSONArray(url));
+			
+		    // Additional fields can only be added once RSS Channel has been updated "ConstructJsonArray" 
+			responseObject.put("channel", this.rssChannel.getTitle());
+			responseObject.put("limit", this.rssChannel.getItem_list().size());
+			
 			JSONResponse(response, responseObject);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
