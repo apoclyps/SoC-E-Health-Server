@@ -60,6 +60,9 @@ public class RequestController extends HttpServlet {
 		fID = rcu.parseYearValue(feedID);
 		
 		switch (fID) {
+			case 0:
+				rcu.callURL("all-years",response);
+			break;
 			case 1:
 				rcu.callURL("year1",response);
 				break;
@@ -74,9 +77,6 @@ public class RequestController extends HttpServlet {
 				break;
 			case 5:
 				rcu.callURL("year5",response);
-				break;
-			case 6:
-				rcu.callURL("all-years",response);
 				break;
 			default:
 				//Return empty json to app

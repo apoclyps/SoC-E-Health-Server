@@ -87,12 +87,13 @@ public class RequestControllerUtil extends RequestController {
 		
 		try {
 			if (feedID.substring(4, 5) == "a") {
-				fID = 6;
+				fID = 0;
 			} else {
 				fID = Integer.parseInt(feedID.substring(4, 5));
 			}
 		} catch (Exception e) {
 			e.getMessage();
+			fID=0;
 		}
 		
 		return fID;
