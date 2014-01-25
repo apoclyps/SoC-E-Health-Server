@@ -85,7 +85,6 @@ public class RequestControllerUtil extends RequestController {
 	public int parseYearValue(String feedID) {
 		int fID =0;
 		
-		//Try to parse feed id if all-years
 		try {
 			if (feedID.substring(4, 5) == "a") {
 				fID = 6;
