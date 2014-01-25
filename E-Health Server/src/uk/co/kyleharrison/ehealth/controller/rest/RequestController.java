@@ -1,10 +1,6 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
@@ -83,7 +78,11 @@ public class RequestController extends HttpServlet {
 			case 6:
 				rcu.callURL("all-years",response);
 				break;
+			default:
+				//Return empty json to app
+				
 			}
+		 
 	}
 	
 	protected void doPost(HttpServletRequest request,
