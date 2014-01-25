@@ -1,9 +1,8 @@
 package uk.co.kyleharrison.ehealth.model.pojo;
 
-import java.util.Date;
-import java.util.ArrayList;
-
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class RSSChannel extends RSSBase {
 	
