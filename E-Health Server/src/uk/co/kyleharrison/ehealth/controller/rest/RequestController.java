@@ -8,17 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONObject;
-
-import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONItem;
-import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
-
 @WebServlet("/feeds/*")
 public class RequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
 
 	private RequestControllerUtil rcu;
 
@@ -29,12 +21,6 @@ public class RequestController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("Request Controller Initialised");
 		this.rcu = new RequestControllerUtil();
-		this.rcu.item = new JSONItem();
-		this.rcu.XMLFacade = new XMLFacade();
-		this.rcu.RC = new RSSChannel();
-		this.rcu.RI = new RSSItem();
-		this.rcu.itemList = new JSONObject[10];
-		this.rcu.url = null;
 	}
 
 	private String[] getParameters(String requestPath) {
@@ -57,37 +43,35 @@ public class RequestController extends HttpServlet {
 			feedID = pathComponents[3];
 		}
 
-		fID = rcu.parseYearValue(feedID);
+		fID = rcu.ParseYearValue(feedID);
 		
 		switch (fID) {
 			case 0:
-				rcu.callURL("all-years",response);
+				rcu.ResponseBuilder("all-years",response);
 			break;
 			case 1:
-				rcu.callURL("year1",response);
+				rcu.ResponseBuilder("year1",response);
 				break;
 			case 2:
-				rcu.callURL("year2",response);
+				rcu.ResponseBuilder("year2",response);
 				break;
 			case 3:
-				rcu.callURL("year3",response);
+				rcu.ResponseBuilder("year3",response);
 				break;
 			case 4:
-				rcu.callURL("year4",response);
+				rcu.ResponseBuilder("year4",response);
 				break;
 			case 5:
-				rcu.callURL("year5",response);
+				rcu.ResponseBuilder("year5",response);
 				break;
 			default:
 				//Return empty json to app
 				
 			}
-		 
 	}
 	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
 	}
-
 }

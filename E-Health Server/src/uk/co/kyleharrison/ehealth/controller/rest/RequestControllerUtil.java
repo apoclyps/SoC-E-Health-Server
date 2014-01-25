@@ -15,55 +15,55 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
-public class RequestControllerUtil extends RequestController {
+public class RequestControllerUtil extends RequestController implements RequestControllerInterface {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected JSONItem item;
-	protected XMLFacade XMLFacade;
-	protected RSSChannel RC;
-	protected RSSItem RI;
-	protected JSONObject[] itemList;
+	protected JSONItem jsonItem;
+	protected XMLFacade xmlFacade;
+	protected RSSChannel rssChannel;
+	protected RSSItem rssItem;
+	protected JSONObject[] jsonItemArray;
 	protected URL url;
 	
 	public JSONItem getItem() {
-		return item;
+		return jsonItem;
 	}
 
-	public void setItem(JSONItem item) {
-		this.item = item;
+	public void setItem(JSONItem jsonItem) {
+		this.jsonItem = jsonItem;
 	}
 
 	public XMLFacade getXMLFacade() {
-		return XMLFacade;
+		return xmlFacade;
 	}
 
-	public void setXMLFacade(XMLFacade xMLFacade) {
-		XMLFacade = xMLFacade;
+	public void setXMLFacade(XMLFacade xmlFacade) {
+		this.xmlFacade = xmlFacade;
 	}
 
 	public RSSChannel getRC() {
-		return RC;
+		return rssChannel;
 	}
 
-	public void setRC(RSSChannel rC) {
-		RC = rC;
+	public void setRC(RSSChannel rssChannel) {
+		this.rssChannel = rssChannel;
 	}
 
 	public RSSItem getRI() {
-		return RI;
+		return rssItem;
 	}
 
-	public void setRI(RSSItem rI) {
-		RI = rI;
+	public void setRI(RSSItem rssItem) {
+		this.rssItem = rssItem;
 	}
 
 	public JSONObject[] getItemList() {
-		return itemList;
+		return jsonItemArray;
 	}
 
-	public void setItemList(JSONObject[] itemList) {
-		this.itemList = itemList;
+	public void setItemList(JSONObject[] jsonItemArray) {
+		this.jsonItemArray = jsonItemArray;
 	}
 
 	public URL getUrl() {
@@ -80,9 +80,15 @@ public class RequestControllerUtil extends RequestController {
 
 	public RequestControllerUtil(){
 		super();
+		this.jsonItem = new JSONItem();
+		this.xmlFacade = new XMLFacade();
+		this.rssChannel = new RSSChannel();
+		this.rssItem = new RSSItem();
+		this.jsonItemArray = new JSONObject[10];
+		this.url = null;
 	}
 
-	public int parseYearValue(String feedID) {
+	public int ParseYearValue(String feedID) {
 		int fID =0;
 		
 		try {
@@ -95,17 +101,15 @@ public class RequestControllerUtil extends RequestController {
 			e.getMessage();
 			fID=0;
 		}
-		
 		return fID;
 	}
 
-	public void callURL(String parameter,HttpServletResponse response){
+	public void ResponseBuilder(String parameter,HttpServletResponse response){
 		try {
 			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
-			JSONObject jo = new JSONObject();
-			jo.put("items",getFeedJSON(url));
-
-			printOut(response, jo);
+			JSONObject responseObject = new JSONObject();
+			responseObject.put("items",ConstructJSONArray(url));
+			JSONResponse(response, responseObject);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
@@ -113,8 +117,20 @@ public class RequestControllerUtil extends RequestController {
 		}
 	}
 	
-	public void printOut(HttpServletResponse response, JSONObject json) {
-		if (json != null) {
+	public JSONObject[] ConstructJSONArray(URL url) throws JSONException {
+		this.jsonItem = new JSONItem();
+		this.xmlFacade.setUrl(url.toString());
+		this.rssChannel = this.xmlFacade.DeconstructXMLToPojo();
+
+		for (int x = 0; x < this.jsonItemArray.length; x++) {
+			this.rssItem = rssChannel.getItem_list().get(x);
+			this.jsonItemArray[x] = this.jsonItem.writeToJson(this.rssItem);
+		}
+		return jsonItemArray;
+	}
+	
+	public void JSONResponse(HttpServletResponse response, JSONObject jsonResponse) {
+		if (jsonResponse != null) {
 			response.setContentType("text/x-json;charset=UTF-8");
 			response.setHeader("Cache-Control", "no-cache");
 
@@ -123,24 +139,12 @@ public class RequestControllerUtil extends RequestController {
 
 			try {
 				out = response.getWriter();
-				out.print(json);
+				out.print(jsonResponse);
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public JSONObject[] getFeedJSON(URL url) throws JSONException {
-		this.item = new JSONItem();
-		this.XMLFacade.setUrl(url.toString());
-		this.RC = XMLFacade.DeconstructXMLToPojo();
-
-		for (int x = 0; x < this.itemList.length; x++) {
-			this.RI = RC.getItem_list().get(x);
-			this.itemList[x] = this.item.writeToJson(this.RI);
-		}
-		return itemList;
 	}
 	
 }
