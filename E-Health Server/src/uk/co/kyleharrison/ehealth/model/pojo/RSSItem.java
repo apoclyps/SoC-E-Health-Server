@@ -3,10 +3,10 @@ package uk.co.kyleharrison.ehealth.model.pojo;
 import java.net.URL;
 import java.util.Date;
 
-public class RSSItem extends RSSBase {
+public class RSSItem {
 	
 	private String UID;
-	private Date creaionDate;
+	private Date creationDate;
 	private String title;
 	private URL link;
 	private Date pubDate;
@@ -33,6 +33,7 @@ public class RSSItem extends RSSBase {
 		this.description = description;
 		this.setContentEncoded(contentEncoded);
 		this.setSlashComments(slashComments);
+		//this.creationDate= new Date();
 	}
 
 	public String getUID() {
@@ -43,12 +44,12 @@ public class RSSItem extends RSSBase {
 		UID = uID;
 	}
 
-	public Date getCreaionDate() {
-		return creaionDate;
+	public Date getCreationDate() {
+		return this.creationDate;
 	}
 
-	public void setCreaionDate(Date creaionDate) {
-		this.creaionDate = creaionDate;
+	public void setCreaionDate(Date creationDate) {
+		this.creationDate = creationDate;
 	}
 
 	public String getTitle() {

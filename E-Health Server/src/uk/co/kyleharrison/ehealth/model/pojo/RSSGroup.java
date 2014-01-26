@@ -2,7 +2,7 @@ package uk.co.kyleharrison.ehealth.model.pojo;
 
 import java.util.ArrayList;
 
-public class RSSGroup extends RSSBase {
+public class RSSGroup {
 
 	private ArrayList<RSSChannel> rss_channel_groups = new ArrayList<RSSChannel>();
 	private String channelXML;

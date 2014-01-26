@@ -4,7 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RSSChannel extends RSSBase {
+public class RSSChannel  {
 	
 	private String title =null;
 	private URL link;
