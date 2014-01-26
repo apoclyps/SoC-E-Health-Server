@@ -9,16 +9,43 @@ import org.json.simple.JSONObject;
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 
+
+// POST Libraries
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+//import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
+
+
+
 public class Push {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
-		// test out JSON object maker thing
+		// create instance of class
+		Push push = new Push();
+		
+		// assign mock object
 		JSONObject myObj = testJson();
 		
+		int[] gcm_ids = {0,2,4,6,8,5,7,9};	// dummy IDs of GCM devices
+		System.out.println("[ GCM ]\n");
+		
+			try { 
+				PushGCM gcm = new PushGCM("TEST PAYLOAD",gcm_ids);
+			}
+			catch (Exception e) {
+				System.out.println("ERROR: "+e.getMessage());
+			}
+		
+		System.out.println("[ /GCM ]>\n");
+		
 		// call POST TO ANDROID method
-		int result_android = post_android(myObj);
-		System.out.println("PUSH >> Android status: "+result_android);
+		//int result_android = post_android(myObj);
+		//System.out.println("PUSH >> Android status: "+result_android);
 		
 		// call POST TO iOS method
 		int result_ios = post_iOS(myObj);
@@ -34,18 +61,25 @@ public class Push {
 			// set up the connection
 			ApnsService service =
 				    APNS.newService()
-				    // next line's arguments: (.PEM file location , password)
-				    .withCert("../E-Health Server/resources/APNS.pem", "apnsCertificateForEuan")
+				    // next line's arguments: (.p12 file location , password)
+				    .withCert("../E-Health Server/resources/Certificates.p12", "apnsCertificateForEuan")
 				    .withSandboxDestination()
 				    .build();
-			
+
 			// create and send the message
 			String payload = APNS.newPayload().alertBody("Test for Toby!").build();
-			String token = "___"; // what is this?
+			/*String payload = APNS.newPayload()
+		            .badge(3)
+		            .customField("secret", "what do you think?")
+		            .localizedKey("GAME_PLAY_REQUEST_FORMAT")
+		            .localizedArguments("Jenna", "Frank")
+		            .actionKey("Play").build();*/
+			String token = "e278a071b803c1d5cf324342871a4fc8f6f92c99b172c95008d6fee8cc5c931f";
 			service.push(token, payload);
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("PUSH >> Error: " + e.getMessage());
 			return 0;
 		}
 		
@@ -56,15 +90,17 @@ public class Push {
 		try {
 			// ANDROID STUFF
 			System.out.println("PUSH >> Attempting to push to Android: "+itemToBeSent);
+			// AND NOW PERFORM THE PUSH:
+			// YEAH?
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("PUSH >> Error: "+e.getMessage());
 			return 0;
 		}
 		
 		return 1;
 	}
-	
 	
 	public static JSONObject testJson() {
 		// from http://www.mkyong.com/java/json-simple-example-read-and-write-json/
@@ -81,8 +117,6 @@ public class Push {
 		obj.put("messages", list);
 		
 		return obj;
-		
-		//System.out.print(obj);
 	}
 
 }
