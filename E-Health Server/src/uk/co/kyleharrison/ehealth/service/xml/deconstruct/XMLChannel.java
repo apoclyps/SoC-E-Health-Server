@@ -111,13 +111,10 @@ public class XMLChannel extends XMlDocumentBuilder {
 		try {
 			_generator = new URL(generator);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		this.rc = rcp.CreateChannel(title, _link, _description, _lastBuildDate, language, updatePeriod, 
 				_updateFrequency, _generator);
-		//testRC();
 	}
-	
 }

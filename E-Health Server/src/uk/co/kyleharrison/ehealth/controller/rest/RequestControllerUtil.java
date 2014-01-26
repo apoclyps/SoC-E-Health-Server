@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import sun.rmi.runtime.Log;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONItem;
@@ -158,6 +159,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 				e.printStackTrace();
 			}
 		}
+		System.out.println("JSON Response Returned");
 	}
 	
 }

@@ -113,9 +113,9 @@ public class XMlDocumentBuilder {
 		System.out.println("");
 
 		ArrayList<RSSItem> rsiA = xmlI.CreateItemList(doc);
-		System.out.println("\n\nSize of Item Array results = " +rsiA.size());
+	//	System.out.println("\n\nSize of Item Array results = " +rsiA.size());
 		rc.setItem_list(rsiA);
-		System.out.println("Size of RSS Channel results = " +this.rc.getItem_list().get(0).getTitle());
+	//	System.out.println("Size of RSS Channel results = " +this.rc.getItem_list().get(0).getTitle());
 		
 	}
 	

@@ -28,9 +28,7 @@ public class XMLItem extends XMlDocumentBuilder {
 	}
 	
 	public ArrayList<RSSItem> CreateItemList(Document doc) {
-		// TODO Auto-generated method stub
 		DeconstruxtXML(doc);
-		
 		return this.rssIA;
 	}
 	

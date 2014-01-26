@@ -35,8 +35,8 @@ public class RequestController extends HttpServlet {
 		int fID = 0;
 		String[] pathComponents = getParameters(request.getRequestURI());
 		
-		System.out.println("Server reached");
-		System.out.println("Path Components : " + request.getRequestURI() + " : " +pathComponents.length);
+		//System.out.println("Server reached");
+		//System.out.println("Path Components : " + request.getRequestURI() + " : " +pathComponents.length);
 		
 		// Select year from request
 		if (pathComponents.length >= 0 && pathComponents.length <= 4) {

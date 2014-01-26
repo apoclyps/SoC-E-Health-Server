@@ -27,7 +27,7 @@ public class RSSItemProxy implements RSSItemInterface {
 			String description, String contentEncoded, int slashComments) {
 		
 		this.ri = new RSSItem(title,link,comments, pubDate,creator, catergory,description, contentEncoded,slashComments);
-		System.out.println("Item : " +ri.getTitle());
+		//System.out.println("Item : " +ri.getTitle());
 		//System.out.println(ri.getDescription());
 		return this.ri;
 		
