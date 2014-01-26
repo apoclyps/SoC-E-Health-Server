@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.xml.util;
+package uk.co.kyleharrison.ehealth.services.xml.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -8,8 +8,7 @@ import org.w3c.dom.Document;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.xml.util.URLReader;
-import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
+import uk.co.kyleharrison.ehealth.services.xml.util.URLReader;
 
 public class XMLFacade {
 

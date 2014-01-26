@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.jackson.construct;
+package uk.co.kyleharrison.ehealth.service.jackson.model;
 
 import java.io.IOException;
 

@@ -1,17 +1,18 @@
-package uk.co.kyleharrison.ehealth.service.xml.deconstruct;
+package uk.co.kyleharrison.ehealth.service.xml.model;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSChannelProxy;
-import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
+import uk.co.kyleharrison.ehealth.service.xml.XMlDocumentBuilder;
+import uk.co.kyleharrison.ehealth.services.xml.util.HTMLParser;
 
 public class XMLChannel extends XMlDocumentBuilder {
 

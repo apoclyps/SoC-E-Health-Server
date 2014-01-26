@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.xml.util;
+package uk.co.kyleharrison.ehealth.service.xml;
 
 import java.io.StringReader;
 import java.net.MalformedURLException;
@@ -14,13 +14,13 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import uk.co.jackgraham.ehealth.services.HTMLParser;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLChannel;
-import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLGroup;
-import uk.co.kyleharrison.ehealth.service.xml.deconstruct.XMLItem;
-import uk.co.kyleharrison.ehealth.services.util.DateConverter;
+import uk.co.kyleharrison.ehealth.service.xml.model.XMLChannel;
+import uk.co.kyleharrison.ehealth.service.xml.model.XMLGroup;
+import uk.co.kyleharrison.ehealth.service.xml.model.XMLItem;
+import uk.co.kyleharrison.ehealth.services.xml.util.DateConverter;
+import uk.co.kyleharrison.ehealth.services.xml.util.HTMLParser;
 
 public class XMlDocumentBuilder {
 

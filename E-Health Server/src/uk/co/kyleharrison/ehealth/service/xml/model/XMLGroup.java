@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.xml.deconstruct;
+package uk.co.kyleharrison.ehealth.service.xml.model;
 
 import uk.co.kyleharrison.ehealth.model.proxy.RSSGroupProxy;
 

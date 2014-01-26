@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.jackson.util;
+package uk.co.kyleharrison.ehealth.service.jackson;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +11,9 @@ import org.json.simple.JSONObject;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONChannel;
-import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONGroup;
-import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONChannel;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONGroup;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 
 public class JSONDocumentBuilder {
 

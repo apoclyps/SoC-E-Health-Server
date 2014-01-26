@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.services.util;
+package uk.co.kyleharrison.ehealth.services.xml.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

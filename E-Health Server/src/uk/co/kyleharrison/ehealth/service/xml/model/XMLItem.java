@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.service.xml.deconstruct;
+package uk.co.kyleharrison.ehealth.service.xml.model;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import org.w3c.dom.NodeList;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.model.proxy.RSSItemProxy;
-import uk.co.kyleharrison.ehealth.service.xml.util.XMlDocumentBuilder;
+import uk.co.kyleharrison.ehealth.service.xml.XMlDocumentBuilder;
 
 public class XMLItem extends XMlDocumentBuilder {
 

@@ -6,7 +6,7 @@ import java.net.URL;
 import uk.co.jackgraham.ehealth.controller.interfaces.RestInterface;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.construct.JSONItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
 import javax.ws.rs.GET;
