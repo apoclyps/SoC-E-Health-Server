@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -108,12 +109,19 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		try {
 			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
 			JSONObject responseObject = new JSONObject();
-			responseObject.put("items",ConstructJSONArray(url));
+			JSONObject [] jsonItemsArray = ConstructJSONArray(url);
 			
+			Date now = new Date();
+
 		    // Additional fields can only be added once RSS Channel has been updated "ConstructJsonArray" 
 			responseObject.put("channel", this.rssChannel.getTitle());
-			responseObject.put("limit", this.rssChannel.getItem_list().size());
+			responseObject.put("lastUpdated", now.toString());
+			responseObject.put("totalRecords", this.rssChannel.getItem_list().size());
+			responseObject.put("numberOfRecordsReturned", this.rssChannel.getItem_list().size());
 			
+			// Items array
+			responseObject.put("items",jsonItemsArray);
+		
 			JSONResponse(response, responseObject);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

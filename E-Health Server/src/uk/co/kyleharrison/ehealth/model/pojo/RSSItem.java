@@ -5,10 +5,11 @@ import java.util.Date;
 
 public class RSSItem {
 	
-	private String UID;
+	private int UID;
 	private Date creationDate;
 	private String title;
 	private URL link;
+	private String publicationDate;
 	private Date pubDate;
 	private String creator;
 	private String catergory;
@@ -28,20 +29,22 @@ public class RSSItem {
 		this.link = link;
 		this.setComments(comments);
 		this.pubDate = pubDate;
+		this.publicationDate = pubDate.toString();
 		this.creator = creator;
 		this.catergory = catergory;
 		this.description = description;
 		this.setContentEncoded(contentEncoded);
 		this.setSlashComments(slashComments);
-		//this.creationDate= new Date();
+		this.creationDate= new Date();
+		this.UID = 0;
 	}
 
-	public String getUID() {
+	public int getUID() {
 		return UID;
 	}
 
-	public void setUID(String uID) {
-		UID = uID;
+	public void setUID(int UID) {
+		this.UID = UID;
 	}
 
 	public Date getCreationDate() {
@@ -122,6 +125,14 @@ public class RSSItem {
 
 	public void setSlashComments(int slashComments) {
 		this.slashComments = slashComments;
+	}
+
+	public String getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(String publicationDate) {
+		this.publicationDate = publicationDate;
 	}
 
 	
