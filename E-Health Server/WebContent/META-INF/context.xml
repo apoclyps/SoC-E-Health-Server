@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/E-Health-Server">
 
-	<Resource driverClassName="com.mysql.jdbc.Driver" maxActive="100"
-		maxIdle="30" maxWait="10000" name="jdbc/ubiquity" password=""
-		type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/ubiquity"
+	<Resource 
+		driverClassName="com.mysql.jdbc.Driver"
+		maxActive="100"
+		maxIdle="30" 
+		maxWait="10000" 
+		name="jdbc/mbchb" 
+		password=""
+		type="javax.sql.DataSource" 
+		url="jdbc:mysql://localhost:3306/ubiquity"
 		username="root" />
 
 </Context>
