@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
-		DBModule connection = new DBModule();
+		MySQLDAO connection = new MySQLDAO();
 		//connection.insertChannel();
 		connection.selectChannel();
 		connection.selectItem();

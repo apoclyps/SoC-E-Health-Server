@@ -7,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
-public class DBModule {
+import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+
+public class MySQLDAO {
 	
 	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
@@ -28,9 +31,7 @@ public class DBModule {
 		return connection ; 
 	}
 
-	public void insertChannel(String title, String link, String desc,
-							  Date lastBuild, String language, String updatePeriod,
-							  int updateFrequency,URL generator) throws SQLException {
+	public void insertChannel(RSSChannel rssChannel) throws SQLException {
 		connection = connectToDB();
 		 // PreparedStatements can use variables and are more efficient
 	      preparedStatement = connection.prepareStatement("insert into mbchb.channel" +
@@ -38,14 +39,14 @@ public class DBModule {
 	      		" values  (?,?,?,?,?,?,?,?)");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
-	      preparedStatement.setString(1, title);
-	      preparedStatement.setString(2, link);
-	      preparedStatement.setString(3, desc);
-	      preparedStatement.setDate(4, new java.sql.Date(lastBuild.getTime()));
-	      preparedStatement.setString(5, language);
-	      preparedStatement.setString(6, updatePeriod);
-	      preparedStatement.setInt(7,updateFrequency);
-	      preparedStatement.setString(8, generator.toString());
+	      preparedStatement.setString(1, rssChannel.getTitle());
+	      preparedStatement.setString(2, rssChannel.getLink().toString());
+	      preparedStatement.setString(3, rssChannel.getDescription());
+	      preparedStatement.setDate(4, new java.sql.Date(rssChannel.getLastBuildDate().getTime()));
+	      preparedStatement.setString(5, rssChannel.getLanguage());
+	      preparedStatement.setString(6, rssChannel.getUpdatePeriod());
+	      preparedStatement.setInt(7,rssChannel.getUpdateFrequency());
+	      preparedStatement.setString(8, rssChannel.getGenerator().toString());
 	      System.out.println("Insert succeed!");
 	      preparedStatement.executeUpdate();
 	      if (connection != null) {
