@@ -1,18 +1,13 @@
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
-
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
 public class MySQLDAO {
 	
-	private Statement statement = null;
 	private PreparedStatement preparedStatement = null;
 	private Connection connection ; 
 	
@@ -54,27 +49,23 @@ public class MySQLDAO {
           }
 	}
 	
-	public void insertItem(String title,URL link,int comment,
-						   Date pubDate, String creator,String category,
-						   String description,String commentRSS,int channel,Date creationDate) throws SQLException{
-						   // note that Channel would be the ChannelID that contain this item  
-		
+	public void insertItem(RSSItem rssItem) throws SQLException{
+		// note that Channel would be the ChannelID that contain this item  
 		connection = connectToDB();
 		
 		preparedStatement = connection.prepareStatement("insert into mbchb.itemtable" +
-	      		"(Title,Link,Comment,PubDate,Creator,Category,Description,CommentRSS,Channel,CreationDate)" +
-	      		" VALUES (?,?,?,?,?,?,?,?,?,?)");
+	      		"(Title,Link,Comment,PubDate,Creator,Category,Description,CommentRSS,CreationDate)" +
+	      		" VALUES (?,?,?,?,?,?,?,?,?)");
 	
-	      preparedStatement.setString(1, title);
-	      preparedStatement.setString(2, link.toString());
-	      preparedStatement.setInt(3, comment);
-	      preparedStatement.setDate(4, new java.sql.Date(pubDate.getTime()));
-	      preparedStatement.setString(5, creator);
-	      preparedStatement.setString(6, category);
-	      preparedStatement.setString(7,description);
-	      preparedStatement.setString(8, commentRSS);
-	      preparedStatement.setInt(9, channel);
-	      preparedStatement.setDate(10, new java.sql.Date(creationDate.getTime()));
+	      preparedStatement.setString(1, rssItem.getTitle());
+	      preparedStatement.setString(2, rssItem.getLink().toString());
+	      preparedStatement.setInt(3, rssItem.getSlashComments());
+	      preparedStatement.setDate(4, new java.sql.Date(rssItem.getPubDate().getTime()));
+	      preparedStatement.setString(5, rssItem.getCreator());
+	      preparedStatement.setString(6, rssItem.getCatergory());
+	      preparedStatement.setString(7,rssItem.getDescription());
+	      preparedStatement.setString(8, rssItem.getComments().toString());
+	      preparedStatement.setDate(10, new java.sql.Date(rssItem.getCreationDate().getTime()));
 	      System.out.println("Insert succeed!");
 	      preparedStatement.executeUpdate();
 	      if (connection != null) {
