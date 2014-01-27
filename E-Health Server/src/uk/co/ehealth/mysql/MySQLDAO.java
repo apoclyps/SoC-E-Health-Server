@@ -1,6 +1,5 @@
 package uk.co.ehealth.mysql;
-import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,21 +12,6 @@ public class MySQLDAO extends MySQLConnector {
 
 	public MySQLDAO() {
 		super();
-	}
-
-	public Connection openConnection(){
-		
-		String url = "jdbc:mysql://localhost:3306/mbchb";
-		String username = "root";
-		String password = "hellokitty1";
-		try {
-		    System.out.println("Connecting database...");
-		    this.connection = DriverManager.getConnection(url, username, password);
-		    System.out.println("Database connected!");
-		} catch (SQLException e) {
-		    throw new RuntimeException("Cannot connect the database!", e);
-		}
-		return connection ; 
 	}
 
 	public void insertChannel(RSSChannel rssChannel) throws SQLException {
@@ -55,7 +39,7 @@ public class MySQLDAO extends MySQLConnector {
 	
 	public void insertItem(RSSItem rssItem) throws SQLException{
 		// note that Channel would be the ChannelID that contain this item  
-		connection = openConnection();
+		if(this.checkConnection()){
 		
 		preparedStatement = connection.prepareStatement("insert into mbchb.itemtable" +
 	      		"(Title,Link,PubDate,Creator,Category,Description,CommentRSS)" +
@@ -72,14 +56,14 @@ public class MySQLDAO extends MySQLConnector {
 	//      preparedStatement.setDate(8, new java.sql.Date(rssItem.getCreationDate().getTime()));
 	      System.out.println("Insert succeed!");
 	      preparedStatement.executeUpdate();
-	      if (connection != null) {
-             connection.close();
-         }
+		}else{
+			System.out.println("MYSQLDOA : Insert item : Connection Failed");
+		}
 		
 	}
 	
 	public void selectChannel() throws SQLException {
-		connection = openConnection();
+		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
 	      preparedStatement = connection.prepareStatement("select * from mbchb.channel");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
@@ -98,12 +82,12 @@ public class MySQLDAO extends MySQLConnector {
 	  
 	    }
 	      
-	      if (connection != null) {
-            connection.close();
-        }
+	}else{
+		System.out.println("MYSQLDOA : Select Channel : Connection Failed");
+	}
 	}
 	public void selectItem() throws SQLException{
-		connection = openConnection();
+		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
 	      preparedStatement = connection.prepareStatement("select * from mbchb.itemtable");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
@@ -119,9 +103,9 @@ public class MySQLDAO extends MySQLConnector {
 			  System.out.println("Item ID : " + itemID);
 	    }
 	      
-	      if (connection != null) {
-           connection.close();
-       }
+	}else{
+		System.out.println("MYSQLDOA : Select Item : Connection Failed");
+	}
 
 		
 	}
