@@ -1,10 +1,17 @@
 package uk.co.ehealth.mysql;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 
 public class MySQLDAO extends MySQLConnector {
 	
@@ -86,25 +93,43 @@ public class MySQLDAO extends MySQLConnector {
 		System.out.println("MYSQLDOA : Select Channel : Connection Failed");
 	}
 	}
-	public void selectItem() throws SQLException{
+	public JSONObject[] selectItem() throws SQLException, MalformedURLException, JSONException{
 		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
-	      preparedStatement = connection.prepareStatement("select * from mbchb.itemtable");
+	      preparedStatement = connection.prepareStatement("SELECT TOP 10 * FROM mbchb.itemtable ORDER BY PubDate DESC");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
-	  
+	      JSONItem jsonItem = new JSONItem();
+	      JSONObject [] items = new JSONObject[10];
+	      int x = 0;
 	      //System.out.println("Insert succeed!");
 	      ResultSet resultSet = preparedStatement.executeQuery();
 	      
 	      // Pulling data by resultset..
 		  while (resultSet.next()) {
 	     // Getting data... 
+			  
+			  RSSItem rssItem = new RSSItem();
+			  
+			  rssItem.setTitle(resultSet.getString("Title"));
+			  URL itemURL = new URL((resultSet.getString("URL")));
+			  rssItem.setLink(itemURL);
+			  rssItem.setPublicationDate(resultSet.getString("PubDate"));
+			  rssItem.setCreator(resultSet.getString("Creator"));
+			  rssItem.setDescription(resultSet.getString("Description"));
+			  URL commentsURL = new URL((resultSet.getString("CommentRSS")));
+			  rssItem.setComments(commentsURL);
+			  
+			  
+			  items[x] = jsonItem.writeToJson(rssItem);
+			  x++;
 			  String itemID = resultSet.getString("ID");
 			  System.out.println("Item ID : " + itemID);
 	    }
-	      
+	      return items;
 	}else{
 		System.out.println("MYSQLDOA : Select Item : Connection Failed");
+		return null;
 	}
 
 		
