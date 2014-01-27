@@ -21,6 +21,9 @@ users/**/*
 *.swp
 *~.nib
 local.properties
+/.classpath
+/.classpath/
+/.classpath/*
 .classpath
 .settings/
 .loadpath
