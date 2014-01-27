@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
 import java.io.IOException;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,11 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import uk.co.ehealth.mysql.MySQLConnector;
+import uk.co.ehealth.mysql.MySQLDAO;
+
 @WebServlet("/feeds/*")
 public class RequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private RequestControllerUtil rcu;
+	protected MySQLDAO mysqlConnector;
 
 	public RequestController() {
 		super();
@@ -21,6 +26,11 @@ public class RequestController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("Request Controller Initialised");
 		this.rcu = new RequestControllerUtil();
+		this.mysqlConnector = new MySQLDAO();
+	}
+	
+	public void Destroy(ServletConfig config) throws ServletException{
+		this.mysqlConnector.close();
 	}
 
 	private String[] getParameters(String requestPath) {
@@ -64,6 +74,8 @@ public class RequestController extends HttpServlet {
 			case 5:
 				rcu.ResponseBuilder("year5",response);
 				break;
+			case 9:
+				rcu.ResponsePresistentStorage("year1");
 			default:
 				//Return empty json to app
 				

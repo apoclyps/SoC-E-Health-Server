@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import uk.co.ehealth.mysql.MySQLDAO;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
@@ -103,6 +105,29 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			fID=0;
 		}
 		return fID;
+	}
+	
+	public void ResponsePresistentStorage(String parameter){
+		try {
+			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
+			JSONObject responseObject = new JSONObject();
+			JSONObject [] jsonItemsArray = ConstructJSONArray(url);
+			
+			MySQLDAO mysqlDAO = new MySQLDAO();
+			mysqlDAO.insertChannel(rssChannel);
+			for(RSSItem rssItem : this.rssChannel.getItem_list()){
+				mysqlDAO.insertItem(rssItem);
+			}
+			
+			System.out.println("Storage updated");
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void ResponseBuilder(String parameter,HttpServletResponse response){

@@ -7,9 +7,9 @@
 		maxIdle="30" 
 		maxWait="10000" 
 		name="jdbc/mbchb" 
-		password=""
+		password="hellokitty1"
 		type="javax.sql.DataSource" 
-		url="jdbc:mysql://localhost:3306/ubiquity"
+		url="jdbc:mysql://localhost:3306/mbchb"
 		username="root" />
 
 </Context>
