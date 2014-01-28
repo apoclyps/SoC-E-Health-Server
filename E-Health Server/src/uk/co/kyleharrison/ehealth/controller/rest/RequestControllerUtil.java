@@ -107,32 +107,9 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		return fID;
 	}
 	
-	public void ResponsePresistentStorage(String parameter){
+	public void ResponseBuilder(String year,String page,HttpServletResponse response){
 		try {
-			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
-			JSONObject responseObject = new JSONObject();
-			JSONObject [] jsonItemsArray = ConstructJSONArray(url);
-			
-			MySQLDAO mysqlDAO = new MySQLDAO();
-			mysqlDAO.insertChannel(rssChannel);
-			for(RSSItem rssItem : this.rssChannel.getItem_list()){
-				mysqlDAO.insertItem(rssItem);
-			}
-			
-			System.out.println("Storage updated");
-			
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void ResponseBuilder(String parameter,HttpServletResponse response){
-		try {
-			url = new URL("https://mbchb.dundee.ac.uk/category/"+parameter+"/feed");
+			url = new URL("https://mbchb.dundee.ac.uk/category/"+year+"/feed/?paged="+page);
 			JSONObject responseObject = new JSONObject();
 			JSONObject [] jsonItemsArray = ConstructJSONArray(url);
 			
@@ -185,5 +162,29 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		}
 		System.out.println("JSON Response Returned");
 	}
-	
+
+    public void ResponsePresistentStorage(String yearID, String pageID){
+        try {
+                url = new URL("https://mbchb.dundee.ac.uk/category/"+yearID+"/feed/?paged="+pageID);
+                JSONObject responseObject = new JSONObject();
+                JSONObject [] jsonItemsArray = ConstructJSONArray(url);
+                
+                MySQLDAO mysqlDAO = new MySQLDAO();
+                mysqlDAO.insertChannel(rssChannel);
+                for(RSSItem rssItem : this.rssChannel.getItem_list()){
+                        mysqlDAO.insertItem(rssItem);
+                }
+                
+                System.out.println("Storage updated");
+                
+        } catch (MalformedURLException e) {
+                e.printStackTrace();
+        } catch (JSONException e) {
+                e.printStackTrace();
+        }catch (SQLException e) {
+                e.printStackTrace();
+        }
+}
+
+
 }
