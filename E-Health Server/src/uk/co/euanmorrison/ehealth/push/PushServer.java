@@ -87,11 +87,13 @@ public class PushServer {
 	}
 	
 	public boolean pushApns(JSONObject payload, ArrayList<String> recipients) {
+		System.out.println(">> Method call PushServer.pushApns(JSONObject payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload,recipients);
 		return push.send();
 	}
 	
 	public boolean pushGcm() {
+		System.out.println(">> Method call PushServer.pushGcm()");
 		return false;
 		// FILL IN LATER
 	}

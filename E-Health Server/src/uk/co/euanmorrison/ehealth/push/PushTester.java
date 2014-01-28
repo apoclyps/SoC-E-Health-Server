@@ -22,7 +22,7 @@ public class PushTester {
 		// if it saves every time a new sub is received, that avoids it
 		// kinda impractical though. hmm.
 		
-		// THIS WILL BE CALLED BY RESTFUL STUFF
+		// THIS WILL BE CALLED BY RESTFUL STUFF, presumably?
 		pushServer.addSubApns(fakeToken());
 		ArrayList<String> subs = pushServer.getSubsApns();
 		
