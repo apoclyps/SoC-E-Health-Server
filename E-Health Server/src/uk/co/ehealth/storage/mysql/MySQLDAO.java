@@ -1,11 +1,17 @@
-package uk.co.ehealth.mysql;
-import java.sql.Connection;
-import java.sql.DriverManager;
+package uk.co.ehealth.storage.mysql;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 
 public class MySQLDAO extends MySQLConnector {
 	
@@ -13,21 +19,6 @@ public class MySQLDAO extends MySQLConnector {
 
 	public MySQLDAO() {
 		super();
-	}
-
-	public Connection openConnection(){
-		
-		String url = "jdbc:mysql://localhost:3306/mbchb";
-		String username = "root";
-		String password = "hellokitty1";
-		try {
-		    System.out.println("Connecting database...");
-		    this.connection = DriverManager.getConnection(url, username, password);
-		    System.out.println("Database connected!");
-		} catch (SQLException e) {
-		    throw new RuntimeException("Cannot connect the database!", e);
-		}
-		return connection ; 
 	}
 
 	public void insertChannel(RSSChannel rssChannel) throws SQLException {
@@ -55,7 +46,7 @@ public class MySQLDAO extends MySQLConnector {
 	
 	public void insertItem(RSSItem rssItem) throws SQLException{
 		// note that Channel would be the ChannelID that contain this item  
-		connection = openConnection();
+		if(this.checkConnection()){
 		
 		preparedStatement = connection.prepareStatement("insert into mbchb.itemtable" +
 	      		"(Title,Link,PubDate,Creator,Category,Description,CommentRSS)" +
@@ -72,14 +63,14 @@ public class MySQLDAO extends MySQLConnector {
 	//      preparedStatement.setDate(8, new java.sql.Date(rssItem.getCreationDate().getTime()));
 	      System.out.println("Insert succeed!");
 	      preparedStatement.executeUpdate();
-	      if (connection != null) {
-             connection.close();
-         }
+		}else{
+			System.out.println("MYSQLDOA : Insert item : Connection Failed");
+		}
 		
 	}
 	
 	public void selectChannel() throws SQLException {
-		connection = openConnection();
+		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
 	      preparedStatement = connection.prepareStatement("select * from mbchb.channel");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
@@ -98,30 +89,48 @@ public class MySQLDAO extends MySQLConnector {
 	  
 	    }
 	      
-	      if (connection != null) {
-            connection.close();
-        }
+	}else{
+		System.out.println("MYSQLDOA : Select Channel : Connection Failed");
 	}
-	public void selectItem() throws SQLException{
-		connection = openConnection();
+	}
+	public JSONObject[] selectItem() throws SQLException, MalformedURLException, JSONException{
+		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
-	      preparedStatement = connection.prepareStatement("select * from mbchb.itemtable");
+	      preparedStatement = connection.prepareStatement("SELECT TOP 10 * FROM mbchb.itemtable ORDER BY PubDate DESC");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
-	  
+	      JSONItem jsonItem = new JSONItem();
+	      JSONObject [] items = new JSONObject[10];
+	      int x = 0;
 	      //System.out.println("Insert succeed!");
 	      ResultSet resultSet = preparedStatement.executeQuery();
 	      
 	      // Pulling data by resultset..
 		  while (resultSet.next()) {
 	     // Getting data... 
+			  
+			  RSSItem rssItem = new RSSItem();
+			  
+			  rssItem.setTitle(resultSet.getString("Title"));
+			  URL itemURL = new URL((resultSet.getString("URL")));
+			  rssItem.setLink(itemURL);
+			  rssItem.setPublicationDate(resultSet.getString("PubDate"));
+			  rssItem.setCreator(resultSet.getString("Creator"));
+			  rssItem.setDescription(resultSet.getString("Description"));
+			  URL commentsURL = new URL((resultSet.getString("CommentRSS")));
+			  rssItem.setComments(commentsURL);
+			  
+			  
+			  items[x] = jsonItem.writeToJson(rssItem);
+			  x++;
 			  String itemID = resultSet.getString("ID");
 			  System.out.println("Item ID : " + itemID);
 	    }
-	      
-	      if (connection != null) {
-           connection.close();
-       }
+	      return items;
+	}else{
+		System.out.println("MYSQLDOA : Select Item : Connection Failed");
+		return null;
+	}
 
 		
 	}

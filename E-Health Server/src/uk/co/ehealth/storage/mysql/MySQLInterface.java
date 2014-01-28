@@ -1,4 +1,4 @@
-package uk.co.ehealth.mysql;
+package uk.co.ehealth.storage.mysql;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 

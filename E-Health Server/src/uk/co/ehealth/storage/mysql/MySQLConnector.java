@@ -1,4 +1,4 @@
-package uk.co.ehealth.mysql;
+package uk.co.ehealth.storage.mysql;
 
 import java.sql.Connection;
 //import java.sql.PreparedStatement;

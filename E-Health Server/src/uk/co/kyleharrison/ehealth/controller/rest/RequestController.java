@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uk.co.ehealth.mysql.MySQLConnector;
-import uk.co.ehealth.mysql.MySQLDAO;
+import uk.co.ehealth.storage.mysql.MySQLConnector;
+import uk.co.ehealth.storage.mysql.MySQLDAO;
 
 @WebServlet("/feeds/*")
 public class RequestController extends HttpServlet {
