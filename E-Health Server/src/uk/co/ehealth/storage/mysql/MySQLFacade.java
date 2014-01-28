@@ -7,7 +7,6 @@ import org.json.JSONException;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
-
 public class MySQLFacade implements MySQLInterface {
 	
 	private MySQLDAO connection;
