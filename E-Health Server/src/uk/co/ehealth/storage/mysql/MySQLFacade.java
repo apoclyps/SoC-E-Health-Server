@@ -1,4 +1,4 @@
-package uk.co.ehealth.mysql;
+package uk.co.ehealth.storage.mysql;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 
@@ -6,7 +6,6 @@ import org.json.JSONException;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-
 
 public class MySQLFacade implements MySQLInterface {
 	

@@ -1,4 +1,4 @@
-package uk.co.ehealth.mysql;
+package uk.co.ehealth.storage.mysql;
 
 import java.net.MalformedURLException;
 import java.net.URL;
