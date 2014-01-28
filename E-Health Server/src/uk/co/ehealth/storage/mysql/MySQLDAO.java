@@ -5,13 +5,10 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.ArrayList;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 
 public class MySQLDAO extends MySQLConnector {
 	
@@ -69,7 +66,9 @@ public class MySQLDAO extends MySQLConnector {
 		
 	}
 	
-	public void selectChannel() throws SQLException {
+	public ArrayList<RSSChannel> selectChannel() throws SQLException, MalformedURLException {
+		ArrayList<RSSChannel> channelList = new ArrayList<RSSChannel>();
+		
 		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
 	      preparedStatement = connection.prepareStatement("select * from mbchb.channel");
@@ -82,57 +81,67 @@ public class MySQLDAO extends MySQLConnector {
 	      // Pulling data by resultset.. 
 
 		  while (resultSet.next()) {
-	   
 	     // Getting data... 
+			  RSSChannel channel = new RSSChannel();
+			  URL url = new URL(resultSet.getString("Link"));
+			//  DateFormat lastBuildDate = new Date(resultSet.getString("LastBuild"));
+			  URL generator = new URL(resultSet.getString("URLGenerator"));
 			  String channelId = resultSet.getString("ChannelID");
+			  channel.setTitle(resultSet.getString("Title"));
+			  
+			  channel.setLink(url);
+			  channel.setDescription(resultSet.getString("Description"));
+			  channel.setLastBuildDate(resultSet.getDate("LastBuild"));
+			  channel.setLanguage(resultSet.getString("Language"));
+			  channel.setUpdatePeriod(resultSet.getString("UpdatePeriod"));
+			  channel.setUpdateFrequency(resultSet.getInt("UpdateFrequency"));
+			  channel.setGenerator(generator);
+			  
 			  System.out.println("Channel ID : " + channelId);
-	  
+			  channelList.add(channel);	
 	    }
 	      
-	}else{
-		System.out.println("MYSQLDOA : Select Channel : Connection Failed");
+	      if (connection != null) {
+            connection.close();
+        }
+		}
+	      return channelList;
 	}
-	}
-	public JSONObject[] selectItem() throws SQLException, MalformedURLException, JSONException{
+	public ArrayList<RSSItem> selectItem() throws SQLException, MalformedURLException{
+		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
+		
 		if(this.checkConnection()){
-		 // PreparedStatements can use variables and are more efficient
-	      preparedStatement = connection.prepareStatement("SELECT * FROM mbchb.itemtable ORDER BY PubDate DESC LIMIT 0,10;");
+		// PreparedStatements can use variables and are more efficient
+	      preparedStatement = connection.prepareStatement("select * from mbchb.Item");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
-	      JSONItem jsonItem = new JSONItem();
-	      JSONObject [] items = new JSONObject[10];
-	      int x = 0;
+	  
 	      //System.out.println("Insert succeed!");
 	      ResultSet resultSet = preparedStatement.executeQuery();
 	      
-	      // Pulling data by resultset..
+	      // Pulling data by resultset.. 
+
 		  while (resultSet.next()) {
 	     // Getting data... 
-			  
-			  RSSItem rssItem = new RSSItem();
-			  
-			  rssItem.setTitle(resultSet.getString("Title"));
-			  URL itemURL = new URL((resultSet.getString("URL")));
-			  rssItem.setLink(itemURL);
-			  rssItem.setPublicationDate(resultSet.getString("PubDate"));
-			  rssItem.setCreator(resultSet.getString("Creator"));
-			  rssItem.setDescription(resultSet.getString("Description"));
-			  URL commentsURL = new URL((resultSet.getString("CommentRSS")));
-			  rssItem.setComments(commentsURL);
-			  
-			  
-			  items[x] = jsonItem.writeToJson(rssItem);
-			  x++;
-			  String itemID = resultSet.getString("ID");
-			  System.out.println("Item ID : " + itemID);
+		 //	  String itemID = resultSet.getString("ID");
+			  RSSItem item = new RSSItem();
+			  URL link = new URL(resultSet.getString("Link"));
+			//  URL commentRss = new URL(resultSet.getString("CommentRSS"));
+				  
+			  item.setTitle(resultSet.getString("Title"));
+			  item.setLink(link);
+			  item.setSlashComments(resultSet.getInt("Comments"));
+			  item.setPubDate(resultSet.getDate("PubDate"));
+			  item.setCreator(resultSet.getString("Creator"));
+			  item.setCatergory(resultSet.getString("Category"));
+			  item.setDescription(resultSet.getString("Description"));
+			//  item.setCommentRss(commentRss);
+			  itemList.add(item);
 	    }
-	      return items;
-	}else{
-		System.out.println("MYSQLDOA : Select Item : Connection Failed");
-		return null;
+	      if (connection != null) {
+           connection.close();
+       }
+		}
+	      return itemList;
 	}
-
-		
-	}
-
 }
