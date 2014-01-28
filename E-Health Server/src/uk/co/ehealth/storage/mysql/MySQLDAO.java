@@ -96,7 +96,7 @@ public class MySQLDAO extends MySQLConnector {
 	public JSONObject[] selectItem() throws SQLException, MalformedURLException, JSONException{
 		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
-	      preparedStatement = connection.prepareStatement("SELECT TOP 10 * FROM mbchb.itemtable ORDER BY PubDate DESC");
+	      preparedStatement = connection.prepareStatement("SELECT * FROM mbchb.itemtable ORDER BY PubDate DESC LIMIT 0,10;");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
 	      JSONItem jsonItem = new JSONItem();
