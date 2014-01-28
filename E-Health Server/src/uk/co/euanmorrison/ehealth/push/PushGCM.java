@@ -15,11 +15,14 @@ public class PushGCM {
 
 	private JSONObject obj;
 	private String response;
-	private final String AUTH = "";
+	private final String GCM_AUTH = "";	// NEEDED FOR GCM PUSH. Comes from Yolina.
+	private final String GCM_URL = "https://android.googleapis.com/gcm/send";
 	
 	public PushGCM(String payload, int[] ids) throws Exception {
 		Date timestamp = new Date();
+		
 		this.obj = this.setJSON("test payload", timestamp, ids);
+		
 		this.response = this.sendPost("https://selfsolve.apple.com/wcResults.do", this.obj);
 		
 		// prints contents of JSON object to console
@@ -52,7 +55,8 @@ public class PushGCM {
 	private String sendPost(String url, JSONObject jsonObj) throws Exception {
 		 
 		//String url = "https://selfsolve.apple.com/wcResults.do";
-		URL obj = new URL(url);
+		//URL obj = new URL(url);
+		URL obj = new URL(GCM_URL);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
  
 		//add request header
@@ -60,10 +64,12 @@ public class PushGCM {
 		con.setRequestProperty("User-Agent", "Mozilla/5.0");
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
 		
-		con.setRequestProperty("Content-Type", "application/json");
-		con.setRequestProperty("Authorization", AUTH);
+		// Required headers for GCM POST
+		con.setRequestProperty("Content-Type", "application/json"); // for json
+		con.setRequestProperty("Authorization", GCM_AUTH);
  
-		String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+		//String urlParameters = "sn=C02G8416DRJM&cn=&locale=&caller=&num=12345";
+		String urlParameters = "";
  
 		// Send post request
 		con.setDoOutput(true);

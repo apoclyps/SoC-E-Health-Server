@@ -5,9 +5,11 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 
+
 // iOS push Libraries
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
+
 
 
 // POST Libraries
@@ -16,13 +18,14 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 //import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
 
 
 
 public class Push {
-
+	
 	public static void main(String[] args) throws Exception {
 
 		// create instance of class
@@ -49,6 +52,9 @@ public class Push {
 		
 		// call POST TO iOS method
 		int result_ios = post_iOS(myObj);
+		
+		// call external APNS post:
+		//PushIOS pushAPNS = new PushIOS(myObj);
 		System.out.println("PUSH >> iOS status: "+result_ios);
 	}
 	
@@ -68,12 +74,7 @@ public class Push {
 
 			// create and send the message
 			String payload = APNS.newPayload().alertBody("Test for Toby!").build();
-			/*String payload = APNS.newPayload()
-		            .badge(3)
-		            .customField("secret", "what do you think?")
-		            .localizedKey("GAME_PLAY_REQUEST_FORMAT")
-		            .localizedArguments("Jenna", "Frank")
-		            .actionKey("Play").build();*/
+
 			String token = "e278a071b803c1d5cf324342871a4fc8f6f92c99b172c95008d6fee8cc5c931f";
 			service.push(token, payload);
 		}
