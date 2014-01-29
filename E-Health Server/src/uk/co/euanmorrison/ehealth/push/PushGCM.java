@@ -32,7 +32,7 @@ public class PushGCM {
 			this.payloadJson = buildBody();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		} 
 		
 		try {
 			this.response = this.send();

@@ -35,11 +35,11 @@ public class PushServer {
 
 	public boolean addSubApns(String token) {
 		System.out.println(">> Method call PushServer.addSubApns(String token)");
-		if (subs_apns.contains(token)) {
+		if (this.subs_apns.contains(token)) {
 			// already in the list. do nothing
 		} else {
 			try {
-				subs_apns.add(token);
+				this.subs_apns.add(token);
 				saveSubsApns(token);
 			} catch (Exception e) {
 				System.out.println("ERROR: " + e.getMessage());
@@ -51,11 +51,11 @@ public class PushServer {
 
 	public boolean addSubGcm(String token) {
 		System.out.println(">> Method call PushServer.addSubGcm(String token)");
-		if (subs_gcm.contains(token)) {
+		if (this.subs_gcm.contains(token)) {
 			// already in the list. do nothing
 		} else {
 			try {
-				subs_gcm.add(token);
+				this.subs_gcm.add(token);
 				saveSubsApns(token);
 			} catch (Exception e) {
 				System.out.println("ERROR: " + e.getMessage());
@@ -100,6 +100,9 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.loadSubs()");
 
 		if( loadSubsApns() && loadSubsGcm() ) {
+			for(int i=0; i< this.subs_apns.size(); i++) {
+				//System.out.println("TOKENS! "+this.subs_apns.get(i));
+			}
 			return true;
 		}
 		else {
@@ -113,13 +116,14 @@ public class PushServer {
 		try {
 			MySQLFacade sql = new MySQLFacade();
 			this.subs_apns = sql.getPhoneIDs("ios");
+			System.out.println(this.subs_apns.toString());
 		}
 		catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
 
-		System.out.println("Opened file successfully");
+		System.out.println("loaded apns subs successfully");
 		return true;
 	}
 
@@ -135,19 +139,8 @@ public class PushServer {
 			return false;
 		}
 
-		System.out.println("Opened file successfully");
+		System.out.println("loaded apns subs successfully");
 		return true;
-	}
-
-	public boolean saveSubs(String key) {
-		System.out.println(">> Method call PushServer.saveSubs()");
-
-		if( saveSubsApns(key) && saveSubsGcm(key) ) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 
 	private boolean saveSubsApns(String key) {
