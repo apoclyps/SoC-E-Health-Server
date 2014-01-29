@@ -3,6 +3,7 @@ import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import uk.co.kyleharrison.ehealth.model.pojo.PhoneID;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
@@ -23,7 +24,11 @@ public class MySQLFacade implements MySQLInterface {
 
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
-		insertItem(rssItem);
+		try {
+			connection.insertItem(rssItem);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -82,6 +87,21 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
+	
+	public ArrayList<PhoneID> getPhoneIDs(String phoneType)
+	{
+		if(phoneType.equals("iOS"))
+		{
+			
+		}
+		else if(phoneType.equals("android"))
+		{
+			
+		}
+		return null;
+		
+	}
+	
 
 	public MySQLDAO getConnection() {
 		return connection;
