@@ -7,6 +7,8 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -176,8 +178,6 @@ public class RequestControllerUtil extends RequestController implements
 		try {
 			url = new URL("https://mbchb.dundee.ac.uk/category/" + yearID
 					+ "/feed/?paged=" + pageID);
-			JSONObject responseObject = new JSONObject();
-			JSONObject[] jsonItemsArray = ConstructJSONArray(url);
 
 			MySQLDAO mysqlDAO = new MySQLDAO();
 			mysqlDAO.insertChannel(rssChannel);
@@ -189,8 +189,6 @@ public class RequestControllerUtil extends RequestController implements
 			System.out.println("Storage updated");
 
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -211,7 +209,7 @@ public class RequestControllerUtil extends RequestController implements
 		
 		int page = Integer.getInteger(endID)/ Integer.getInteger(startID);
 
-		System.out.println("PageID "+pageID);
+		System.out.println("PageID "+pageID + " page" + page);
 		System.out.println("startID "+startID);
 		System.out.println("endID "+endID);
 		
@@ -221,6 +219,12 @@ public class RequestControllerUtil extends RequestController implements
 		System.out.println("RC : Parameter exception");
 	}
 	return false;
+	}
+
+	public void PushNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setAttribute("pushJSON", this.rssChannel.getItem_list().get(0).getPushJSON());
+		RequestDispatcher rd = request.getRequestDispatcher("/PushController/");
+		rd.forward(request, response);
 	}
 
 }
