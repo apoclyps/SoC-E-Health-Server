@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
-
 /**
  * Servlet implementation class PushController
  */
@@ -30,7 +28,6 @@ public class PushController extends HttpServlet {
      */
     public PushController() {
         super();
-        // TODO Auto-generated constructor stub
     }
     
 	public void init(ServletConfig config) throws ServletException {
@@ -43,15 +40,11 @@ public class PushController extends HttpServlet {
 		this.ps.serverStop();
 	}
 
-	private String[] getParameters(String requestPath) {
-		return requestPath.split("/");
-	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("SERVLET 'GET' HIT");
 		
 		String responseOutput = "";
