@@ -116,6 +116,8 @@ public class RequestControllerUtil extends RequestController implements
 		try {
 			url = new URL("https://mbchb.dundee.ac.uk/category/" + year
 					+ "/feed/?paged=" + page);
+			
+			System.out.println("url"+url.toString());
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArray(url);
 

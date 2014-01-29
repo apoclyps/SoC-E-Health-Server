@@ -47,6 +47,13 @@ public class RequestController extends HttpServlet {
 		yearID = pathComponents[3];
 
 		//boolean pageRequest = rcu.PagingCheck(request);
+		
+		try{
+			pageID = (String) request.getParameter("page");
+		}catch(Exception e){
+			e.printStackTrace();
+			pageID="0";
+		}
 
 		fID = rcu.ParseYearValue(yearID);
 		
@@ -58,23 +65,23 @@ public class RequestController extends HttpServlet {
 			break;
 			case 1:
 				rcu.ResponseBuilder("year1",pageID,response);
-				rcu.ResponsePresistentStorage("year1",pageID);
+				//rcu.ResponsePresistentStorage("year1",pageID);
 				break;
 			case 2:
 				rcu.ResponseBuilder("year2",pageID,response);
-				rcu.ResponsePresistentStorage("year2",pageID);
+			//	rcu.ResponsePresistentStorage("year2",pageID);
 				break;
 			case 3:
 				rcu.ResponseBuilder("year3",pageID,response);
-				rcu.ResponsePresistentStorage("year3",pageID);
+			//	rcu.ResponsePresistentStorage("year3",pageID);
 				break;
 			case 4:
 				rcu.ResponseBuilder("year4",pageID,response);
-				rcu.ResponsePresistentStorage("year4",pageID);
+				//rcu.ResponsePresistentStorage("year4",pageID);
 				break;
 			case 5:
 				rcu.ResponseBuilder("year5",pageID,response);
-				rcu.ResponsePresistentStorage("year5",pageID);
+				//rcu.ResponsePresistentStorage("year5",pageID);
 				break;
 			case 6 :
 				rcu.PushNotification(request, response);
