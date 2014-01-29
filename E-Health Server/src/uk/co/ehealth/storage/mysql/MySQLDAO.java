@@ -192,7 +192,8 @@ public class MySQLDAO extends MySQLConnector {
 				item.setTitle(resultSet.getString("Title"));
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
-				item.setPubDate(resultSet.getDate("PubDate"));
+			//	System.out.println("MYSQLDAO pub date needs fixed");
+				//item.setPubDate(resultSet.getDate("PubDate"));
 				item.setCreator(resultSet.getString("Creator"));
 				item.setCategory(resultSet.getString("Category"));
 				item.setDescription(resultSet.getString("Description"));
