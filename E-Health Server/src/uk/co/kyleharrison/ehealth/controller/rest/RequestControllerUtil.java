@@ -21,8 +21,7 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
-public class RequestControllerUtil extends RequestController implements
-		RequestControllerInterface {
+public class RequestControllerUtil extends RequestController implements RequestControllerInterface {
 
 	private static final long serialVersionUID = 1L;
 

@@ -4,13 +4,21 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
- <!--  <listener>
-    <listener-class>uk.co.kyleharrison.ehealth.controller.rest.RequestControllerContextListener</listener-class>
-  </listener>
-  -->
-    <listener>
+  <listener>
     <listener-class>uk.co.kyleharrison.ehealth.controller.rest.DatabaseContextListener</listener-class>
   </listener>
+  
+  <servlet>
+        <servlet-name>FlashCardController</servlet-name>
+        <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.flashcards.FlashCardController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FlashCardController</servlet-name>
+     <url-pattern>/FlashCardController</url-pattern>
+    <url-pattern>/FlashCardController/*</url-pattern>
+    </servlet-mapping>
+  
   <error-page>
     <error-code>404</error-code>
     <location>/EHealth/Error/error.jsp</location>
