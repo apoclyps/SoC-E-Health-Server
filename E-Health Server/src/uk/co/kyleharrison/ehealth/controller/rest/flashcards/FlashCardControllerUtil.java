@@ -2,6 +2,7 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,13 +13,13 @@ import org.json.JSONObject;
 import uk.co.ehealth.storage.mysql.MySQLFacade;
 import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.flashcards.QuestionSet;
-import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONFlashCard;
 
 public class FlashCardControllerUtil extends FlashCardController implements FlashCardInterface  {
 
 	private static final long serialVersionUID = 1L;
 
-	protected JSONItem jsonItem;
+	protected JSONFlashCard flashcardItem;
 	protected QuestionSet questionSet;
 	protected FlashCard flashCard;
 	protected JSONObject[] jsonItemArray;
@@ -26,20 +27,22 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 
 	public FlashCardControllerUtil() {
 		super();
-		this.jsonItem = new JSONItem();
+		this.flashcardItem = new JSONFlashCard();
 		this.questionSet = new QuestionSet();
 		this.flashCard = new FlashCard();
+		this.mysqlFacade= new MySQLFacade();
 	//	this.jsonItemArray = new JSONObject [] () ;
 	}
 	
 	
-	public FlashCardControllerUtil(JSONItem jsonItem, QuestionSet questionSet,
+	public FlashCardControllerUtil(JSONFlashCard flashcardItem, QuestionSet questionSet,
 			FlashCard flashCard, JSONObject[] jsonItemArray) {
 		super();
-		this.jsonItem = jsonItem;
+		this.flashcardItem = flashcardItem;
 		this.questionSet = questionSet;
 		this.flashCard = flashCard;
 		this.jsonItemArray = jsonItemArray;
+		this.mysqlFacade= new MySQLFacade();
 	}
 
 	public void ResponseBuilder(String year, String page,String callback,
@@ -68,7 +71,21 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 	}
 
 	public JSONObject[] ConstructJSONArray() throws JSONException {
-		this.jsonItem = new JSONItem();
+		this.flashcardItem = new JSONFlashCard();
+		
+		// get result set
+		System.out.println("Selecting Flash Card from Mysql");
+		ArrayList<FlashCard> fcItems = mysqlFacade.selectFlashCard();
+		
+		try{
+			System.out.println("Size ="+fcItems.size());
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		
+		
+		//this.flashcardItem.writeToJson(flashCard);
 	//	this.xmlFacade.setUrl(url.toString());
 	//	this.questionSet = this.xmlFacade.DeconstructXMLToPojo();
 /*

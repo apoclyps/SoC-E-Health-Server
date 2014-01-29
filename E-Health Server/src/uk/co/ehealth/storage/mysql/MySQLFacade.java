@@ -4,6 +4,7 @@ import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
@@ -33,6 +34,16 @@ public class MySQLFacade implements MySQLInterface {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public ArrayList<FlashCard> selectFlashCard(){
+		ArrayList<FlashCard> flashCardsArray = null;
+		try {
+			flashCardsArray = connection.selectFlashCardBySubject("1");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return flashCardsArray;
 	}
 
 	@Override

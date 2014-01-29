@@ -16,14 +16,18 @@ import uk.co.kyleharrison.ehealth.controller.rest.RequestControllerUtil;
 public class FlashCardController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private RequestControllerUtil rcu;
+	private FlashCardControllerUtil fcu;
 	protected MySQLDAO mysqlConnector;
 	
     public FlashCardController() {
         super();
-       this.rcu = new RequestControllerUtil();
-       this.mysqlConnector = new MySQLDAO();
     }
+    
+	public void init(ServletConfig config) throws ServletException {
+		System.out.println("Request Controller Initialised");
+		this.fcu = new FlashCardControllerUtil();
+		this.mysqlConnector = new MySQLDAO();
+	}
     
 	
 	public void Destroy(ServletConfig config) throws ServletException{
@@ -38,8 +42,7 @@ public class FlashCardController extends HttpServlet {
 	
 		String[] pathComponents = getParameters(request.getRequestURI());
 
-	
-		//rcu.ResponseBuilder("all-years",pageID,callback,response);
+		fcu.ResponseBuilder("all-years",pageID,callback,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
