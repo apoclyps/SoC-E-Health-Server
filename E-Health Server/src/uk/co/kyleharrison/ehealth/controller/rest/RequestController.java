@@ -41,6 +41,7 @@ public class RequestController extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String pageID = "0";
 		String yearID = null;
+		String callback ="callback";
 		int fID = 0;
 		
 		String[] pathComponents = getParameters(request.getRequestURI());
@@ -50,9 +51,21 @@ public class RequestController extends HttpServlet {
 		
 		try{
 			pageID = (String) request.getParameter("page");
+			try{
+				if(Integer.getInteger(pageID)!=0){
+					pageID = ""+ (Integer.getInteger(pageID)-1);
+				}
+				callback = (String) request.getParameter("callback");
+			}catch(NullPointerException npe){
+				System.out.println("Callback not set");
+				callback="0";
+			}
+			
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			pageID="0";
+			callback="callback";
 		}
 
 		fID = rcu.ParseYearValue(yearID);
@@ -61,26 +74,26 @@ public class RequestController extends HttpServlet {
 			case 0:
 				//boolean download = rcu.CheckRSSFeed();
 			//	System.out.println("RSS Object = "+download);
-				rcu.ResponseBuilder("all-years",pageID,response);
+				rcu.ResponseBuilder("all-years",pageID,callback,response);
 			break;
 			case 1:
-				rcu.ResponseBuilder("year1",pageID,response);
+				rcu.ResponseBuilder("year1",pageID,callback,response);
 				//rcu.ResponsePresistentStorage("year1",pageID);
 				break;
 			case 2:
-				rcu.ResponseBuilder("year2",pageID,response);
+				rcu.ResponseBuilder("year2",pageID,callback,response);
 			//	rcu.ResponsePresistentStorage("year2",pageID);
 				break;
 			case 3:
-				rcu.ResponseBuilder("year3",pageID,response);
+				rcu.ResponseBuilder("year3",pageID,callback,response);
 			//	rcu.ResponsePresistentStorage("year3",pageID);
 				break;
 			case 4:
-				rcu.ResponseBuilder("year4",pageID,response);
+				rcu.ResponseBuilder("year4",pageID,callback,response);
 				//rcu.ResponsePresistentStorage("year4",pageID);
 				break;
 			case 5:
-				rcu.ResponseBuilder("year5",pageID,response);
+				rcu.ResponseBuilder("year5",pageID,callback,response);
 				//rcu.ResponsePresistentStorage("year5",pageID);
 				break;
 			case 6 :

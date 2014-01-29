@@ -23,15 +23,14 @@ public class MySQLFacade implements MySQLInterface {
 
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
-		// TODO Auto-generated method stub
-		/*
 		try {
-			connection.insertItem(rssItem);
+			if(connection.insertItem(rssItem)){
+				System.out.println("Inserted 1 Record " + rssItem.getTitle());
+			}
+			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		*/
 		return false;
 	}
 
@@ -79,7 +78,8 @@ public class MySQLFacade implements MySQLInterface {
 	public ArrayList<RSSItem> selectItemsFromYear(String yearID) {
 		// TODO Auto-generated method stub
 		try {
-			return connection.selectItem();
+			//return connection.selectItem();
+			return connection.selectItemFromYear(yearID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
