@@ -24,7 +24,10 @@ public class MySQLFacade implements MySQLInterface {
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
 		try {
-			connection.insertItem(rssItem);
+			if(connection.insertItem(rssItem)){
+				System.out.println("Inserted 1 Record " + rssItem.getTitle());
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -86,21 +89,6 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
-	
-	public ArrayList<String> getPhoneIDs(String phoneType) throws SQLException
-	{
-		if(phoneType.equals("ios"))
-		{
-			return connection.getIOSIDs();
-		}
-		else if(phoneType.equals("android"))
-		{
-			return connection.getAndroidIDs();
-		}
-		return null;
-		
-	}
-	
 
 	public MySQLDAO getConnection() {
 		return connection;

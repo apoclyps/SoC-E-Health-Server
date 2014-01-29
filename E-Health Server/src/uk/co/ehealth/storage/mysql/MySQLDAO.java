@@ -31,8 +31,7 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setString(1, rssChannel.getTitle());
 			preparedStatement.setString(2, rssChannel.getLink().toString());
 			preparedStatement.setString(3, rssChannel.getDescription());
-			preparedStatement.setString(4, rssChannel.getLastBuildDate()
-					.toString());
+			preparedStatement.setTimestamp(4, new java.sql.Timestamp(rssChannel.getLastBuildDate().getTime()));
 			preparedStatement.setString(5, rssChannel.getLanguage());
 			preparedStatement.setString(6, rssChannel.getUpdatePeriod());
 			preparedStatement.setInt(7, rssChannel.getUpdateFrequency());
@@ -60,7 +59,8 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setString(1, rssItem.getTitle());
 			preparedStatement.setString(2, rssItem.getLink().toString());
 			// preparedStatement.setInt(3, rssItem.getSlashComments());
-			preparedStatement.setString(3, rssItem.getPubDate().toString());
+			//preparedStatement.setString(3, rssItem.getPubDate().toString());
+			preparedStatement.setTimestamp(3, new java.sql.Timestamp(rssItem.getPubDate().getTime()));
 			preparedStatement.setString(4, rssItem.getCreator());
 			preparedStatement.setString(5, rssItem.getCategory());
 			preparedStatement.setString(6, rssItem.getDescription());
@@ -113,7 +113,7 @@ public class MySQLDAO extends MySQLConnector {
 
 				channel.setLink(url);
 				channel.setDescription(resultSet.getString("Description"));
-				channel.setLastBuildDate(resultSet.getDate("LastBuild"));
+				channel.setLastBuildDate(resultSet.getTimestamp("LastBuild"));
 				channel.setLanguage(resultSet.getString("Language"));
 				channel.setUpdatePeriod(resultSet.getString("UpdatePeriod"));
 				channel.setUpdateFrequency(resultSet.getInt("UpdateFrequency"));
@@ -156,7 +156,7 @@ public class MySQLDAO extends MySQLConnector {
 				item.setTitle(resultSet.getString("Title"));
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
-				item.setPubDate(resultSet.getDate("PubDate"));
+				item.setPubDate(resultSet.getTimestamp("PubDate"));
 				item.setCreator(resultSet.getString("Creator"));
 				item.setCategory(resultSet.getString("Category"));
 				item.setDescription(resultSet.getString("Description"));
@@ -199,7 +199,7 @@ public class MySQLDAO extends MySQLConnector {
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
 			//	System.out.println("MYSQLDAO pub date needs fixed");
-				//item.setPubDate(resultSet.getDate("PubDate"));
+				item.setPubDate(resultSet.getTimestamp("PubDate"));
 				item.setCreator(resultSet.getString("Creator"));
 				item.setCategory(resultSet.getString("Category"));
 				item.setDescription(resultSet.getString("Description"));
@@ -321,39 +321,4 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return flashCardList;
 	}
-	
-	public ArrayList<String> getAndroidIDs() throws SQLException
-	{
-		ArrayList<String> androidIDs = new ArrayList<String>();
-		if (this.checkConnection()){
-			preparedStatement = connection.prepareStatement("SELECT * FROM subs_android;");
-		
-			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()) {
-				String ID =rs.getString("ID");
-				androidIDs.add(ID);
-			}
-			
-		}
-		
-		return androidIDs;
-	}
-	
-	public ArrayList<String> getIOSIDs() throws SQLException
-	{
-		ArrayList<String> iOSIDs = new ArrayList<String>();
-		if (this.checkConnection()){
-			preparedStatement = connection.prepareStatement("SELECT * FROM subs_ios;");
-		
-			ResultSet rs = preparedStatement.executeQuery();
-			while (rs.next()) {
-				String ID =rs.getString("ID");
-				iOSIDs.add(ID);
-			}
-			
-		}
-		
-		return iOSIDs;
-	}
-	
 }
