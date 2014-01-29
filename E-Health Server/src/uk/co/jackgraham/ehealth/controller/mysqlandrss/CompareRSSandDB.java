@@ -2,9 +2,13 @@ package uk.co.jackgraham.ehealth.controller.mysqlandrss;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import uk.co.ehealth.storage.mysql.MySQLFacade;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
 
@@ -22,6 +26,7 @@ public class CompareRSSandDB {
 		super();
 	}
 	
+	// sets up Facades and splits url to get yearID
 	public CompareRSSandDB(String url)
 	{
 		xml = new XMLFacade(url);
@@ -31,17 +36,60 @@ public class CompareRSSandDB {
 		yearID = pathComponents[3];
 	}
 	
+	// Get ArrayList from RSS feed by yearID
 	public void getRSS()
 	{
 		rc = xml.DeconstructXMLToPojo();
 		setRssItemList(rc.getItem_list());
 	}
 	
+	// Get ArrayList from DB by yearID
 	public void getDBdata()
 	{
 		setSqlItemList(sql.selectItemsFromYear(yearID));
 	}
-
+	
+	//Check RSS and DB Array Lists 
+	public void compareRSStoSQL() throws JSONException
+	{
+		RSSItem rss;
+		RSSItem sqlItem;
+		rss = rssItemList.get(0);
+		sqlItem = sqlItemList.get(0);
+		JSONItem jsonItem = new JSONItem();
+		
+		if( rss.getTitle().equals(sqlItem.getTitle()) )
+		{
+			// push to app
+			JSONObject[] newJSON = new JSONObject[rssItemList.size()];
+			
+			for(int i = 0; i < rssItemList.size(); i++)
+			{
+			    newJSON[i] = jsonItem.writeToJson(rssItemList.get(i));
+			}
+			
+			//newJSON now ready to sent to app
+		}
+		else
+		{
+			// push to sql then app
+			for(int x = 0; x < rssItemList.size(); x++)
+			{
+				sql.insertItem(rssItemList.get(x));
+			}
+			ArrayList<RSSItem> newList = sql.selectItemsFromYear(yearID);
+			JSONObject[] newJSON = new JSONObject[newList.size()];
+			
+			for(int i = 0; i < newList.size(); i++)
+			{
+			    newJSON[i] = jsonItem.writeToJson(newList.get(i));
+			}
+			// newJSON now ready to be sent to app
+		}
+	}
+	
+	// Getters and Setters-------------------------------------------------
+	
 	public ArrayList<RSSItem> getRssItemList() {
 		return rssItemList;
 	}
