@@ -33,7 +33,6 @@ public class RequestController extends HttpServlet {
 	}
 
 	private String[] getParameters(String requestPath) {
-
 		return requestPath.split("/");
 	}
 
@@ -47,20 +46,31 @@ public class RequestController extends HttpServlet {
 		String[] pathComponents = getParameters(request.getRequestURI());
 		yearID = pathComponents[3];
 
-		//boolean pageRequest = rcu.PagingCheck(request);
-		
 		try{
 			pageID = (String) request.getParameter("page");
 			try{
-				if(Integer.getInteger(pageID)!=0){
-					pageID = ""+ (Integer.getInteger(pageID)-1);
+				if(Integer.parseInt(pageID)>0){
+					//int id = Integer.parseInt(pageID)-1;
+					int id = Integer.parseInt(pageID);
+					pageID = Integer.toString(id);
+				}else{
+					pageID="0";
 				}
-				callback = (String) request.getParameter("callback");
 			}catch(NullPointerException npe){
-				System.out.println("Callback not set");
-				callback="0";
+				System.out.println("page not set");
+				pageID="0";
 			}
 			
+			try{
+				if(request.getParameter("callback")==null){
+					callback="callback";
+				}else{
+					callback=request.getParameter("callback");
+				}
+			}catch(NullPointerException npe){
+				System.out.println("callback not set");
+				callback="callback";
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -72,34 +82,27 @@ public class RequestController extends HttpServlet {
 		
 		switch (fID) {
 			case 0:
-				//boolean download = rcu.CheckRSSFeed();
-			//	System.out.println("RSS Object = "+download);
 				rcu.ResponseBuilder("all-years",pageID,callback,response);
 			break;
 			case 1:
 				rcu.ResponseBuilder("year1",pageID,callback,response);
-				//rcu.ResponsePresistentStorage("year1",pageID);
 				break;
 			case 2:
 				rcu.ResponseBuilder("year2",pageID,callback,response);
-			//	rcu.ResponsePresistentStorage("year2",pageID);
 				break;
 			case 3:
 				rcu.ResponseBuilder("year3",pageID,callback,response);
-			//	rcu.ResponsePresistentStorage("year3",pageID);
 				break;
 			case 4:
 				rcu.ResponseBuilder("year4",pageID,callback,response);
-				//rcu.ResponsePresistentStorage("year4",pageID);
 				break;
 			case 5:
 				rcu.ResponseBuilder("year5",pageID,callback,response);
-				//rcu.ResponsePresistentStorage("year5",pageID);
 				break;
 			case 6 :
 				rcu.PushNotification(request, response);
 			default:
-				//Return empty json to app
+				rcu.ResponseBuilder("all-years","0",callback,response);
 				
 			}
 	}
