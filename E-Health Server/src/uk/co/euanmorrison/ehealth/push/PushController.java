@@ -50,7 +50,7 @@ public class PushController extends HttpServlet {
 		String responseOutput = "";
 		
 		Map<String,String[]> params = request.getParameterMap();
-		
+			
 		switch(params.get("platform")[0]) {
 			case "ios":
 				if(ps.addSubApns(params.get("token")[0])) {
