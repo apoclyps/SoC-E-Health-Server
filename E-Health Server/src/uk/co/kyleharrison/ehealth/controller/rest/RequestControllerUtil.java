@@ -111,7 +111,7 @@ public class RequestControllerUtil extends RequestController implements
 		return fID;
 	}
 
-	public void ResponseBuilder(String year, String page,
+	public void ResponseBuilder(String year, String page,String callback,
 			HttpServletResponse response) {
 		try {
 			url = new URL("https://mbchb.dundee.ac.uk/category/" + year
@@ -135,7 +135,7 @@ public class RequestControllerUtil extends RequestController implements
 			// Items array
 			responseObject.put("items", jsonItemsArray);
 
-			JSONResponse(response, responseObject);
+			JSONResponse(response, responseObject,callback);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
@@ -156,7 +156,7 @@ public class RequestControllerUtil extends RequestController implements
 	}
 
 	public void JSONResponse(HttpServletResponse response,
-			JSONObject jsonResponse) {
+			JSONObject jsonResponse,String callback) {
 		if (jsonResponse != null) {
 			response.setContentType("text/x-json;charset=UTF-8");
 			response.setHeader("Cache-Control", "no-cache");
@@ -167,7 +167,7 @@ public class RequestControllerUtil extends RequestController implements
 			try {
 				out = response.getWriter();
 			//	out.print(jsonResponse);
-				out.print("Ext.data.JsonP.feedscb(" + jsonResponse+ ");");
+				out.print(callback+"(" + jsonResponse+ ");");
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
