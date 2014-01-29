@@ -105,20 +105,15 @@ public class PushController extends HttpServlet {
 		}
 	}
 
-	protected void pushPost(HttpServletRequest request,HttpServletResponse response,String responseOutput){
+	protected void pushPost(HttpServletRequest request,HttpServletResponse response,String pushJson){
 		System.out.println("SERVLET POST HIT");
 
-		/*String requestBody = responseOutput;
-		try {
-			requestBody = getBody(request);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// ENTRY POINT FOR GCM POST
+		// COPYPASTE THE APNS STUFF AND ADAPT
 
-	*/
-		if (ps.pushApns(responseOutput, ps.getSubsApns())) {
+		if (ps.pushApns(pushJson, ps.getSubsApns())) {
 			// successfully pushed to APNS
-			System.out.println("successfully pushed to APNS"+responseOutput);
+			System.out.println("successfully pushed to APNS "+pushJson);
 			//responseOutput = "true";
 		} else {
 			System.out.println("Failed to push to APNS");
