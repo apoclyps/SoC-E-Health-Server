@@ -2,6 +2,7 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +24,11 @@ public class FlashCardController extends HttpServlet {
        this.rcu = new RequestControllerUtil();
        this.mysqlConnector = new MySQLDAO();
     }
+    
+	
+	public void Destroy(ServletConfig config) throws ServletException{
+		this.mysqlConnector.close();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
