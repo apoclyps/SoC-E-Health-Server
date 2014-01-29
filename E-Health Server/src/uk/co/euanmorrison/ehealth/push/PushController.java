@@ -50,8 +50,11 @@ public class PushController extends HttpServlet {
 		String responseOutput = "";
 		
 		Map<String,String[]> params = request.getParameterMap();
+		
+		//System.out.println("PARAMS: "+ params.));
 
-		String type = (String) request.getAttribute("type");
+		//String type = (String) request.getAttribute("type");
+		String type = params.get("type")[0];
 		try{
 			System.out.println("type"+type);
 		}catch(NullPointerException e){

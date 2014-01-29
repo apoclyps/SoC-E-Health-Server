@@ -30,6 +30,7 @@ public class PushIOS {
 
 			for(int i=0; i<this.recipients.size(); i++) {
 				//String token = "e278a071b803c1d5cf324342871a4fc8f6f92c99b172c95008d6fee8cc5c931f";
+				
 				//service.push(token, payload);
 				try {
 					service.push(this.recipients.get(i),payload);
