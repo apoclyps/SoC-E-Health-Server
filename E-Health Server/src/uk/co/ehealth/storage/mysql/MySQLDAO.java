@@ -321,4 +321,39 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return flashCardList;
 	}
+	
+	public ArrayList<String> getAndroidIDs() throws SQLException
+	{
+		ArrayList<String> androidIDs = new ArrayList<String>();
+		if (this.checkConnection()){
+			preparedStatement = connection.prepareStatement("SELECT * FROM subs_android;");
+		
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				String ID =rs.getString("ID");
+				androidIDs.add(ID);
+			}
+			
+		}
+		
+		return androidIDs;
+	}
+	
+	public ArrayList<String> getIOSIDs() throws SQLException
+	{
+		ArrayList<String> iOSIDs = new ArrayList<String>();
+		if (this.checkConnection()){
+			preparedStatement = connection.prepareStatement("SELECT * FROM subs_ios;");
+		
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				String ID =rs.getString("ID");
+				iOSIDs.add(ID);
+			}
+			
+		}
+		
+		return iOSIDs;
+	}
+	
 }
