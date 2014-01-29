@@ -1,9 +1,7 @@
 package uk.co.euanmorrison.ehealth.push;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
@@ -16,7 +14,7 @@ import org.json.JSONObject;
 
 public class PushGCM {
 
-	private String response;
+	private boolean response;
 	private final String GCM_AUTH = "key=AIzaSyDRHjCe_wWhxR1hf6_-93wb-imobSYPRJg";					// NEEDED FOR GCM PUSH. Comes from Yolina.
 	private final String GCM_URL = "https://android.googleapis.com/gcm/send";						// Where POST goes to
 	private final String GCM_CONTENT = "application/x-www-form-urlencoded;charset=UTF-8";
@@ -45,7 +43,7 @@ public class PushGCM {
 		System.out.println("# Attempted POST. Result:\n" + this.getResponse() + "\n");
 	}
 	
-	public String send() throws IOException {
+	public boolean send() throws IOException {
 		 
 		URL obj;
 		obj = new URL(GCM_URL);
@@ -67,27 +65,23 @@ public class PushGCM {
 		// Send post request
 		con.setDoOutput(true);
 		DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-		//wr.writeBytes(urlParameters);
 		wr.writeBytes(urlParameters);
 		wr.flush();
 		wr.close();
 		
-		//int responseCode = con.getResponseCode();
- 
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
- 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
+		int responseCode = con.getResponseCode();
 		
-		return response.toString();
+		if(responseCode==200) {
+			// success, do nothing
+		}
+		else {
+			System.out.println("Error on Push: "+responseCode);
+			return false;
+		}
+		return true;
 	}
 	
-	private String getResponse() {
+	private boolean getResponse() {
 		return this.response;
 	}
 	

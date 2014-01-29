@@ -94,14 +94,10 @@ public class PushController extends HttpServlet {
 				}
 				break;
 		}
-		/*for(String value:params.get("test")) {
-			System.out.println("Value of 'test': " + value);
-		}*/
+
 		PrintWriter pw = response.getWriter();
 		pw.print(responseOutput);
 		pw.close();
-		//ps.pushApns(ps.testJson(), ps.getSubsApns());
-		ps.saveSubs();
 		}
 	}
 
