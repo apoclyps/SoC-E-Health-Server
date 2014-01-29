@@ -14,8 +14,8 @@
 		
 		<Resource 
 		driverClassName="com.mysql.jdbc.Driver"
-		maxActive="100"
-		maxIdle="30" 
+		maxActive="500"
+		maxIdle="100" 
 		maxWait="10000" 
 		name="jdbc/mbchb" 
 		password="Atmitwwsu007"
