@@ -3,6 +3,8 @@ package uk.co.kyleharrison.ehealth.model.pojo;
 import java.net.URL;
 import java.util.Date;
 
+import org.json.simple.JSONObject;
+
 public class RSSItem {
 	
 	private int UID;
@@ -142,6 +144,14 @@ public class RSSItem {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public JSONObject getPushJSON(){
+		JSONObject pushJSON = new JSONObject();
+		pushJSON.put("title", this.getTitle());
+		pushJSON.put("year", Integer.toString(this.getYear()));
+		return pushJSON;
 	}
 
 	
