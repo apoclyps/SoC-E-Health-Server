@@ -48,7 +48,7 @@ public class MySQLDAO extends MySQLConnector {
 		}
 	}
 
-	public void insertItem(RSSItem rssItem) throws SQLException {
+	public boolean insertItem(RSSItem rssItem) throws SQLException {
 		// note that Channel would be the ChannelID that contain this item
 		if (this.checkConnection()) {
 
@@ -70,13 +70,19 @@ public class MySQLDAO extends MySQLConnector {
 			// java.sql.Date(rssItem.getCreationDate().getTime()));
 			// System.out.println("Insert succeed!"+ rssItem.getYear());
 			preparedStatement.executeUpdate();
+			
+			if (connection != null) {
+				connection.close();
+			}
+			return true;
 		} else {
 			System.out.println("MYSQLDOA : Insert item : Connection Failed");
+			if (connection != null) {
+				connection.close();
+			}
+			return false;
 		}
 
-		if (connection != null) {
-			connection.close();
-		}
 	}
 
 	public ArrayList<RSSChannel> selectChannel() throws SQLException,

@@ -23,15 +23,7 @@ public class MySQLFacade implements MySQLInterface {
 
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
-		// TODO Auto-generated method stub
-		/*
-		try {
-			connection.insertItem(rssItem);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
+		insertItem(rssItem);
 		return false;
 	}
 
