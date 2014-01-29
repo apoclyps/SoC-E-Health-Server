@@ -13,7 +13,7 @@
 		<servlet-class>uk.co.kyleharrison.ehealth.controller.rest.RequestController</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>FeedController</servlet-name>
+		<servlet-name>FeedsController</servlet-name>
 		<url-pattern>/feeds</url-pattern>
 		<url-pattern>/feeds/*</url-pattern>
 	</servlet-mapping>
