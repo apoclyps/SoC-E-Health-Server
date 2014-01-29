@@ -2,8 +2,6 @@ package uk.co.kyleharrison.ehealth.model.flashcards;
 
 import java.util.ArrayList;
 
-import uk.co.kyleharrison.ehealth.model.pojo.FlashCard;
-
 public class QuestionSet {
 
 	private ArrayList<FlashCard> questionSet = new ArrayList<FlashCard>();

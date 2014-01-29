@@ -8,7 +8,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import uk.co.kyleharrison.ehealth.model.pojo.FlashCard;
+import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 
 public class JSONFlashCard {
 
