@@ -349,7 +349,7 @@ public class MySQLDAO extends MySQLConnector {
 	public boolean addAndroidKey(String key) throws SQLException {
 		if (this.checkConnection()) {
 			preparedStatement = connection
-					.prepareStatement("insert into mbchb.subs_ios" + "(ID)"
+					.prepareStatement("insert into mbchb.subs_android" + "(ID)"
 							+ "values (?)");
 
 			preparedStatement.setString(1, key);
