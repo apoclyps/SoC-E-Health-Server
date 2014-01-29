@@ -4,16 +4,29 @@
   <welcome-file-list>
     <welcome-file>FeedController</welcome-file>
   </welcome-file-list>
-  <servlet>
+  
+  <!--  <servlet>
     <servlet-name>FeedController</servlet-name>
-    <servlet-class>uk.co.kyleharrison.jobseeker.servlets.RequestController
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.RequestController
 		</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FeedController</servlet-name>
     <url-pattern>/FeedController</url-pattern>
     <url-pattern>/FeedController/*</url-pattern>
+  </servlet-mapping> -->
+  
+  <servlet>
+    <servlet-name>PushController</servlet-name>
+    <servlet-class>uk.co.euanmorrison.ehealth.push.PushController
+		</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PushController</servlet-name>
+    <url-pattern>/PushController</url-pattern>
+    <url-pattern>/PushController/*</url-pattern>
   </servlet-mapping>
+  
   <error-page>
     <error-code>404</error-code>
     <location>/EHealth/Error/error.jsp</location>
@@ -22,4 +35,5 @@
     <error-code>500</error-code>
     <location>/EHealth/Error/error.jsp</location>
   </error-page>
+  
 </web-app>
