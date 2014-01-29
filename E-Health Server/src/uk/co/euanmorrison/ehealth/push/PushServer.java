@@ -3,6 +3,8 @@ package uk.co.euanmorrison.ehealth.push;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import uk.co.ehealth.storage.mysql.MySQLFacade;
+
 public class PushServer {
 
 	ArrayList<String> subs_apns = new ArrayList<String>();
@@ -15,7 +17,6 @@ public class PushServer {
 		for (int i = 0; i < subs_apns.size(); i++) {
 			System.out.println(">> subs_apns(" + i + "): " + subs_apns.get(i));
 		}
-		saveSubs();
 	}
 
 	private boolean serverSetup() {
@@ -29,12 +30,6 @@ public class PushServer {
 	}
 
 	public boolean serverStop() {
-		System.out.println(">> Method call PushServer.serverStop()");
-		if (saveSubs()) {
-			// success
-		} else {
-			return false;
-		}
 		return true;
 	}
 
@@ -45,7 +40,7 @@ public class PushServer {
 		} else {
 			try {
 				subs_apns.add(token);
-				saveSubsApns();
+				saveSubsApns(token);
 			} catch (Exception e) {
 				System.out.println("ERROR: " + e.getMessage());
 				return false;
@@ -61,7 +56,7 @@ public class PushServer {
 		} else {
 			try {
 				subs_gcm.add(token);
-				saveSubsApns();
+				saveSubsApns(token);
 			} catch (Exception e) {
 				System.out.println("ERROR: " + e.getMessage());
 				return false;
@@ -115,12 +110,9 @@ public class PushServer {
 	private boolean loadSubsApns() {
 		System.out.println(">> Method call PushServer.loadSubsApns()");
 
-		// set up instance of facadey thing for DB
-		// open the connection
-
 		try {
-			// this.subs_apns = call method to GET all devices in APNS (returns Arraylist<String>)
-			// CLOSE DB CONNECTION
+			MySQLFacade sql = new MySQLFacade();
+			this.subs_apns = sql.getPhoneIDs("ios");
 		}
 		catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -134,13 +126,23 @@ public class PushServer {
 	private boolean loadSubsGcm() {
 		System.out.println(">> Method call PushServer.loadSubsGcm()");
 
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			this.subs_gcm = sql.getPhoneIDs("android");
+		}
+		catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			return false;
+		}
+
+		System.out.println("Opened file successfully");
 		return true;
 	}
 
-	public boolean saveSubs() {
+	public boolean saveSubs(String key) {
 		System.out.println(">> Method call PushServer.saveSubs()");
 
-		if( saveSubsApns() && saveSubsGcm() ) {
+		if( saveSubsApns(key) && saveSubsGcm(key) ) {
 			return true;
 		}
 		else {
@@ -148,11 +150,12 @@ public class PushServer {
 		}
 	}
 
-	private boolean saveSubsApns() {
+	private boolean saveSubsApns(String key) {
 		System.out.println(">> Method call PushServer.saveSubsApns()");
 
 		try {
-			
+			MySQLFacade sql = new MySQLFacade();
+			sql.insertIOSKey(key);
 		}
 		catch (Exception e) {
 			System.out.println("ERROR: " + e.getMessage());
@@ -162,8 +165,18 @@ public class PushServer {
 		return true;
 	}
 
-	private boolean saveSubsGcm() {
+	private boolean saveSubsGcm(String key) {
 		System.out.println(">> Method call PushServer.saveSubsGcm()");
+		
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			sql.insertAndroidKey(key);
+		}
+		catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
+			return false;
+		}
+		System.out.println("Wrote to file successfully");
 		return true;
 	}
 
