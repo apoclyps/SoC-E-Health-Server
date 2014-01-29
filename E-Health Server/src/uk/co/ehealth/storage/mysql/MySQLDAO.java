@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
@@ -21,7 +22,7 @@ public class MySQLDAO extends MySQLConnector {
 	public void insertChannel(RSSChannel rssChannel) throws SQLException {
 		if(this.checkConnection()){
 			 // PreparedStatements can use variables and are more efficient
-		      preparedStatement = connection.prepareStatement("insert into mbchb.channel" +
+		      preparedStatement = connection.prepareStatement("insert into mbchb.Channel" +
 		      		"(Title, Link, Description, LastBuild, Language, UpdatePeriod, UpdateFrequency, URLGenerator)" +
 		      		" values  (?,?,?,?,?,?,?,?)");
 		      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
@@ -29,7 +30,7 @@ public class MySQLDAO extends MySQLConnector {
 		      preparedStatement.setString(1, rssChannel.getTitle());
 		      preparedStatement.setString(2, rssChannel.getLink().toString());
 		      preparedStatement.setString(3, rssChannel.getDescription());
-		      preparedStatement.setDate(4, new java.sql.Date(rssChannel.getLastBuildDate().getTime()));
+		      preparedStatement.setString(4, rssChannel.getLastBuildDate().toString());
 		      preparedStatement.setString(5, rssChannel.getLanguage());
 		      preparedStatement.setString(6, rssChannel.getUpdatePeriod());
 		      preparedStatement.setInt(7,rssChannel.getUpdateFrequency());
@@ -45,25 +46,25 @@ public class MySQLDAO extends MySQLConnector {
 		// note that Channel would be the ChannelID that contain this item  
 		if(this.checkConnection()){
 		
-		preparedStatement = connection.prepareStatement("insert into mbchb.itemtable" +
-	      		"(Title,Link,PubDate,Creator,Category,Description,CommentRSS)" +
-	      		" VALUES (?,?,?,?,?,?,?)");
+		preparedStatement = connection.prepareStatement("insert into mbchb.Item" +
+	      		"(Title,Link,PubDate,Creator,Category,Description,CommentRSS,Year)" +
+	      		" VALUES (?,?,?,?,?,?,?,?)");
 	
 	      preparedStatement.setString(1, rssItem.getTitle());
 	      preparedStatement.setString(2, rssItem.getLink().toString());
 	 //     preparedStatement.setInt(3, rssItem.getSlashComments());
-	      preparedStatement.setDate(3, new java.sql.Date(rssItem.getPubDate().getTime()));
+	      preparedStatement.setString(3, rssItem.getPubDate().toString());
 	      preparedStatement.setString(4, rssItem.getCreator());
-	      preparedStatement.setString(5, rssItem.getCatergory());
+	      preparedStatement.setString(5, rssItem.getCategory());
 	      preparedStatement.setString(6,rssItem.getDescription());
 	      preparedStatement.setString(7, rssItem.getComments().toString());
+	      preparedStatement.setInt(8, rssItem.getYear());
 	//      preparedStatement.setDate(8, new java.sql.Date(rssItem.getCreationDate().getTime()));
-	      System.out.println("Insert succeed!");
+	    //  System.out.println("Insert succeed!"+ rssItem.getYear());
 	      preparedStatement.executeUpdate();
 		}else{
 			System.out.println("MYSQLDOA : Insert item : Connection Failed");
 		}
-		
 	}
 	
 	public ArrayList<RSSChannel> selectChannel() throws SQLException, MalformedURLException {
@@ -71,7 +72,7 @@ public class MySQLDAO extends MySQLConnector {
 		
 		if(this.checkConnection()){
 		 // PreparedStatements can use variables and are more efficient
-	      preparedStatement = connection.prepareStatement("select * from mbchb.channel");
+	      preparedStatement = connection.prepareStatement("select * from mbchb.Channel");
 	      // "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 	      // Parameters start with 1
 	  
@@ -133,8 +134,9 @@ public class MySQLDAO extends MySQLConnector {
 			  item.setSlashComments(resultSet.getInt("Comments"));
 			  item.setPubDate(resultSet.getDate("PubDate"));
 			  item.setCreator(resultSet.getString("Creator"));
-			  item.setCatergory(resultSet.getString("Category"));
+			  item.setCategory(resultSet.getString("Category"));
 			  item.setDescription(resultSet.getString("Description"));
+			  item.setYear(resultSet.getInt("Year"));
 			//  item.setCommentRss(commentRss);
 			  itemList.add(item);
 	    }

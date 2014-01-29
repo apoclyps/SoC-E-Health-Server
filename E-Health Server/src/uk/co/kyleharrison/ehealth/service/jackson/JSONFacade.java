@@ -10,7 +10,6 @@ public class JSONFacade {
 		 
 		RSSItem rssItem = new RSSItem();
 		rssItem.setTitle("Hello World");
-		rssItem.setCatergory("Testing");
 	
 		Gson gson = new Gson();      
 		String json = gson.toJson(rssItem);

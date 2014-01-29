@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/E-Health-Server">
 
-	<Resource 
+	<!-- <Resource 
 		driverClassName="com.mysql.jdbc.Driver"
 		maxActive="100"
 		maxIdle="30" 
@@ -10,6 +10,17 @@
 		password="hellokitty1"
 		type="javax.sql.DataSource" 
 		url="jdbc:mysql://localhost:3306/mbchb"
-		username="root" />
+		username="root" /> -->
+		
+		<Resource 
+		driverClassName="com.mysql.jdbc.Driver"
+		maxActive="100"
+		maxIdle="30" 
+		maxWait="10000" 
+		name="jdbc/mbchb" 
+		password="Atmitwwsu007"
+		type="javax.sql.DataSource" 
+		url="jdbc:mysql://137.117.146.199:3306/mbchb"
+		username="admin" />
 
 </Context>
