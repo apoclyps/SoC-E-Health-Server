@@ -130,6 +130,11 @@ public class MySQLFacade implements MySQLInterface {
 	}
 
 	public void setConnection(MySQLDAO connection) {
+		try{
+			closeConnection();
+		}catch(NullPointerException e){
+			System.out.println("Connection closing problem");
+		}
 		this.connection = connection;
 	}
 

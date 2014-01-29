@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import uk.co.kyleharrison.ehealth.model.pojo.FlashCard;
+import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 

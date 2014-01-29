@@ -21,6 +21,7 @@ public class MySQLConnector {
 	private String database_name = "mbchb";
 
 	public MySQLConnector() {
+		System.out.println("Connection Opened");
 		try {
 			datasource = (DataSource) new InitialContext()
 					.lookup("java:/comp/env/jdbc/" + database_name);
@@ -39,7 +40,7 @@ public class MySQLConnector {
 
 	public boolean checkConnection() {
 		Context initContext;
-
+		System.out.println("Connection Check");
 		try {
 			initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:/comp/env");
@@ -67,6 +68,7 @@ public class MySQLConnector {
 			}
 
 			if (connection != null) {
+				System.out.println("Connection Closed");
 				connection.close();
 			}
 		} catch (Exception e) {

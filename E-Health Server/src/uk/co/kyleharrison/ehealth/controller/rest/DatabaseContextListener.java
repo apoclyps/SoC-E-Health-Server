@@ -19,7 +19,7 @@ public class DatabaseContextListener implements ServletContextListener {
 	private int[] years = { 1, 2, 3, 4, 5 };
 	private long delayBetweenRequests = 10000;
 	private long waitTime = 60000;
-	private MySQLFacade mysqlFacade;
+	private MySQLFacade mysqlFacade = new MySQLFacade();
 	protected RSSChannel rc;
 	
     public void contextInitialized(ServletContextEvent arg0) {
@@ -27,7 +27,7 @@ public class DatabaseContextListener implements ServletContextListener {
     	System.out.println("Database context listener");
     	new Thread() {
 			public void run() {
-
+				
 				InsertRSSFeed();
 				try {
 					Thread.sleep(waitTime);
@@ -50,7 +50,7 @@ public class DatabaseContextListener implements ServletContextListener {
 			//Calls XML Facade and creates RSSChannel based on year provided.
 			CreateMBCHBModel(year);
 
-			mysqlFacade = new MySQLFacade();
+			
 
 			// Update storage model
 			ArrayList<RSSItem> rssItemsPersistent = mysqlFacade
