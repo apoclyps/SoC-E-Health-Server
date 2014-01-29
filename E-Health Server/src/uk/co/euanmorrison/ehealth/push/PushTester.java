@@ -34,7 +34,7 @@ public class PushTester {
 		pushServer.saveSubs();
 		
 		// test push
-		pushServer.pushApns(testJson(),subs);
+		//pushServer.pushApns(testJson(),subs);
 	}
 	
 	public static JSONObject testJson() {
