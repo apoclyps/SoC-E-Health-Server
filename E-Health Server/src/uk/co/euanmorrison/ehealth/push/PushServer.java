@@ -91,8 +91,8 @@ public class PushServer {
 		return true;
 	}
 	
-	public boolean pushApns(JSONObject payload, ArrayList<String> recipients) {
-		System.out.println(">> Method call PushServer.pushApns(JSONObject payload, ArrayList<String> recipients)");
+	public boolean pushApns(String payload, ArrayList<String> recipients) {
+		System.out.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload,recipients);
 		return push.send();
 	}

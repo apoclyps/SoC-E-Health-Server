@@ -9,10 +9,10 @@ import com.notnoop.apns.ApnsService;
 
 public class PushIOS {
 	
-	private JSONObject messageText;
+	private String messageText;
 	private ArrayList<String> recipients;
 
-	public PushIOS(JSONObject itemToBeSent, ArrayList<String> recipients) {
+	public PushIOS(String itemToBeSent, ArrayList<String> recipients) {
 		this.messageText = itemToBeSent;
 		this.recipients = recipients;
 	}

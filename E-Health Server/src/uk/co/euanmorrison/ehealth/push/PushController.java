@@ -91,32 +91,11 @@ public class PushController extends HttpServlet {
 		PrintWriter pw = response.getWriter();
 		pw.print(responseOutput);
 		
+		pw.close();
+		
 		//ps.pushApns(ps.testJson(), ps.getSubsApns());
 		
 		ps.saveSubs();
-		
-		
-		
-		// FOR TESTING, LET'S SIMULATE A POST
-
-		// so this will be received as a POST request object in the real world:
-		JSONObject objReceived = ps.testJson();
-		
-		// now we grab the fields we want from the object and format them into a string for pushing:
-		String objToPush = "{year:\""+objReceived.get("year")+"\",title:\""+objReceived.get("title")+"\"}";
-		
-		// testing that the String is properly formatted for the devices:
-		System.out.println(objToPush);
-		
-		// now let's push it to APNS and see what happens:
-		System.out.println("Attempting push...");
-		
-		if(ps.pushApns(ps.testJson(), ps.getSubsApns())) {
-			System.out.println("Push succeeded");
-		}
-		else {
-			System.out.println("Push failed");
-		}
 		
 	}
 
@@ -124,15 +103,25 @@ public class PushController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("SERVLET POST HIT");
+		String responseOutput = "";
 		
-		System.out.println(getBody(request));
+		System.out.println("request body: "+getBody(request));
 		
-		//PrintWriter pw = response.getWriter();
-		//pw.print("some text");
+		if ( ps.pushApns( getBody(request).toString() , ps.getSubsApns() ) ) {
+			// successfully pushed to APNS
+			System.out.println("successfully pushed to APNS");
+			responseOutput = "true";
+		}
+		else {
+			System.out.println("Failed to push to APNS");
+			responseOutput = "false";
+		}
 		
-		//ps.pushApns(ps.testJson(), ps.getSubsApns());
+		PrintWriter pw = response.getWriter();
+		pw.print(responseOutput);
+		
+		pw.close();
 	}
 	
 	public static String getBody(HttpServletRequest request) throws IOException {
