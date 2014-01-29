@@ -222,8 +222,10 @@ public class RequestControllerUtil extends RequestController implements
 	}
 
 	public void PushNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.setAttribute("type", "broadcast");
 		request.setAttribute("pushJSON", this.rssChannel.getItem_list().get(0).getPushJSON());
-		RequestDispatcher rd = request.getRequestDispatcher("/PushController/");
+	    RequestDispatcher rd = request.getRequestDispatcher("/PushController/");
 		rd.forward(request, response);
 	}
 
