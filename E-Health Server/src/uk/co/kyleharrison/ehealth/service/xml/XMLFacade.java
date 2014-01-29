@@ -88,19 +88,5 @@ public class XMLFacade {
 		}
 		return xmlDocB.getRc();
 	}
-	
-	public static void main(String [] arugments){
-		
-		XMLFacade xmlf = new XMLFacade("https://mbchb.dundee.ac.uk/category/year1/feed");
-		RSSChannel rc = xmlf.DeconstructXMLToPojo();
-		
-		RSSItem ri = rc.getItem_list().get(9);
-		System.out.println("RI 0 : "+ri.getTitle());
-		
-		//New Query
-		//xmlf.setUrl("https://mbchb.dundee.ac.uk/category/year2/feed");
-		//xmlf.DeconstructXMLToPojo();
-		
-	}
-	
+
 }

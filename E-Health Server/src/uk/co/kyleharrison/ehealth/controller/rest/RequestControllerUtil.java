@@ -7,6 +7,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
@@ -18,17 +19,18 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
-public class RequestControllerUtil extends RequestController implements RequestControllerInterface {
+public class RequestControllerUtil extends RequestController implements
+		RequestControllerInterface {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected JSONItem jsonItem;
 	protected XMLFacade xmlFacade;
 	protected RSSChannel rssChannel;
 	protected RSSItem rssItem;
 	protected JSONObject[] jsonItemArray;
 	protected URL url;
-	
+
 	public JSONItem getItem() {
 		return jsonItem;
 	}
@@ -81,7 +83,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		return serialVersionUID;
 	}
 
-	public RequestControllerUtil(){
+	public RequestControllerUtil() {
 		super();
 		this.jsonItem = new JSONItem();
 		this.xmlFacade = new XMLFacade();
@@ -92,8 +94,8 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	}
 
 	public int ParseYearValue(String feedID) {
-		int fID =0;
-		
+		int fID = 0;
+
 		try {
 			if (feedID.substring(4, 5) == "a") {
 				fID = 0;
@@ -102,28 +104,33 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			}
 		} catch (Exception e) {
 			e.getMessage();
-			fID=0;
+			fID = 0;
 		}
 		return fID;
 	}
-	
-	public void ResponseBuilder(String year,String page,HttpServletResponse response){
+
+	public void ResponseBuilder(String year, String page,
+			HttpServletResponse response) {
 		try {
-			url = new URL("https://mbchb.dundee.ac.uk/category/"+year+"/feed/?paged="+page);
+			url = new URL("https://mbchb.dundee.ac.uk/category/" + year
+					+ "/feed/?paged=" + page);
 			JSONObject responseObject = new JSONObject();
-			JSONObject [] jsonItemsArray = ConstructJSONArray(url);
-			
+			JSONObject[] jsonItemsArray = ConstructJSONArray(url);
+
 			Date now = new Date();
 
-		    // Additional fields can only be added once RSS Channel has been updated "ConstructJsonArray" 
+			// Additional fields can only be added once RSS Channel has been
+			// updated "ConstructJsonArray"
 			responseObject.put("channel", this.rssChannel.getTitle());
 			responseObject.put("lastUpdated", now.toString());
-			responseObject.put("totalRecords", this.rssChannel.getItem_list().size());
-			responseObject.put("numberOfRecordsReturned", this.rssChannel.getItem_list().size());
-			
+			responseObject.put("totalRecords", this.rssChannel.getItem_list()
+					.size());
+			responseObject.put("numberOfRecordsReturned", this.rssChannel
+					.getItem_list().size());
+
 			// Items array
-			responseObject.put("items",jsonItemsArray);
-		
+			responseObject.put("items", jsonItemsArray);
+
 			JSONResponse(response, responseObject);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -131,7 +138,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			e.printStackTrace();
 		}
 	}
-	
+
 	public JSONObject[] ConstructJSONArray(URL url) throws JSONException {
 		this.jsonItem = new JSONItem();
 		this.xmlFacade.setUrl(url.toString());
@@ -143,8 +150,9 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		}
 		return jsonItemArray;
 	}
-	
-	public void JSONResponse(HttpServletResponse response, JSONObject jsonResponse) {
+
+	public void JSONResponse(HttpServletResponse response,
+			JSONObject jsonResponse) {
 		if (jsonResponse != null) {
 			response.setContentType("text/x-json;charset=UTF-8");
 			response.setHeader("Cache-Control", "no-cache");
@@ -154,7 +162,8 @@ public class RequestControllerUtil extends RequestController implements RequestC
 
 			try {
 				out = response.getWriter();
-				out.print(jsonResponse);
+			//	out.print(jsonResponse);
+				out.print("Ext.data.JsonP.feedscb(" + jsonResponse+ ");");
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -163,28 +172,55 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		System.out.println("JSON Response Returned");
 	}
 
-    public void ResponsePresistentStorage(String yearID, String pageID){
-        try {
-                url = new URL("https://mbchb.dundee.ac.uk/category/"+yearID+"/feed/?paged="+pageID);
-                JSONObject responseObject = new JSONObject();
-                JSONObject [] jsonItemsArray = ConstructJSONArray(url);
-                
-                MySQLDAO mysqlDAO = new MySQLDAO();
-                mysqlDAO.insertChannel(rssChannel);
-                for(RSSItem rssItem : this.rssChannel.getItem_list()){
-                        mysqlDAO.insertItem(rssItem);
-                }
-                
-                System.out.println("Storage updated");
-                
-        } catch (MalformedURLException e) {
-                e.printStackTrace();
-        } catch (JSONException e) {
-                e.printStackTrace();
-        }catch (SQLException e) {
-                e.printStackTrace();
-        }
-}
+	public void ResponsePresistentStorage(String yearID, String pageID) {
+		try {
+			url = new URL("https://mbchb.dundee.ac.uk/category/" + yearID
+					+ "/feed/?paged=" + pageID);
+			JSONObject responseObject = new JSONObject();
+			JSONObject[] jsonItemsArray = ConstructJSONArray(url);
 
+			MySQLDAO mysqlDAO = new MySQLDAO();
+			mysqlDAO.insertChannel(rssChannel);
+			for (RSSItem rssItem : this.rssChannel.getItem_list()) {
+				rssItem.setYear(Integer.parseInt(yearID.substring(4, 5)));
+				mysqlDAO.insertItem(rssItem);
+			}
+
+			System.out.println("Storage updated");
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean CheckRSSFeed(){
+		this.xmlFacade.setUrl(url.toString());
+		RSSChannel rssChannelMemory = this.xmlFacade.DeconstructXMLToPojo();
+		return (this.rssChannel.getLastBuildDate().equals(rssChannelMemory.getLastBuildDate()));
+	}
+	
+	public boolean pagingCheck(HttpServletRequest request){
+	try{
+		String startID = request.getParameter("start");
+		String endID = request.getParameter("end");
+		String pageID = request.getParameter("page");
+		
+		int page = Integer.getInteger(endID)/ Integer.getInteger(startID);
+
+		System.out.println("PageID "+pageID);
+		System.out.println("startID "+startID);
+		System.out.println("endID "+endID);
+		
+		// calculate return
+		
+	}catch(NullPointerException e){
+		System.out.println("RC : Parameter exception");
+	}
+	return false;
+	}
 
 }

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import uk.co.ehealth.storage.mysql.MySQLConnector;
 import uk.co.ehealth.storage.mysql.MySQLDAO;
 
 @WebServlet("/feeds/*")
@@ -43,36 +42,40 @@ public class RequestController extends HttpServlet {
 		String pageID = "0";
 		String yearID = null;
 		int fID = 0;
-		String[] pathComponents = getParameters(request.getRequestURI());
 		
-		// Select year from request
-		if (pathComponents.length >= 0 && pathComponents.length <= 4) {
-			yearID = pathComponents[3];
-		}
+		String[] pathComponents = getParameters(request.getRequestURI());
+		yearID = pathComponents[3];
+
+		//boolean pageRequest = rcu.PagingCheck(request);
 
 		fID = rcu.ParseYearValue(yearID);
 		
 		switch (fID) {
 			case 0:
+				//boolean download = rcu.CheckRSSFeed();
+			//	System.out.println("RSS Object = "+download);
 				rcu.ResponseBuilder("all-years",pageID,response);
 			break;
 			case 1:
 				rcu.ResponseBuilder("year1",pageID,response);
+				rcu.ResponsePresistentStorage("year1",pageID);
 				break;
 			case 2:
 				rcu.ResponseBuilder("year2",pageID,response);
+				rcu.ResponsePresistentStorage("year2",pageID);
 				break;
 			case 3:
 				rcu.ResponseBuilder("year3",pageID,response);
+				rcu.ResponsePresistentStorage("year3",pageID);
 				break;
 			case 4:
 				rcu.ResponseBuilder("year4",pageID,response);
+				rcu.ResponsePresistentStorage("year4",pageID);
 				break;
 			case 5:
 				rcu.ResponseBuilder("year5",pageID,response);
+				rcu.ResponsePresistentStorage("year5",pageID);
 				break;
-			case 9:
-				rcu.ResponsePresistentStorage("year1",pageID);
 			default:
 				//Return empty json to app
 				

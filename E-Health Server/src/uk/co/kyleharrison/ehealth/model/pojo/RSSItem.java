@@ -12,18 +12,19 @@ public class RSSItem {
 	private String publicationDate;
 	private Date pubDate;
 	private String creator;
-	private String catergory;
+	private String Category;
 	private String description;
 	private URL comments;
 	private String contentEncoded;
 	private int slashComments;
+	private int year;
 	
 	public RSSItem() {
 		super();
 	}
 
 	public RSSItem(String title, URL link, URL comments,
-			Date pubDate, String creator, String catergory,
+			Date pubDate, String creator, String Category,
 			String description, String contentEncoded, int slashComments) {
 		this.title = title;
 		this.link = link;
@@ -31,7 +32,7 @@ public class RSSItem {
 		this.pubDate = pubDate;
 		this.publicationDate = pubDate.toString();
 		this.creator = creator;
-		this.catergory = catergory;
+		this.Category = Category;
 		this.description = description;
 		this.setContentEncoded(contentEncoded);
 		this.setSlashComments(slashComments);
@@ -87,12 +88,12 @@ public class RSSItem {
 		this.creator = creator;
 	}
 
-	public String getCatergory() {
-		return catergory;
+	public String getCategory() {
+		return Category;
 	}
 
-	public void setCatergory(String catergory) {
-		this.catergory = catergory;
+	public void setCategory(String Category) {
+		this.Category = Category;
 	}
 
 	public String getDescription() {
@@ -133,6 +134,14 @@ public class RSSItem {
 
 	public void setPublicationDate(String publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 
 	

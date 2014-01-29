@@ -15,7 +15,6 @@ public class RSSChannel  {
 	private int updateFrequency;
 	private URL generator;
 	private ArrayList <RSSItem> item_list = new ArrayList<RSSItem>();
-	private String itemsXML;
 	
 	public RSSChannel() {
 		super();
@@ -107,12 +106,4 @@ public class RSSChannel  {
 		this.item_list = item_list;
 	}
 
-	public String getItemsXML() {
-		return itemsXML;
-	}
-
-	public void setItemsXML(String itemsXML) {
-		this.itemsXML = itemsXML;
-	}
-	
 }
