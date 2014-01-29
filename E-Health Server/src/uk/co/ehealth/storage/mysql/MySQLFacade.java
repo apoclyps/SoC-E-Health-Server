@@ -1,6 +1,7 @@
 package uk.co.ehealth.storage.mysql;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
@@ -60,10 +61,25 @@ public class MySQLFacade implements MySQLInterface {
 	}
 
 	@Override
-	public RSSItem[] selectItems() {
+	public ArrayList<RSSItem> selectItems() {
 		// TODO Auto-generated method stub
 		try {
-			connection.selectItem();
+			return connection.selectItem();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public ArrayList<RSSItem> selectItemsFromYear(String yearID) {
+		// TODO Auto-generated method stub
+		try {
+			return connection.selectItem();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

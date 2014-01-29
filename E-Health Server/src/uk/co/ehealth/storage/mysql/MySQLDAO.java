@@ -164,4 +164,45 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return itemList;
 	}
+	
+	public ArrayList<RSSItem> selectItemFromYear(String yearID) throws SQLException,
+	MalformedURLException {
+ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
+
+if (this.checkConnection()) {
+	// PreparedStatements can use variables and are more efficient
+	preparedStatement = connection
+			.prepareStatement("select * from mbchb.Item WHERE Year = '" + yearID + "'");
+	// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
+	// Parameters start with 1
+
+	// System.out.println("Insert succeed!");
+	ResultSet resultSet = preparedStatement.executeQuery();
+
+	// Pulling data by resultset..
+
+	while (resultSet.next()) {
+		// Getting data...
+		// String itemID = resultSet.getString("ID");
+		RSSItem item = new RSSItem();
+		URL link = new URL(resultSet.getString("Link"));
+		// URL commentRss = new URL(resultSet.getString("CommentRSS"));
+
+		item.setTitle(resultSet.getString("Title"));
+		item.setLink(link);
+		item.setSlashComments(resultSet.getInt("Comments"));
+		item.setPubDate(resultSet.getDate("PubDate"));
+		item.setCreator(resultSet.getString("Creator"));
+		item.setCategory(resultSet.getString("Category"));
+		item.setDescription(resultSet.getString("Description"));
+		item.setYear(resultSet.getInt("Year"));
+		// item.setCommentRss(commentRss);
+		itemList.add(item);
+	}
+	if (connection != null) {
+		connection.close();
+	}
+}
+return itemList;
+}
 }
