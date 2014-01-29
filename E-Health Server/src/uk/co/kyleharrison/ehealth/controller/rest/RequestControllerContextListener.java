@@ -1,6 +1,5 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
-import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -20,16 +19,14 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
-/**
- * Application Lifecycle Listener implementation class RequestControllerContextListener
- *
- */
 @WebListener
 public class RequestControllerContextListener implements ServletContextListener {
 
 	private Thread myThread = null;
 	private XMLFacade xmlFacade;
 	private int [] years = {1,2,3,4,5};
+	private long delayBetweenRequests =10000;
+	private long waitTime = 60000;
 	
     public void contextInitialized(ServletContextEvent arg0) {
         // TODO Auto-generated method stub
@@ -48,33 +45,23 @@ public class RequestControllerContextListener implements ServletContextListener 
         		    	System.out.println(rc.getTitle());
         		    }
         		    try {
-    					this.sleep(10000);
+    					this.sleep(delayBetweenRequests);
     				} catch (InterruptedException e) {
     					e.printStackTrace();
     				}
-
     			}
-    			
     		    try {
-					this.sleep(30000);
+					this.sleep(waitTime);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-    			 
-    		    run();
+    		   // run();
     		  }
     		}.start();
     }
     
 	@Override
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
 		System.out.println("ServletContextListener destroyed");
-		
 	}
-
-
-
-
-	
 }
