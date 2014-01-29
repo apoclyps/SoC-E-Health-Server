@@ -153,6 +153,12 @@ public class RSSItem {
 		pushJSON.put("year", Integer.toString(this.getYear()));
 		return pushJSON;
 	}
-
+	
+	public String getPushString(){
+		JSONObject pushJSON = new JSONObject();
+		pushJSON.put("title", this.getTitle());
+		pushJSON.put("year", Integer.toString(this.getYear()));
+		return pushJSON.toJSONString();
+	}
 	
 }

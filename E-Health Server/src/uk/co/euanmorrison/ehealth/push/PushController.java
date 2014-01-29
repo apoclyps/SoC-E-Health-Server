@@ -50,11 +50,20 @@ public class PushController extends HttpServlet {
 		String responseOutput = "";
 		
 		Map<String,String[]> params = request.getParameterMap();
+
+		String type = (String) request.getAttribute("type");
+		try{
+			System.out.println("type"+type);
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
 		
-		if(request.getParameter("type").equalsIgnoreCase("broadcast")){
+		if(type.equals("broadcast")){
+			System.out.println("Broadcasting");
 			try{
-				String pushJson = request.getParameter("pushJSON");
-				pushPost(request,response,pushJson);
+				String pushJSON = (String) request.getAttribute("pushJSON");
+				System.out.println("PushJson"+pushJSON);
+				pushPost(request,response,pushJSON);
 				
 			}catch(NullPointerException e){
 				e.printStackTrace();
@@ -99,32 +108,23 @@ public class PushController extends HttpServlet {
 	protected void pushPost(HttpServletRequest request,HttpServletResponse response,String responseOutput){
 		System.out.println("SERVLET POST HIT");
 
-		String requestBody = null;
+		/*String requestBody = responseOutput;
 		try {
 			requestBody = getBody(request);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		if (ps.pushApns(requestBody, ps.getSubsApns())) {
+	*/
+		if (ps.pushApns(responseOutput, ps.getSubsApns())) {
 			// successfully pushed to APNS
-			System.out.println("successfully pushed to APNS");
-			responseOutput = "true";
+			System.out.println("successfully pushed to APNS"+responseOutput);
+			//responseOutput = "true";
 		} else {
 			System.out.println("Failed to push to APNS");
-			responseOutput = "false";
+		//	responseOutput = "false";
 		}
 
-		PrintWriter pw = null;
-		try {
-			pw = response.getWriter();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pw.print(responseOutput);
-
-		pw.close();
 	}
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
