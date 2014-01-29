@@ -5,10 +5,10 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>E-Health - Welcome</display-name>
 	<welcome-file-list>
-		<welcome-file>FeedsController</welcome-file>
+		 <welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>FeedsController</servlet-name>
 		<servlet-class>uk.co.kyleharrison.ehealth.controller.rest.RequestController</servlet-class>
 	</servlet>
@@ -26,7 +26,7 @@
 		<servlet-name>PushController</servlet-name>
 		<url-pattern>/PushController</url-pattern>
 		<url-pattern>/PushController/*</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping>-->
 
 	<error-page>
 		<error-code>404</error-code>
