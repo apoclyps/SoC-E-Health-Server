@@ -1,4 +1,4 @@
-package uk.co.euanmorrison.ehealth.push;
+/*package uk.co.euanmorrison.ehealth.push;
 
 // JSON object Libraries
 import org.json.simple.JSONArray;
@@ -105,4 +105,4 @@ public class Push {
 		return obj;
 	}
 
-}
+}*/
