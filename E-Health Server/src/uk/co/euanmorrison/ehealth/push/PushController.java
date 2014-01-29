@@ -106,9 +106,9 @@ public class PushController extends HttpServlet {
 		System.out.println("SERVLET POST HIT");
 		String responseOutput = "";
 		
-		System.out.println("request body: "+getBody(request));
+		String requestBody = getBody(request);
 		
-		if ( ps.pushApns( getBody(request).toString() , ps.getSubsApns() ) ) {
+		if ( ps.pushApns( requestBody , ps.getSubsApns() ) ) {
 			// successfully pushed to APNS
 			System.out.println("successfully pushed to APNS");
 			responseOutput = "true";
