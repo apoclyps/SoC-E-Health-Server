@@ -327,7 +327,7 @@ public class MySQLDAO extends MySQLConnector {
 	public boolean addiosKey(String key) throws SQLException {
 		if (this.checkConnection()) {
 			preparedStatement = connection
-					.prepareStatement("insert into mbchb.subs_android" + "(ID)"
+					.prepareStatement("insert into mbchb.subs_ios" + "(ID)"
 							+ "values (?)");
 
 			preparedStatement.setString(1, key);
