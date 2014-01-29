@@ -17,14 +17,14 @@ public class PushIOS {
 		this.recipients = recipients;
 	}
 	
-	@SuppressWarnings("unused")
 	public boolean send() {
 		try {
 			System.out.println("PUSH >> Attempting to push to iOS: "+this.messageText);
 
 			ApnsService service =
 				    APNS.newService()
-				    .withCert("../E-Health Server/resources/Certificates.p12", "apnsCertificateForEuan")
+				    //.withCert("../E-Health Server/resources/Certificates.p12", "apnsCertificateForEuan")
+				    .withCert("C:/Certificates.p12", "apnsCertificateForEuan")
 				    .withSandboxDestination()
 				    .build();
 

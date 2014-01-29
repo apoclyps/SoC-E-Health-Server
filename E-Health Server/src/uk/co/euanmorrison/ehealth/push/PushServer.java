@@ -3,6 +3,7 @@ package uk.co.euanmorrison.ehealth.push;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class PushServer {
@@ -10,6 +11,10 @@ public class PushServer {
 	ArrayList<String> subs_apns = new ArrayList<String>();
 	ArrayList<String> subs_gcm = new ArrayList<String>();
 	
+	private static final String API_KEY = "4815162342";							// USED FOR API CALLS
+	private static final String LOC_APNS = "C:/subs_apns.txt";					// NEEDS CHANGED ON DEPLOY
+	private static final String LOC_GCM = "";									// NOT USED YET
+
 	public PushServer() {
 		System.out.println(">> PushServer Constructor called");
 		serverSetup(); // on instantiation, set up server.
@@ -87,11 +92,13 @@ public class PushServer {
 	}
 	
 	public boolean pushApns(JSONObject payload, ArrayList<String> recipients) {
+		System.out.println(">> Method call PushServer.pushApns(JSONObject payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload,recipients);
 		return push.send();
 	}
 	
 	public boolean pushGcm() {
+		System.out.println(">> Method call PushServer.pushGcm()");
 		return false;
 		// FILL IN LATER
 	}
@@ -106,8 +113,10 @@ public class PushServer {
 	private boolean loadSubsApns() {
 		System.out.println(">> Method call PushServer.loadSubsApns()");
 		
-		String fileName = "../E-Health Server/resources/subs_apns.txt";
+		String fileName = LOC_APNS;
+		
 		String line = null;
+		System.out.println(fileName);
 		
         try {
             // FileReader reads text files in the default encoding.
@@ -158,8 +167,8 @@ public class PushServer {
 	
 	private boolean saveSubsApns() {
 		System.out.println(">> Method call PushServer.saveSubsApns()");
-        // The name of the file to open.
-        String fileName = "../E-Health Server/resources/subs_apns.txt";
+
+		String fileName = LOC_APNS;
 
         try {
             // Assume default encoding.
@@ -182,6 +191,7 @@ public class PushServer {
             System.out.println(
                 "Error writing to file '"
                 + fileName + "'");
+            System.out.println("ERROR: " + ex.getMessage());
             return false;
         }
         System.out.println("Wrote to file successfully");
@@ -201,6 +211,15 @@ public class PushServer {
 	public ArrayList<String> getSubsGcm() {
 		System.out.println(">> Method call getSubsGcm()");
 		return subs_gcm;
+	}
+	
+	public JSONObject testJson() {
+		// from http://www.mkyong.com/java/json-simple-example-read-and-write-json/
+		JSONObject obj = new JSONObject();
+		obj.put("year", "year1");
+		obj.put("title", "this is an example post title");
+		
+		return obj;
 	}
 	
 }

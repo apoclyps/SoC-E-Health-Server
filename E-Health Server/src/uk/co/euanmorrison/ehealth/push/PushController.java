@@ -1,0 +1,172 @@
+package uk.co.euanmorrison.ehealth.push;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.Map;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.simple.JSONObject;
+
+/**
+ * Servlet implementation class PushController
+ */
+@WebServlet("/PushController")
+public class PushController extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+	private PushServer ps;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public PushController() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+    
+	public void init(ServletConfig config) throws ServletException {
+		System.out.println("Push Controller initialised");
+		this.ps = new PushServer();
+	}
+
+	public void Destroy(ServletConfig config) throws ServletException {
+		System.out.println("Push Controller shutting down");
+		this.ps.serverStop();
+	}
+
+	private String[] getParameters(String requestPath) {
+		return requestPath.split("/");
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("SERVLET 'GET' HIT");
+		
+		String responseOutput = "";
+		
+		Map<String,String[]> params = request.getParameterMap();
+		
+		switch(params.get("platform")[0]) {
+			case "ios":
+				if(ps.addSubApns(params.get("token")[0])) {
+					// successfully added to iOS token set
+					System.out.println("added token to iOS set: "+params.get("token")[0]);
+					responseOutput = "true";
+				}
+				else {
+					System.out.println("Failed to add token");
+					responseOutput = "false";
+				}
+				break;
+				
+			case "android":
+				if(ps.addSubGcm(params.get("token")[0])) {
+					// successfully added to Android token set
+					System.out.println("added token to Android set: "+params.get("token")[0]);
+					responseOutput = "true";
+				}
+				else {
+					System.out.println("Failed to add token");
+					responseOutput = "false";
+				}
+				break;
+		}
+		
+		/*for(String value:params.get("test")) {
+			System.out.println("Value of 'test': " + value);
+		}*/
+		
+		PrintWriter pw = response.getWriter();
+		pw.print(responseOutput);
+		
+		//ps.pushApns(ps.testJson(), ps.getSubsApns());
+		
+		ps.saveSubs();
+		
+		
+		
+		// FOR TESTING, LET'S SIMULATE A POST
+
+		// so this will be received as a POST request object in the real world:
+		JSONObject objReceived = ps.testJson();
+		
+		// now we grab the fields we want from the object and format them into a string for pushing:
+		String objToPush = "{year:\""+objReceived.get("year")+"\",title:\""+objReceived.get("title")+"\"}";
+		
+		// testing that the String is properly formatted for the devices:
+		System.out.println(objToPush);
+		
+		// now let's push it to APNS and see what happens:
+		System.out.println("Attempting push...");
+		
+		if(ps.pushApns(ps.testJson(), ps.getSubsApns())) {
+			System.out.println("Push succeeded");
+		}
+		else {
+			System.out.println("Push failed");
+		}
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		System.out.println("SERVLET POST HIT");
+		
+		System.out.println(getBody(request));
+		
+		//PrintWriter pw = response.getWriter();
+		//pw.print("some text");
+		
+		//ps.pushApns(ps.testJson(), ps.getSubsApns());
+	}
+	
+	public static String getBody(HttpServletRequest request) throws IOException {
+
+	    String body = null;
+	    StringBuilder stringBuilder = new StringBuilder();
+	    BufferedReader bufferedReader = null;
+
+	    try {
+	        InputStream inputStream = request.getInputStream();
+	        if (inputStream != null) {
+	            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+	            char[] charBuffer = new char[128];
+	            int bytesRead = -1;
+	            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+	                stringBuilder.append(charBuffer, 0, bytesRead);
+	            }
+	        } else {
+	            stringBuilder.append("");
+	        }
+	    } catch (IOException ex) {
+	        throw ex;
+	    } finally {
+	        if (bufferedReader != null) {
+	            try {
+	                bufferedReader.close();
+	            } catch (IOException ex) {
+	                throw ex;
+	            }
+	        }
+	    }
+
+	    body = stringBuilder.toString();
+	    return body;
+	}
+
+}
