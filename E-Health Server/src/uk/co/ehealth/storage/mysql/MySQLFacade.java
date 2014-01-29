@@ -133,4 +133,7 @@ public class MySQLFacade implements MySQLInterface {
 		this.connection = connection;
 	}
 
+	public void closeConnection(){
+		this.connection.close();
+	}
 }

@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
@@ -24,13 +25,16 @@ public class MySQLConnector {
 			datasource = (DataSource) new InitialContext()
 					.lookup("java:/comp/env/jdbc/" + database_name);
 			connection = datasource.getConnection();
-		} catch (NamingException ne) {
+		} catch(NameNotFoundException nnfe){
+			System.out.println("MySQLConnector : File not found Exception in DatabaseConnector.java");
+			nnfe.printStackTrace();
+		}catch (NamingException ne) {
 			System.out.println("Naming Exception in DatabaseConnector.java");
 			ne.printStackTrace();
 		} catch (SQLException e) {
 			System.out.println("SQL Exception in DatabaseConnector.java");
 			e.printStackTrace();
-		}
+		} 
 	}
 
 	public boolean checkConnection() {

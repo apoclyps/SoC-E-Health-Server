@@ -51,7 +51,7 @@ public class DatabaseContextListener implements ServletContextListener {
 			CreateMBCHBModel(year);
 
 			mysqlFacade = new MySQLFacade();
-			
+
 			// Update storage model
 			ArrayList<RSSItem> rssItemsPersistent = mysqlFacade
 					.selectItemsFromYear(Integer.toString(year));
@@ -93,6 +93,7 @@ public class DatabaseContextListener implements ServletContextListener {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			mysqlFacade.closeConnection();
 		}
 
 	}
