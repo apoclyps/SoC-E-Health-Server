@@ -51,10 +51,16 @@ public class RequestController extends HttpServlet {
 		
 		try{
 			pageID = (String) request.getParameter("page");
-			if(Integer.getInteger(pageID)!=0){
-				pageID = ""+ (Integer.getInteger(pageID)-1);
+			try{
+				if(Integer.getInteger(pageID)!=0){
+					pageID = ""+ (Integer.getInteger(pageID)-1);
+				}
+				callback = (String) request.getParameter("callback");
+			}catch(NullPointerException npe){
+				System.out.println("Callback not set");
+				callback="0";
 			}
-			callback = (String) request.getParameter("callback");
+			
 			
 		}catch(Exception e){
 			e.printStackTrace();

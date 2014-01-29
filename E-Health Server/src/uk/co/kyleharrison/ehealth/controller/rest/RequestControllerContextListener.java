@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
@@ -35,8 +36,7 @@ public class RequestControllerContextListener implements ServletContextListener 
 
 	public void contextInitialized(ServletContextEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out
-				.println("ServletContextListener started for retrieving xml feed");
+		System.out.println("ServletContextListener started for retrieving xml feed");
 
 		new Thread() {
 			public void run() {
@@ -44,14 +44,17 @@ public class RequestControllerContextListener implements ServletContextListener 
 				// Selecting records from database for comparison
 				mysqlFacade = new MySQLFacade();
 
-				ValidateRSSFeed();
+				Date date = new Date("Tue Jan 28 15:41:29 GMT 2014");
+				System.out.println(date.toGMTString());
+				
+			//	ValidateRSSFeed();
 
 				try {
 					Thread.sleep(waitTime);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				run();
+				//run();
 			}
 		}.start();
 	}
