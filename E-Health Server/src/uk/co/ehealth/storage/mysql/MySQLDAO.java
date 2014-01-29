@@ -282,4 +282,36 @@ public class MySQLDAO extends MySQLConnector {
 		return flashCardList;
 	}
 
+	public ArrayList<FlashCard> selectFlashCardBySubject(String subject)
+			throws SQLException {
+
+		ArrayList<FlashCard> flashCardList = new ArrayList<FlashCard>();
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("SELECT `Subject`.SubjectID, `Subject`.CardSubject,Flashcards.Question,"
+							+ "Flashcards.Answer FROM Flashcards INNER JOIN `Subject`ON"
+							+ "Flashcards.SubjectID=`Subject`.SubjectID"
+							+ "WHERE `Subject`.SubjectID = ?"
+							+ "ORDER BY `Subject`.SubjectID;");
+
+			preparedStatement.setString(0, subject);
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				FlashCard card = new FlashCard();
+				card.setCardID(rs.getInt("CardID"));
+				card.setSubjectID(rs.getInt("SubjectID"));
+				card.setAnswer(rs.getString("Answer"));
+				card.setCardSubject(rs.getString("CardSubject"));
+				card.setLectureNumber(rs.getInt("LectureNum"));
+				card.setQuestion(rs.getString("Question"));
+				card.setCardSubject(rs.getString("CardSubject"));
+				card.setYearStudied(rs.getInt("YearStudied"));
+
+				flashCardList.add(card);
+			}
+		}
+		return flashCardList;
+	}
 }
