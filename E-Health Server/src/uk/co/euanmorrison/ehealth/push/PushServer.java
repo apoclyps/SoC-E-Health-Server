@@ -1,22 +1,14 @@
 package uk.co.euanmorrison.ehealth.push;
 
-import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import uk.co.ehealth.storage.mysql.MySQLFacade;
 
 public class PushServer {
 
 	ArrayList<String> subs_apns = new ArrayList<String>();
 	ArrayList<String> subs_gcm = new ArrayList<String>();
-
-	private static final String API_KEY = "4815162342"; // USED FOR API CALLS
-	private static final String LOC_APNS = "C:/subs_apns.txt"; // NEEDS CHANGED
-																// ON DEPLOY
-	private static final String LOC_GCM = ""; // NOT USED YET
 
 	public PushServer() {
 		System.out.println(">> PushServer Constructor called");
@@ -25,7 +17,6 @@ public class PushServer {
 		for (int i = 0; i < subs_apns.size(); i++) {
 			System.out.println(">> subs_apns(" + i + "): " + subs_apns.get(i));
 		}
-		saveSubs();
 	}
 
 	private boolean serverSetup() {
@@ -39,25 +30,18 @@ public class PushServer {
 	}
 
 	public boolean serverStop() {
-		System.out.println(">> Method call PushServer.serverStop()");
-		if (saveSubs()) {
-			// success
-		} else {
-			return false;
-		}
 		return true;
 	}
 
 	public boolean addSubApns(String token) {
-		System.out
-				.println(">> Method call PushServer.addSubApns(String token)");
+		System.out.println(">> Method call PushServer.addSubApns(String token)");
 		if (subs_apns.contains(token)) {
 			// already in the list. do nothing
 		} else {
 			try {
 				subs_apns.add(token);
+				saveSubsApns(token);
 			} catch (Exception e) {
-				// e.printStackTrace();
 				System.out.println("ERROR: " + e.getMessage());
 				return false;
 			}
@@ -72,8 +56,8 @@ public class PushServer {
 		} else {
 			try {
 				subs_gcm.add(token);
+				saveSubsApns(token);
 			} catch (Exception e) {
-				// e.printStackTrace();
 				System.out.println("ERROR: " + e.getMessage());
 				return false;
 			}
@@ -81,111 +65,118 @@ public class PushServer {
 		return true; // successfully added
 	}
 
-	public boolean sendPush(JSONObject payload) {
-		System.out
-				.println(">> Method call PushServer.sendPush(JSONObject payload)");
-		// Push p = new Push();
-		// return p.sendPush(payload);
+	public boolean sendPush(String payload, ArrayList<String> recipients_ios, ArrayList<String> recipients_android) {
+		System.out.println(">> Method call PushServer.sendPush(String payload, ArrayList<String> recipients_ios, ArrayList<String> recipients_android)");
+		
+		// HANDLE POTENTIAL EXCEPTIONS WITH EACH SERVICE
+		if( pushGcm(payload, recipients_ios) && pushApns(payload,recipients_android ) ) {
+			// yay, everyone is happy!
+		}
+		else {
+			return false;
+		}
+		
 		return true;
 	}
 
 	public boolean pushApns(String payload, ArrayList<String> recipients) {
-		System.out
-				.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
+		System.out.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload, recipients);
 		return push.send();
 	}
 
-	public boolean pushGcm() {
-		System.out.println(">> Method call PushServer.pushGcm()");
-		return false;
-		// FILL IN LATER
+	public boolean pushGcm(String payload, ArrayList<String> recipients) {
+		System.out.println(">> Method call PushServer.pushGcm(String payload, ArrayList<String> recipients)");
+		PushGCM push = new PushGCM(payload, recipients);
+		try {
+			push.send();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		return true;
 	}
 
 	private boolean loadSubs() {
 		System.out.println(">> Method call PushServer.loadSubs()");
 
-		// FOR NOW: Only doing APNS. Sort this later.
-		return loadSubsApns();
+		if( loadSubsApns() && loadSubsGcm() ) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	private boolean loadSubsApns() {
 		System.out.println(">> Method call PushServer.loadSubsApns()");
 
-		String fileName = LOC_APNS;
-		
-		String line = null;
-		System.out.println(fileName);
-
 		try {
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
-
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-			while ((line = bufferedReader.readLine()) != null) {
-				// System.out.println(line);
-				subs_apns.add(line);
-			}
-
-			// Always close files.
-			bufferedReader.close();
-		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file '" + fileName + "'");
-			return false;
-		} catch (IOException ex) {
-			System.out.println("Error reading file '" + fileName + "'");
+			MySQLFacade sql = new MySQLFacade();
+			this.subs_apns = sql.getPhoneIDs("ios");
+		}
+		catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
 			return false;
 		}
 
-		System.out.println("opened file successfully");
+		System.out.println("Opened file successfully");
 		return true;
 	}
 
 	private boolean loadSubsGcm() {
 		System.out.println(">> Method call PushServer.loadSubsGcm()");
 
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			this.subs_gcm = sql.getPhoneIDs("android");
+		}
+		catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+			return false;
+		}
+
+		System.out.println("Opened file successfully");
 		return true;
 	}
 
-	public boolean saveSubs() {
+	public boolean saveSubs(String key) {
 		System.out.println(">> Method call PushServer.saveSubs()");
 
-		// NEEDS UPDATED TO INCLUDE GCM
-		return saveSubsApns();
+		if( saveSubsApns(key) && saveSubsGcm(key) ) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
-	private boolean saveSubsApns() {
+	private boolean saveSubsApns(String key) {
 		System.out.println(">> Method call PushServer.saveSubsApns()");
 
-		String fileName = LOC_APNS;
-
 		try {
-			// Assume default encoding.
-			FileWriter fileWriter = new FileWriter(fileName);
-
-			// Always wrap FileWriter in BufferedWriter.
-			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-			for (int i = 0; i < subs_apns.size(); i++) {
-				bufferedWriter.write(subs_apns.get(i));
-				bufferedWriter.newLine();
-			}
-
-			// Always close files.
-			bufferedWriter.close();
-		} catch (IOException ex) {
-			System.out.println("Error writing to file '" + fileName + "'");
-			System.out.println("ERROR: " + ex.getMessage());
+			MySQLFacade sql = new MySQLFacade();
+			sql.insertIOSKey(key);
+		}
+		catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
 			return false;
 		}
 		System.out.println("Wrote to file successfully");
 		return true;
 	}
 
-	private boolean saveSubsGcm() {
+	private boolean saveSubsGcm(String key) {
 		System.out.println(">> Method call PushServer.saveSubsGcm()");
+		
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			sql.insertAndroidKey(key);
+		}
+		catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
+			return false;
+		}
+		System.out.println("Wrote to file successfully");
 		return true;
 	}
 
@@ -197,16 +188,6 @@ public class PushServer {
 	public ArrayList<String> getSubsGcm() {
 		System.out.println(">> Method call getSubsGcm()");
 		return subs_gcm;
-	}
-
-	public JSONObject testJson() {
-		// from
-		// http://www.mkyong.com/java/json-simple-example-read-and-write-json/
-		JSONObject obj = new JSONObject();
-		obj.put("year", "year1");
-		obj.put("title", "this is an example post title");
-
-		return obj;
 	}
 
 }

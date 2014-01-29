@@ -1,39 +1,53 @@
 package uk.co.euanmorrison.ehealth.push;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PushGCM {
 
-	private JSONObject obj;
-	private String response;
-	private final String GCM_AUTH = "key=YOUR_API_KEY";							// NEEDED FOR GCM PUSH. Comes from Yolina.
-	private final String GCM_URL = "https://android.googleapis.com/gcm/send";	// Where POST goes to
+	private boolean response;
+	private final String GCM_AUTH = "key=AIzaSyDRHjCe_wWhxR1hf6_-93wb-imobSYPRJg";					// NEEDED FOR GCM PUSH. Comes from Yolina.
+	private final String GCM_URL = "https://android.googleapis.com/gcm/send";						// Where POST goes to
 	private final String GCM_CONTENT = "application/x-www-form-urlencoded;charset=UTF-8";
 			// Content-Type: application/json for JSON; application/x-www-form-urlencoded;charset=UTF-8 for plain text.
+	private String payload = "";
+	private JSONObject payloadJson;
+	private String[] ids;
 	
-	public PushGCM(String payload, String[] ids) throws Exception {
-		Date timestamp = new Date();
+	public PushGCM(String payload, ArrayList<String> recipients) {
 		
-		//this.obj = this.setJSON("test payload", timestamp, ids);
+		this.payload = payload;
+		this.ids = recipients.toArray(new String[recipients.size()]);
 		
-		this.response = this.sendPost("https://selfsolve.apple.com/wcResults.do", this.obj);
+		try {
+			this.payloadJson = buildBody();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		
-		// prints contents of JSON object to console
+		try {
+			this.response = this.send();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		
 		System.out.println("# Attempted POST. Result:\n" + this.getResponse() + "\n");
 	}
 	
-	private String sendPost(String url, JSONObject jsonObj) throws Exception {
+	public boolean send() throws IOException {
 		 
-		URL obj = new URL(GCM_URL);
+		URL obj;
+		obj = new URL(GCM_URL);
+		
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
  
 		//add request header
@@ -45,7 +59,8 @@ public class PushGCM {
 		con.setRequestProperty("Content-Type", GCM_CONTENT);
 		con.setRequestProperty("Authorization", GCM_AUTH);
  
-		String urlParameters = "";
+		//String urlParameters = "";
+		String urlParameters = this.payloadJson.toString();
  
 		// Send post request
 		con.setDoOutput(true);
@@ -55,22 +70,36 @@ public class PushGCM {
 		wr.close();
 		
 		int responseCode = con.getResponseCode();
- 
-		BufferedReader in = new BufferedReader(
-		        new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer response = new StringBuffer();
- 
-		while ((inputLine = in.readLine()) != null) {
-			response.append(inputLine);
-		}
-		in.close();
 		
-		return response.toString();
+		if(responseCode==200) {
+			// success, do nothing
+		}
+		else {
+			System.out.println("Error on Push: "+responseCode);
+			return false;
+		}
+		return true;
 	}
 	
-	private String getResponse() {
+	private boolean getResponse() {
 		return this.response;
+	}
+	
+	private JSONObject buildBody() throws JSONException {
+		JSONObject payloadJson = new JSONObject(this.payload);
+		
+		JSONObject body = new JSONObject();
+		JSONObject data = new JSONObject();
+		
+		data.put("year", payloadJson.get("year"));
+		data.put("title", payloadJson.get("title"));
+		
+		JSONArray registration_ids = new JSONArray(this.ids);
+		
+		body.put("data", data);
+		body.put("registration_ids", registration_ids);
+		
+		return body;
 	}
 	
 }

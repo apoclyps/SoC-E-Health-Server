@@ -2,8 +2,6 @@ package uk.co.euanmorrison.ehealth.push;
 
 import java.util.ArrayList;
 
-import org.json.simple.JSONObject;
-
 import com.notnoop.apns.APNS;
 import com.notnoop.apns.ApnsService;
 

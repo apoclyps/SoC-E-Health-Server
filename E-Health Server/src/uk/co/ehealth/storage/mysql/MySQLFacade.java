@@ -1,4 +1,5 @@
 package uk.co.ehealth.storage.mysql;
+
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -7,12 +8,12 @@ import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
 public class MySQLFacade implements MySQLInterface {
-	
+
 	private MySQLDAO connection;
-	
+
 	public MySQLFacade() {
-	super();
-	this.setConnection(new MySQLDAO());
+		super();
+		this.setConnection(new MySQLDAO());
 	}
 
 	@Override
@@ -24,10 +25,10 @@ public class MySQLFacade implements MySQLInterface {
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
 		try {
-			if(connection.insertItem(rssItem)){
+			if (connection.insertItem(rssItem)) {
 				System.out.println("Inserted 1 Record " + rssItem.getTitle());
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -73,12 +74,12 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public ArrayList<RSSItem> selectItemsFromYear(String yearID) {
 		// TODO Auto-generated method stub
 		try {
-			//return connection.selectItem();
+			// return connection.selectItem();
 			return connection.selectItemFromYear(yearID);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -86,6 +87,40 @@ public class MySQLFacade implements MySQLInterface {
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void insertIOSKey(String key)
+	{
+		try {
+			if (connection.addiosKey(key)) {
+				System.out.println("Inserted 1 Key " + key);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insertAndroidKey(String key)
+	{
+		try {
+			if (connection.addAndroidKey(key)) {
+				System.out.println("Inserted 1 Key " + key);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public ArrayList<String> getPhoneIDs(String phoneType) throws SQLException {
+		if (phoneType.equals("ios")) {
+			return connection.getIOSIDs();
+		} else if (phoneType.equals("android")) {
+
+			return connection.getAndroidIDs();
 		}
 		return null;
 	}
@@ -97,5 +132,5 @@ public class MySQLFacade implements MySQLInterface {
 	public void setConnection(MySQLDAO connection) {
 		this.connection = connection;
 	}
-	
+
 }

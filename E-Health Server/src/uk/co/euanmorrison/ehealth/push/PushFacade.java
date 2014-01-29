@@ -28,16 +28,16 @@ public class PushFacade {
 	
 	protected void broadcast(String pushJson) {				
 		System.out.println("Broadcasting");
-		try{
+		try {
 			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH
 				System.out.println("successfully pushed to APNS "+pushJson);
 			} else {
 				System.out.println("Failed to push to APNS");
 			}
-		}catch(NullPointerException e){
+		}
+		catch(NullPointerException e) {
 			e.printStackTrace();
 		}
-		ps.saveSubs();
 	}
 	
 }
