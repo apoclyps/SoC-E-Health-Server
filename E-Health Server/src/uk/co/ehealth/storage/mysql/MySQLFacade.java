@@ -90,6 +90,30 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
+	
+	public void insertIOSKey(String key)
+	{
+		try {
+			if (connection.addiosKey(key)) {
+				System.out.println("Inserted 1 Key " + key);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void insertAndroidKey(String key)
+	{
+		try {
+			if (connection.addAndroidKey(key)) {
+				System.out.println("Inserted 1 Key " + key);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ArrayList<String> getPhoneIDs(String phoneType) throws SQLException {
 		if (phoneType.equals("ios")) {

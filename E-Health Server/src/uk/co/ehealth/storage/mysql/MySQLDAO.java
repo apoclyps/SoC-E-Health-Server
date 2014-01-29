@@ -31,7 +31,8 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setString(1, rssChannel.getTitle());
 			preparedStatement.setString(2, rssChannel.getLink().toString());
 			preparedStatement.setString(3, rssChannel.getDescription());
-			preparedStatement.setTimestamp(4, new java.sql.Timestamp(rssChannel.getLastBuildDate().getTime()));
+			preparedStatement.setTimestamp(4, new java.sql.Timestamp(rssChannel
+					.getLastBuildDate().getTime()));
 			preparedStatement.setString(5, rssChannel.getLanguage());
 			preparedStatement.setString(6, rssChannel.getUpdatePeriod());
 			preparedStatement.setInt(7, rssChannel.getUpdateFrequency());
@@ -59,8 +60,9 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setString(1, rssItem.getTitle());
 			preparedStatement.setString(2, rssItem.getLink().toString());
 			// preparedStatement.setInt(3, rssItem.getSlashComments());
-			//preparedStatement.setString(3, rssItem.getPubDate().toString());
-			preparedStatement.setTimestamp(3, new java.sql.Timestamp(rssItem.getPubDate().getTime()));
+			// preparedStatement.setString(3, rssItem.getPubDate().toString());
+			preparedStatement.setTimestamp(3, new java.sql.Timestamp(rssItem
+					.getPubDate().getTime()));
 			preparedStatement.setString(4, rssItem.getCreator());
 			preparedStatement.setString(5, rssItem.getCategory());
 			preparedStatement.setString(6, rssItem.getDescription());
@@ -70,7 +72,7 @@ public class MySQLDAO extends MySQLConnector {
 			// java.sql.Date(rssItem.getCreationDate().getTime()));
 			// System.out.println("Insert succeed!"+ rssItem.getYear());
 			preparedStatement.executeUpdate();
-			
+
 			if (connection != null) {
 				connection.close();
 			}
@@ -198,7 +200,7 @@ public class MySQLDAO extends MySQLConnector {
 				item.setTitle(resultSet.getString("Title"));
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
-			//	System.out.println("MYSQLDAO pub date needs fixed");
+				// System.out.println("MYSQLDAO pub date needs fixed");
 				item.setPubDate(resultSet.getTimestamp("PubDate"));
 				item.setCreator(resultSet.getString("Creator"));
 				item.setCategory(resultSet.getString("Category"));
@@ -321,39 +323,82 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return flashCardList;
 	}
-	
-	
-	public ArrayList<String> getAndroidIDs() throws SQLException
-	{
+
+	public boolean addiosKey(String key) throws SQLException {
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("insert into mbchb.subs_android" + "(ID)"
+							+ "values (?)");
+
+			preparedStatement.setString(1, key);
+			preparedStatement.executeUpdate();
+			if (connection != null) {
+				connection.close();
+			}
+			return true;
+		}else{
+			
+		}
+			System.out.println("MYSQLDOA : Insert iOS Key : Connection Failed");
+		if (connection != null) {
+			connection.close();
+		}
+		return false;
+	}
+
+	public boolean addAndroidKey(String key) throws SQLException {
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("insert into mbchb.subs_ios" + "(ID)"
+							+ "values (?)");
+
+			preparedStatement.setString(1, key);
+			preparedStatement.executeUpdate();
+			if (connection != null) {
+				connection.close();
+			}
+			return true;
+		}else{
+			
+		}
+			System.out.println("MYSQLDOA : Insert Android Key : Connection Failed");
+		if (connection != null) {
+			connection.close();
+		}
+		return false;
+	}
+
+	public ArrayList<String> getAndroidIDs() throws SQLException {
 		ArrayList<String> androidIDs = new ArrayList<String>();
-		if (this.checkConnection()){
-			preparedStatement = connection.prepareStatement("SELECT * FROM subs_android;");
-		
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("SELECT * FROM subs_android;");
+
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				String ID =rs.getString("ID");
+				String ID = rs.getString("ID");
 				androidIDs.add(ID);
 			}
-			
+
 		}
-		
+
 		return androidIDs;
 	}
-	
-	public ArrayList<String> getIOSIDs() throws SQLException
-	{
+
+	public ArrayList<String> getIOSIDs() throws SQLException {
 		ArrayList<String> iOSIDs = new ArrayList<String>();
-		if (this.checkConnection()){
-			preparedStatement = connection.prepareStatement("SELECT * FROM subs_ios;");
-		
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("SELECT * FROM subs_ios;");
+
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
-				String ID =rs.getString("ID");
+				String ID = rs.getString("ID");
 				iOSIDs.add(ID);
 			}
-			
+
 		}
-		
+
 		return iOSIDs;
 	}
 }
