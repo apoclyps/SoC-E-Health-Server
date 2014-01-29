@@ -76,6 +76,8 @@ public class RequestController extends HttpServlet {
 				rcu.ResponseBuilder("year5",pageID,response);
 				rcu.ResponsePresistentStorage("year5",pageID);
 				break;
+			case 6 :
+				rcu.PushNotification(request, response);
 			default:
 				//Return empty json to app
 				

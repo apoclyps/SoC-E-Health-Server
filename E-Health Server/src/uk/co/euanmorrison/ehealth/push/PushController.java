@@ -14,25 +14,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONObject;
-
 /**
  * Servlet implementation class PushController
  */
 @WebServlet("/PushController")
 public class PushController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private PushServer ps;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public PushController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-    
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public PushController() {
+		super();
+	}
+
 	public void init(ServletConfig config) throws ServletException {
 		System.out.println("Push Controller initialised");
 		this.ps = new PushServer();
@@ -43,22 +40,27 @@ public class PushController extends HttpServlet {
 		this.ps.serverStop();
 	}
 
-	private String[] getParameters(String requestPath) {
-		return requestPath.split("/");
-	}
-
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("SERVLET 'GET' HIT");
 		
 		String responseOutput = "";
 		
 		Map<String,String[]> params = request.getParameterMap();
 		
-		switch(params.get("platform")[0]) {
+		if(request.getParameter("type").equalsIgnoreCase("broadcast")){
+			try{
+				String pushJson = request.getParameter("pushJSON");
+				pushPost(request,response,pushJson);
+				
+			}catch(NullPointerException e){
+				e.printStackTrace();
+			}
+		}else{
+			switch(params.get("platform")[0]) {
 			case "ios":
 				if(ps.addSubApns(params.get("token")[0])) {
 					// successfully added to iOS token set
@@ -83,90 +85,107 @@ public class PushController extends HttpServlet {
 				}
 				break;
 		}
-		
 		/*for(String value:params.get("test")) {
 			System.out.println("Value of 'test': " + value);
 		}*/
-		
 		PrintWriter pw = response.getWriter();
 		pw.print(responseOutput);
-		
+		pw.close();
 		//ps.pushApns(ps.testJson(), ps.getSubsApns());
-		
 		ps.saveSubs();
-		
-		
-		
-		// FOR TESTING, LET'S SIMULATE A POST
-
-		// so this will be received as a POST request object in the real world:
-		JSONObject objReceived = ps.testJson();
-		
-		// now we grab the fields we want from the object and format them into a string for pushing:
-		String objToPush = "{year:\""+objReceived.get("year")+"\",title:\""+objReceived.get("title")+"\"}";
-		
-		// testing that the String is properly formatted for the devices:
-		System.out.println(objToPush);
-		
-		// now let's push it to APNS and see what happens:
-		System.out.println("Attempting push...");
-		
-		if(ps.pushApns(ps.testJson(), ps.getSubsApns())) {
-			System.out.println("Push succeeded");
 		}
-		else {
-			System.out.println("Push failed");
-		}
-		
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void pushPost(HttpServletRequest request,HttpServletResponse response,String responseOutput){
 		System.out.println("SERVLET POST HIT");
-		
-		System.out.println(getBody(request));
-		
-		//PrintWriter pw = response.getWriter();
-		//pw.print("some text");
-		
-		//ps.pushApns(ps.testJson(), ps.getSubsApns());
+
+		String requestBody = null;
+		try {
+			requestBody = getBody(request);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (ps.pushApns(requestBody, ps.getSubsApns())) {
+			// successfully pushed to APNS
+			System.out.println("successfully pushed to APNS");
+			responseOutput = "true";
+		} else {
+			System.out.println("Failed to push to APNS");
+			responseOutput = "false";
+		}
+
+		PrintWriter pw = null;
+		try {
+			pw = response.getWriter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pw.print(responseOutput);
+
+		pw.close();
 	}
-	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("SERVLET POST HIT");
+		String responseOutput = "";
+
+		String requestBody = getBody(request);
+
+		if (ps.pushApns(requestBody, ps.getSubsApns())) {
+			// successfully pushed to APNS
+			System.out.println("successfully pushed to APNS");
+			responseOutput = "true";
+		} else {
+			System.out.println("Failed to push to APNS");
+			responseOutput = "false";
+		}
+
+		PrintWriter pw = response.getWriter();
+		pw.print(responseOutput);
+
+		pw.close();
+	}
+
 	public static String getBody(HttpServletRequest request) throws IOException {
 
-	    String body = null;
-	    StringBuilder stringBuilder = new StringBuilder();
-	    BufferedReader bufferedReader = null;
+		String body = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		BufferedReader bufferedReader = null;
 
-	    try {
-	        InputStream inputStream = request.getInputStream();
-	        if (inputStream != null) {
-	            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-	            char[] charBuffer = new char[128];
-	            int bytesRead = -1;
-	            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-	                stringBuilder.append(charBuffer, 0, bytesRead);
-	            }
-	        } else {
-	            stringBuilder.append("");
-	        }
-	    } catch (IOException ex) {
-	        throw ex;
-	    } finally {
-	        if (bufferedReader != null) {
-	            try {
-	                bufferedReader.close();
-	            } catch (IOException ex) {
-	                throw ex;
-	            }
-	        }
-	    }
+		try {
+			InputStream inputStream = request.getInputStream();
+			if (inputStream != null) {
+				bufferedReader = new BufferedReader(new InputStreamReader(
+						inputStream));
+				char[] charBuffer = new char[128];
+				int bytesRead = -1;
+				while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+					stringBuilder.append(charBuffer, 0, bytesRead);
+				}
+			} else {
+				stringBuilder.append("");
+			}
+		} catch (IOException ex) {
+			throw ex;
+		} finally {
+			if (bufferedReader != null) {
+				try {
+					bufferedReader.close();
+				} catch (IOException ex) {
+					throw ex;
+				}
+			}
+		}
 
-	    body = stringBuilder.toString();
-	    return body;
+		body = stringBuilder.toString();
+		return body;
 	}
 
 }

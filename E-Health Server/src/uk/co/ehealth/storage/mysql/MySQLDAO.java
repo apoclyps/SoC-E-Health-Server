@@ -5,9 +5,9 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import uk.co.kyleharrison.ehealth.model.pojo.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 
@@ -164,45 +164,122 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return itemList;
 	}
-	
-	public ArrayList<RSSItem> selectItemFromYear(String yearID) throws SQLException,
-	MalformedURLException {
-ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
-if (this.checkConnection()) {
-	// PreparedStatements can use variables and are more efficient
-	preparedStatement = connection
-			.prepareStatement("select * from mbchb.Item WHERE Year = '" + yearID + "'");
-	// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-	// Parameters start with 1
+	public ArrayList<RSSItem> selectItemFromYear(String yearID)
+			throws SQLException, MalformedURLException {
+		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
-	// System.out.println("Insert succeed!");
-	ResultSet resultSet = preparedStatement.executeQuery();
+		if (this.checkConnection()) {
+			// PreparedStatements can use variables and are more efficient
+			preparedStatement = connection
+					.prepareStatement("select * from mbchb.Item WHERE Year = '"
+							+ yearID + "'");
+			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
+			// Parameters start with 1
 
-	// Pulling data by resultset..
+			// System.out.println("Insert succeed!");
+			ResultSet resultSet = preparedStatement.executeQuery();
 
-	while (resultSet.next()) {
-		// Getting data...
-		// String itemID = resultSet.getString("ID");
-		RSSItem item = new RSSItem();
-		URL link = new URL(resultSet.getString("Link"));
-		// URL commentRss = new URL(resultSet.getString("CommentRSS"));
+			// Pulling data by resultset..
 
-		item.setTitle(resultSet.getString("Title"));
-		item.setLink(link);
-		item.setSlashComments(resultSet.getInt("Comments"));
-		item.setPubDate(resultSet.getDate("PubDate"));
-		item.setCreator(resultSet.getString("Creator"));
-		item.setCategory(resultSet.getString("Category"));
-		item.setDescription(resultSet.getString("Description"));
-		item.setYear(resultSet.getInt("Year"));
-		// item.setCommentRss(commentRss);
-		itemList.add(item);
+			while (resultSet.next()) {
+				// Getting data...
+				// String itemID = resultSet.getString("ID");
+				RSSItem item = new RSSItem();
+				URL link = new URL(resultSet.getString("Link"));
+				// URL commentRss = new URL(resultSet.getString("CommentRSS"));
+
+				item.setTitle(resultSet.getString("Title"));
+				item.setLink(link);
+				item.setSlashComments(resultSet.getInt("Comments"));
+				item.setPubDate(resultSet.getDate("PubDate"));
+				item.setCreator(resultSet.getString("Creator"));
+				item.setCategory(resultSet.getString("Category"));
+				item.setDescription(resultSet.getString("Description"));
+				item.setYear(resultSet.getInt("Year"));
+				// item.setCommentRss(commentRss);
+				itemList.add(item);
+			}
+			if (connection != null) {
+				connection.close();
+			}
+		}
+		return itemList;
 	}
-	if (connection != null) {
-		connection.close();
+
+	public void insertToFlashCard(int cardID, int subjectID,
+			int questionNumber, String question, String answer)
+			throws SQLException {
+		if (this.checkConnection()) {
+			// PreparedStatements can use variables and are more efficient
+			preparedStatement = connection
+					.prepareStatement("insert into mbchb.FlashCards"
+							+ "(CardID, SubjectID, QuestionNum,Question, Answer)"
+							+ " values  (?,?,?,?,?)");
+			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
+			// Parameters start with 1
+			preparedStatement.setInt(1, cardID);
+			preparedStatement.setInt(2, subjectID);
+			preparedStatement.setInt(3, questionNumber);
+			preparedStatement.setString(4, question);
+			preparedStatement.setString(5, answer);
+			System.out.println("Insert succeed!");
+			preparedStatement.executeUpdate();
+		}
+		if (connection != null) {
+			connection.close();
+		}
 	}
-}
-return itemList;
-}
+
+	public void insertToSubject(int subjectID, String cardSubject,
+			int yearStudied) throws SQLException {
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("insert into mbchb.Subject"
+							+ "(SubjectID,CardSubject,YearStudied)"
+							+ "values (?,?,?)");
+
+			preparedStatement.setInt(1, subjectID);
+			preparedStatement.setString(2, cardSubject);
+			preparedStatement.setInt(3, yearStudied);
+			System.out.println("Insert succeed!");
+			preparedStatement.executeUpdate();
+		}
+		if (connection != null) {
+			connection.close();
+		}
+
+	}
+
+	public ArrayList<FlashCard> selectFlashCard() throws SQLException {
+		ArrayList<FlashCard> flashCardList = new ArrayList<FlashCard>();
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("SELECT Flashcards.CardID, Flashcards.LectureNum, Flashcards.QuestionNum,"
+							+ "Flashcards.Question, Flashcards.Answer , `Subject`.SubjectID,`Subject`.CardSubject,"
+							+ "`Subject`.YearStudied"
+							+ "FROM Flashcards"
+							+ "INNER JOIN `Subject`"
+							+ "ON Flashcards.SubjectID=`Subject`.SubjectID"
+							+ "ORDER BY `Subject`.SubjectID;");
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				FlashCard card = new FlashCard();
+				card.setCardID(rs.getInt("CardID"));
+				card.setSubjectID(rs.getInt("SubjectID"));
+				card.setAnswer(rs.getString("Answer"));
+				card.setCardSubject(rs.getString("CardSubject"));
+				card.setLectureNumber(rs.getInt("LectureNum"));
+				card.setQuestion(rs.getString("Question"));
+				card.setCardSubject(rs.getString("CardSubject"));
+				card.setYearStudied(rs.getInt("YearStudied"));
+
+				flashCardList.add(card);
+			}
+		}
+		return flashCardList;
+	}
+
 }
