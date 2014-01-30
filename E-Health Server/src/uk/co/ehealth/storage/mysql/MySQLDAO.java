@@ -300,10 +300,11 @@ public class MySQLDAO extends MySQLConnector {
 					.prepareStatement("SELECT `Subject`.SubjectID, `Subject`.CardSubject,Flashcards.Question,"
 							+ "Flashcards.Answer FROM Flashcards INNER JOIN `Subject`ON"
 							+ "Flashcards.SubjectID=`Subject`.SubjectID"
-							+ "WHERE `Subject`.SubjectID = ?"
-							+ "ORDER BY `Subject`.SubjectID;");
+							+ "WHERE `Subject`.SubjectID ='"
+							+ subject
+							+ "' ORDER BY `Subject`.SubjectID;");
 
-			preparedStatement.setString(0, subject);
+			//preparedStatement.setString(0, subject);
 
 			ResultSet rs = preparedStatement.executeQuery();
 
