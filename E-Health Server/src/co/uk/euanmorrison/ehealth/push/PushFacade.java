@@ -1,4 +1,4 @@
-package co.uk.euanmorrison.push;
+package co.uk.euanmorrison.ehealth.push;
 
 public class PushFacade {
 
