@@ -423,29 +423,40 @@ public class MySQLDAO extends MySQLConnector {
 		return iOSIDs;
 	}
 
-	public boolean deleteIOSKey(String token) throws SQLException {
+	public boolean deleteIOSKey(String token) {
 		if (this.checkConnection()) {
-			preparedStatement = connection
-					.prepareStatement("Delete FROM subs_ios"
-					+ "WHERE ID = '" + token +"'");
-					preparedStatement.executeQuery();
-					return true;
-	}
-		if (connection != null) {
-			connection.close();
-			return false;
+
+			try {
+				System.out.println("TOKEN TO DELETE: "+token);
+				preparedStatement = connection
+						.prepareStatement("Delete FROM subs_ios WHERE ID = '"+ token + "';");
+				preparedStatement.execute();
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				if (connection != null) {
+					try {
+						connection.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						// e.printStackTrace();
+					}
+				}
+			}
 		}
 		return false;
 	}
-	
+
 	public boolean deleteAndroidKey(String token) throws SQLException {
 		if (this.checkConnection()) {
 			preparedStatement = connection
 					.prepareStatement("Delete FROM subs_android"
-					+ "WHERE ID = '" + token +"'");
-					preparedStatement.executeQuery();
-					return true;
-	}
+							+ "WHERE ID = '" + token + "'");
+			preparedStatement.execute();
+			return true;
+		}
 		if (connection != null) {
 			connection.close();
 			return false;
@@ -455,20 +466,21 @@ public class MySQLDAO extends MySQLConnector {
 
 	public boolean isItemExist(String title, Date pudDate) throws SQLException {
 		if (this.checkConnection()) {
-		preparedStatement = connection
-				.prepareStatement("SELECT Title,PubDate FROM Item WHERE Title = ? AND pubDate = ?;");
-		preparedStatement.setString(1, title);
-		preparedStatement.setTimestamp(2, new Timestamp(pudDate.getTime()));
-		ResultSet rs = preparedStatement.executeQuery();
+			preparedStatement = connection
+					.prepareStatement("SELECT Title,PubDate FROM Item WHERE Title = ? AND pubDate = ?;");
+			preparedStatement.setString(1, title);
+			preparedStatement.setTimestamp(2, new Timestamp(pudDate.getTime()));
+			ResultSet rs = preparedStatement.executeQuery();
 
-		return rs.first();
+			return rs.first();
 		}
 		return false;
-		
+
 	}
 
 	public boolean removeTokenFromIOS(String token) {
 		if (this.checkConnection()) {
+
 		}
 		return true;
 

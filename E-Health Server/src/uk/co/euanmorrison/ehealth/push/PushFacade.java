@@ -30,6 +30,14 @@ public class PushFacade {
 		return this.ps.deleteSubGcm(key);
 	}
 	
+	public boolean addSubApns(String key) {
+		return this.ps.addSubApns(key);
+	}
+	
+	public boolean addSubGcm(String key) {
+		return this.ps.addSubGcm(key);
+	}
+	
 	public void writeSubscriptions() {
 		this.ps.serverStop();
 	}

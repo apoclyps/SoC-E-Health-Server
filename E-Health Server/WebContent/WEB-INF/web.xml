@@ -32,6 +32,17 @@
 		<url-pattern>/push</url-pattern>
 		<url-pattern>/push/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PushPanel</servlet-name>
+		<servlet-class>uk.co.euanmorrison.ehealth.push.PushPanel</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>PushPanel</servlet-name>
+		<url-pattern>/pushpanel</url-pattern>
+		<url-pattern>/pushpanel/*</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>FlashCardController</servlet-name>
