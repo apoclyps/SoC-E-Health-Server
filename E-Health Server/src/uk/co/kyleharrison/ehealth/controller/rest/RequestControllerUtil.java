@@ -146,6 +146,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		this.jsonItem = new JSONItem();
 		this.xmlFacade.setUrl(url.toString());
 		this.rssChannel = this.xmlFacade.DeconstructXMLToPojo();
+		this.jsonItemArray = new JSONObject[this.rssChannel.getItem_list().size()];
 
 		for (int x = 0; x < this.jsonItemArray.length; x++) {
 			this.rssItem = rssChannel.getItem_list().get(x);
