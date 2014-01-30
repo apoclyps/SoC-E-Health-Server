@@ -265,12 +265,12 @@ public class MySQLDAO extends MySQLConnector {
 		if (this.checkConnection()) {
 			preparedStatement = connection
 					.prepareStatement("SELECT Flashcards.CardID, Flashcards.LectureNum, Flashcards.QuestionNum,"
-							+ "Flashcards.Question, Flashcards.Answer , `Subject`.SubjectID,`Subject`.CardSubject,"
-							+ "`Subject`.YearStudied"
+							+ "Flashcards.Question, Flashcards.Answer , 'Subject'.SubjectID,'Subject'.CardSubject,"
+							+ "'Subject'.YearStudied"
 							+ "FROM Flashcards"
-							+ "INNER JOIN `Subject`"
-							+ "ON Flashcards.SubjectID=`Subject`.SubjectID"
-							+ "ORDER BY `Subject`.SubjectID;");
+							+ "INNER JOIN 'Subject'"
+							+ "ON Flashcards.SubjectID='Subject'.SubjectID"
+							+ "ORDER BY 'Subject'.SubjectID;");
 
 			ResultSet rs = preparedStatement.executeQuery();
 
@@ -291,18 +291,16 @@ public class MySQLDAO extends MySQLConnector {
 		return flashCardList;
 	}
 
-	public ArrayList<FlashCard> selectFlashCardBySubject(String subject)
+	public ArrayList<FlashCard> selectFlashCardBySubject(int subject)
 			throws SQLException {
 
 		ArrayList<FlashCard> flashCardList = new ArrayList<FlashCard>();
 		if (this.checkConnection()) {
 			preparedStatement = connection
-					.prepareStatement("SELECT `Subject`.SubjectID, `Subject`.CardSubject,Flashcards.Question,"
-							+ "Flashcards.Answer FROM Flashcards INNER JOIN `Subject`ON"
-							+ "Flashcards.SubjectID=`Subject`.SubjectID"
-							+ "WHERE `Subject`.SubjectID ='"
-							+ subject
-							+ "' ORDER BY `Subject`.SubjectID;");
+					.prepareStatement("SELECT * "
+							+ "FROM Flashcards INNER JOIN Subject ON Flashcards.SubjectID=Subject.SubjectID "
+							+ "WHERE Subject.SubjectID = " + subject +" "
+							+ "ORDER BY Subject.SubjectID LIMIT 0,10;");
 
 			//preparedStatement.setString(0, subject);
 
@@ -317,7 +315,7 @@ public class MySQLDAO extends MySQLConnector {
 				card.setLectureNumber(rs.getInt("LectureNum"));
 				card.setQuestion(rs.getString("Question"));
 				card.setCardSubject(rs.getString("CardSubject"));
-				card.setYearStudied(rs.getInt("YearStudied"));
+				//card.setYearStudied(rs.getInt("YearStudied"));
 
 				flashCardList.add(card);
 			}

@@ -36,10 +36,10 @@ public class MySQLFacade implements MySQLInterface {
 		return false;
 	}
 	
-	public ArrayList<FlashCard> selectFlashCard(){
+	public ArrayList<FlashCard> selectFlashCard(int subjectID){
 		ArrayList<FlashCard> flashCardsArray = null;
 		try {
-			flashCardsArray = connection.selectFlashCardBySubject("1");
+			flashCardsArray = connection.selectFlashCardBySubject(subjectID);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
