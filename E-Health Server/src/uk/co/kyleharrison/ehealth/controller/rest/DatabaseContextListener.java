@@ -19,7 +19,7 @@ public class DatabaseContextListener implements ServletContextListener {
 	private XMLFacade xmlFacade;
 	private int[] years = { 1, 2, 3, 4, 5 };
 	private long delayBetweenRequests = 10000;
-	private long waitTime = 60000;
+	private long waitTime = 60000*5;
 	private MySQLFacade mysqlFacade = new MySQLFacade();
 	protected RSSChannel rc;
 	
@@ -35,7 +35,7 @@ public class DatabaseContextListener implements ServletContextListener {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			//	run();
+				run();
 			}
 		}.start();
     }

@@ -150,11 +150,6 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	
 	public void DefaultResponseBuilder(String page, String callback,HttpServletResponse response) {
 		try {
-			// url = new
-			// URL("https://mbchb.dundee.ac.uk/category/all-years/feed/?paged="
-			// + page);
-
-		//	System.out.println("url" + url.toString());
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArrayFromMySQL();
 			
@@ -171,7 +166,6 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			responseObject.put("numberOfRecordsReturned", this.rssChannel
 					.getItem_list().size());
 
-			// Items array
 			responseObject.put("items", jsonItemsArray);
 
 			JSONResponse(response, responseObject, callback);
@@ -217,13 +211,9 @@ public class RequestControllerUtil extends RequestController implements RequestC
 				e.printStackTrace();
 			}
 		}
-		
 		return jsonItemArray;
 	}
 	
-	
-	
-
 	public void JSONResponse(HttpServletResponse response,
 			JSONObject jsonResponse,String callback) {
 		if (jsonResponse != null) {
@@ -298,5 +288,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	    RequestDispatcher rd = request.getRequestDispatcher("/PushController/");
 		rd.forward(request, response);
 	}
+
+
 
 }

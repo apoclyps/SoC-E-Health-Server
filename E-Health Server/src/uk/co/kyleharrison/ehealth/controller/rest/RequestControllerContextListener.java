@@ -38,12 +38,13 @@ public class RequestControllerContextListener implements ServletContextListener 
 		// TODO Auto-generated method stub
 		System.out.println("ServletContextListener started for retrieving xml feed");
 
+		mysqlFacade = new MySQLFacade();
+		
 		new Thread() {
 			public void run() {
 
 				// Selecting records from database for comparison
-				mysqlFacade = new MySQLFacade();
-
+				
 				Date date = new Date("Tue Jan 28 15:41:29 GMT 2014");
 				System.out.println(date.toGMTString());
 				

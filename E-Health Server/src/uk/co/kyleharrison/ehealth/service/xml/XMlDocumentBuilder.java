@@ -20,11 +20,12 @@ import uk.co.kyleharrison.ehealth.service.xml.model.XMLChannel;
 import uk.co.kyleharrison.ehealth.service.xml.model.XMLGroup;
 import uk.co.kyleharrison.ehealth.service.xml.model.XMLItem;
 import uk.co.kyleharrison.ehealth.services.xml.util.DateConverter;
+import uk.co.kyleharrison.ehealth.services.xml.util.DocumentBuilderUtil;
 import uk.co.kyleharrison.ehealth.services.xml.util.HTMLParser;
 
 public class XMlDocumentBuilder {
 
-	private String xmlContent=null;
+	private String xmlContent = null;
 	private XMLChannel xmlChannel;
 	private XMLItem xmlItem;
 	private XMLGroup xmlGroup;
@@ -37,14 +38,14 @@ public class XMlDocumentBuilder {
 		this.htmlParser = new HTMLParser();
 		this.DC = new DateConverter();
 	}
-	
+
 	public XMlDocumentBuilder(String xmlContent) {
 		super();
 		this.xmlContent = xmlContent;
 		this.htmlParser = new HTMLParser();
 		this.DC = new DateConverter();
 	}
-	
+
 	public String getXmlContent() {
 		return xmlContent;
 	}
@@ -76,7 +77,7 @@ public class XMlDocumentBuilder {
 	public void setXmlGroup(XMLGroup xmlGroup) {
 		this.xmlGroup = xmlGroup;
 	}
-	
+
 	public RSSChannel getRc() {
 		return rc;
 	}
@@ -85,27 +86,12 @@ public class XMlDocumentBuilder {
 		this.rc = rc;
 	}
 
-
 	public Document buildXMLDocument() {
-		try {
-			String xmlFile = this.xmlContent;
-
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory
-					.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(new InputSource(new StringReader(
-					xmlFile)));
-			doc.getDocumentElement().normalize();
-			
-			return doc;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return DocumentBuilderUtil.buildXMLDocument(this.xmlContent);
 	}
-	
-	//Extracts information from XML Document
-	public void extractXMLData(Document doc){
+
+	// Extracts information from XML Document
+	public void extractXMLData(Document doc) {
 		XMLChannel xmlC = new XMLChannel();
 		XMLItem xmlI = new XMLItem();
 		xmlC.CreateChannelList(doc);
@@ -113,15 +99,17 @@ public class XMlDocumentBuilder {
 		System.out.println("");
 
 		ArrayList<RSSItem> rsiA = xmlI.CreateItemList(doc);
-	//	System.out.println("\n\nSize of Item Array results = " +rsiA.size());
+		// System.out.println("\n\nSize of Item Array results = " +rsiA.size());
 		rc.setItem_list(rsiA);
-	//	System.out.println("Size of RSS Channel results = " +this.rc.getItem_list().get(0).getTitle());
-		
+		// System.out.println("Size of RSS Channel results = "
+		// +this.rc.getItem_list().get(0).getTitle());
+
 	}
-	
+
 	// Gets string value from an element tag
 	protected String getTagValue(String sTag, Element eElement) {
-		NodeList nlList = eElement.getElementsByTagName(sTag).item(0).getChildNodes();
+		NodeList nlList = eElement.getElementsByTagName(sTag).item(0)
+				.getChildNodes();
 		Node nValue = (Node) nlList.item(0);
 		return nValue.getNodeValue();
 	}
@@ -133,21 +121,19 @@ public class XMlDocumentBuilder {
 	public void setHtmlParser(HTMLParser htmlParser) {
 		this.htmlParser = htmlParser;
 	}
-	
-	public URL castStringToURL(String url){
-		
+
+	public URL castStringToURL(String url) {
+
 		URL _link = null;
-		if(url!=null){
-			try{
+		if (url != null) {
+			try {
 				_link = new URL(url);
 			} catch (MalformedURLException e1) {
 				// TODO Auto-generated catch block
-				System.out.println( " " +e1.getMessage());
+				System.out.println(" " + e1.getMessage());
 			}
 		}
 		return _link;
 	}
 
-
-	
 }

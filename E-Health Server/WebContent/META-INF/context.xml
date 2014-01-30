@@ -4,8 +4,8 @@
 	    <!--  Azure details required for database -->	
 		<Resource 
 		driverClassName="com.mysql.jdbc.Driver"
-		maxActive="500"
-		maxIdle="100" 
+		maxActive="100"
+		maxIdle="10" 
 		maxWait="10000" 
 		name="jdbc/mbchb" 
 		password="Atmitwwsu007"

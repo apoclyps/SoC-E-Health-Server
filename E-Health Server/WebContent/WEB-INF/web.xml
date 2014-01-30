@@ -1,66 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-	id="WebApp_ID" version="3.0" metadata-complete="true">
-	<display-name>E-Health - Welcome</display-name>
-	<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>
-	<listener>
-		<listener-class>uk.co.kyleharrison.ehealth.controller.rest.DatabaseContextListener</listener-class>
-	</listener>
-
-	<servlet>
-		<servlet-name>RequestController</servlet-name>
-		<servlet-class>uk.co.kyleharrison.ehealth.controller.rest.RequestController</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>RequestController</servlet-name>
-		<url-pattern>/feeds</url-pattern>
-		<url-pattern>/feeds/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>PushController</servlet-name>
-		<servlet-class>uk.co.euanmorrison.ehealth.push.PushController</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>PushController</servlet-name>
-		<url-pattern>/push</url-pattern>
-		<url-pattern>/push/*</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
-		<servlet-name>PushPanel</servlet-name>
-		<servlet-class>uk.co.euanmorrison.ehealth.push.PushPanel</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>PushPanel</servlet-name>
-		<url-pattern>/pushpanel</url-pattern>
-		<url-pattern>/pushpanel/*</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>FlashCardController</servlet-name>
-		<servlet-class>uk.co.kyleharrison.ehealth.controller.rest.flashcards.FlashCardController</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>FlashCardController</servlet-name>
-		<url-pattern>/flashcards</url-pattern>
-		<url-pattern>/flashcards/*</url-pattern>
-	</servlet-mapping>
-
-	<error-page>
-		<error-code>404</error-code>
-		<location>/EHealth/Error/error.jsp</location>
-	</error-page>
-	<error-page>
-		<error-code>500</error-code>
-		<location>/EHealth/Error/error.jsp</location>
-	</error-page>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" metadata-complete="true" version="3.0">
+  <display-name>E-Health - Welcome</display-name>
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  <listener>
+    <listener-class>uk.co.kyleharrison.ehealth.controller.rest.DatabaseContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>RequestController</servlet-name>
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.RequestController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RequestController</servlet-name>
+    <url-pattern>/feeds</url-pattern>
+    <url-pattern>/feeds/*</url-pattern>
+  </servlet-mapping>
+    <servlet>
+    <servlet-name>ItemFeedController</servlet-name>
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.ItemFeedController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ItemFeedController</servlet-name>
+    <url-pattern>/announcements</url-pattern>
+    <url-pattern>/announcements/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PushController</servlet-name>
+    <servlet-class>uk.co.euanmorrison.ehealth.push.PushController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PushController</servlet-name>
+    <url-pattern>/push</url-pattern>
+    <url-pattern>/push/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>PushPanel</servlet-name>
+    <servlet-class>uk.co.euanmorrison.ehealth.push.PushPanel</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PushPanel</servlet-name>
+    <url-pattern>/pushpanel</url-pattern>
+    <url-pattern>/pushpanel/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>FlashCardController</servlet-name>
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.flashcards.FlashCardController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FlashCardController</servlet-name>
+    <url-pattern>/flashcards</url-pattern>
+    <url-pattern>/flashcards/*</url-pattern>
+  </servlet-mapping>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/EHealth/Error/error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/EHealth/Error/error.jsp</location>
+  </error-page>
 </web-app>

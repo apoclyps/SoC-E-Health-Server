@@ -9,9 +9,11 @@ public class PushServer {
 
 	ArrayList<String> subs_apns = new ArrayList<String>();
 	ArrayList<String> subs_gcm = new ArrayList<String>();
+	private MySQLFacade sql;
 
 	public PushServer() {
 		System.out.println(">> PushServer Constructor called");
+		this.sql =  new MySQLFacade();
 		serverSetup(); // on instantiation, set up server.
 
 		for (int i = 0; i < subs_apns.size(); i++) {
@@ -120,7 +122,6 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.loadSubsApns()");
 
 		try {
-			MySQLFacade sql = new MySQLFacade();
 			this.subs_apns = sql.getPhoneIDs("ios");
 			//System.out.println(this.subs_apns.toString());
 		}
@@ -137,7 +138,6 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.loadSubsGcm()");
 
 		try {
-			MySQLFacade sql = new MySQLFacade();
 			this.subs_gcm = sql.getPhoneIDs("android");
 		}
 		catch (Exception e) {
@@ -153,7 +153,6 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.saveSubsApns(String key)");
 
 		try {
-			MySQLFacade sql = new MySQLFacade();
 			sql.insertIOSKey(key);
 		}
 		catch (Exception e) {
@@ -168,7 +167,6 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.saveSubsGcm(String key)");
 		
 		try {
-			MySQLFacade sql = new MySQLFacade();
 			sql.insertAndroidKey(key);
 		}
 		catch (Exception e) {
