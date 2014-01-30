@@ -44,6 +44,12 @@ public class PushFacade {
 	
 	public void broadcast(String pushJson) {				
 		System.out.println("Broadcasting");
+		
+		if(pushJson=="" || pushJson==null) {
+			System.out.println("Error: no text defined to push.");
+			return;
+		}
+		
 		try {
 			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH 
 				System.out.println("successfully pushed to APNS "+pushJson);

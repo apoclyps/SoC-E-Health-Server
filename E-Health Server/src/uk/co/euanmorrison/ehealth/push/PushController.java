@@ -50,60 +50,76 @@ public class PushController extends HttpServlet {
 		String responseOutput = "";
 		
 		Map<String,String[]> params = request.getParameterMap();
-		
-		//System.out.println("PARAMS: "+ params.));
 
-		//String type = (String) request.getAttribute("type");
-		String type = params.get("type")[0];
-		try{
-			System.out.println("type"+type);
-		}catch(NullPointerException e){
-			e.printStackTrace();
-		}
-		
-		if(type.equals("broadcast")){
-			/*System.out.println("Broadcasting");
-			try{
-				String pushJSON = (String) request.getAttribute("pushJSON");
-				System.out.println("PushJson"+pushJSON);
-				pushPost(request,response,pushJSON);
-				
-			}catch(NullPointerException e){
-				e.printStackTrace();
-			}*/
-			PushFacade pf  = new PushFacade();
-			pf.broadcast("some text to push at your phone thing");
-		}else{
-			switch(params.get("platform")[0]) {
-			case "ios":
-				if(ps.addSubApns(params.get("token")[0])) {
-					// successfully added to iOS token set
-					System.out.println("added token to iOS set: "+params.get("token")[0]);
-					responseOutput = "true";
+		if(ps.checkApiKey(params.get("key")[0])) {
+			
+			String type = params.get("type")[0];
+			
+			if (type.equals("subscribe")) {
+				switch(params.get("platform")[0]) {
+				case "ios":
+					if(ps.addSubApns(params.get("token")[0])) {
+						// successfully added to iOS token set
+						System.out.println("added token to iOS set: "+params.get("token")[0]);
+						responseOutput = "true";
+					}
+					else {
+						System.out.println("Failed to add token");
+						responseOutput = "false";
+					}
+					break;
+					
+				case "android":
+					if(ps.addSubGcm(params.get("token")[0])) {
+						// successfully added to Android token set
+						System.out.println("added token to Android set: "+params.get("token")[0]);
+						responseOutput = "true";
+					}
+					else {
+						System.out.println("Failed to add token");
+						responseOutput = "false";
+					}
+					break;
 				}
-				else {
-					System.out.println("Failed to add token");
-					responseOutput = "false";
+			} // end if type = subscribe
+			
+			else if (type.equals("unsubscribe")) {
+				switch(params.get("platform")[0]) {
+				case "ios":
+					if(ps.deleteSubApns(params.get("token")[0])) {
+						// successfully added to iOS token set
+						System.out.println("removed token from iOS set: "+params.get("token")[0]);
+						responseOutput = "true";
+					}
+					else {
+						System.out.println("Failed to add token");
+						responseOutput = "false";
+					}
+					break;
+					
+				case "android":
+					if(ps.deleteSubGcm(params.get("token")[0])) {
+						// successfully added to Android token set
+						System.out.println("removed token from Android set: "+params.get("token")[0]);
+						responseOutput = "true";
+					}
+					else {
+						System.out.println("Failed to add token");
+						responseOutput = "false";
+					}
+					break;
 				}
-				break;
-				
-			case "android":
-				if(ps.addSubGcm(params.get("token")[0])) {
-					// successfully added to Android token set
-					System.out.println("added token to Android set: "+params.get("token")[0]);
-					responseOutput = "true";
-				}
-				else {
-					System.out.println("Failed to add token");
-					responseOutput = "false";
-				}
-				break;
+			} // end if type = unsubscribe
+			
+		} // end 'if API key is correct'
+		else {
+			System.out.println("Bad API key received in GET");
+			responseOutput = "false"; // bad API key
 		}
 
 		PrintWriter pw = response.getWriter();
 		pw.print(responseOutput);
 		pw.close();
-		}
 	}
 
 	protected void pushPost(HttpServletRequest request,HttpServletResponse response,String pushJson){
