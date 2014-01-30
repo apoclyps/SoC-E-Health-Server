@@ -41,7 +41,7 @@
 	<servlet-mapping>
 		<servlet-name>FlashCardController</servlet-name>
 		<url-pattern>/flashcards</url-pattern>
-		<url-pattern>//flashcards/*</url-pattern>
+		<url-pattern>/flashcards/*</url-pattern>
 	</servlet-mapping>
 
 	<error-page>
