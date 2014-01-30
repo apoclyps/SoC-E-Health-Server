@@ -45,7 +45,7 @@ public class PushFacade {
 	public void broadcast(String pushJson) {				
 		System.out.println("Broadcasting");
 		try {
-			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH
+			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH 
 				System.out.println("successfully pushed to APNS "+pushJson);
 			} else {
 				System.out.println("Failed to push to APNS");

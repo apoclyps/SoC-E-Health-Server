@@ -122,7 +122,7 @@ public class PushServer {
 		try {
 			MySQLFacade sql = new MySQLFacade();
 			this.subs_apns = sql.getPhoneIDs("ios");
-			System.out.println(this.subs_apns.toString());
+			//System.out.println(this.subs_apns.toString());
 		}
 		catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
