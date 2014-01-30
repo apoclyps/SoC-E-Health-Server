@@ -39,10 +39,11 @@ public class FlashCardController extends HttpServlet {
 		System.out.println("Flash Card servlet hit");
 		String pageID = "0";
 		String callback ="callback";
+		int subjectID=1;
 	
 		String[] pathComponents = getParameters(request.getRequestURI());
 
-		fcu.ResponseBuilder("all-years",pageID,callback,response);
+		fcu.ResponseBuilder("all-years",pageID,callback,subjectID,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

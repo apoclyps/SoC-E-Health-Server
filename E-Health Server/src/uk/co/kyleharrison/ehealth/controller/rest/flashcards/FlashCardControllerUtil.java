@@ -31,9 +31,8 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 		this.questionSet = new QuestionSet();
 		this.flashCard = new FlashCard();
 		this.mysqlFacade= new MySQLFacade();
-	//	this.jsonItemArray = new JSONObject [] () ;
+		this.jsonItemArray = new JSONObject[10];
 	}
-	
 	
 	public FlashCardControllerUtil(JSONFlashCard flashcardItem, QuestionSet questionSet,
 			FlashCard flashCard, JSONObject[] jsonItemArray) {
@@ -45,17 +44,11 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 		this.mysqlFacade= new MySQLFacade();
 	}
 
-	public void ResponseBuilder(String year, String page,String callback,
+	public void ResponseBuilder(String year, String page,String callback, int subjectID,
 			HttpServletResponse response) {
-		try {
-			// GET FLASHCARDS FROM DATABASE
-			
-		//	this.questionSet.setQuestionSet(questionSet);
-			
+		try {	
 			JSONObject responseObject = new JSONObject();
-			JSONObject[] jsonItemsArray = ConstructJSONArray();
-
-			Date now = new Date();
+			JSONObject[] jsonItemsArray = ConstructJSONArray(subjectID);
 
 			// Additional fields can only be added once RSS Channel has been
 			// updated "ConstructJsonArray"
@@ -70,30 +63,31 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 		}
 	}
 
-	public JSONObject[] ConstructJSONArray() throws JSONException {
+	public JSONObject[] ConstructJSONArray(int subjectID) throws JSONException {
 		this.flashcardItem = new JSONFlashCard();
 		
 		// get result set
 		System.out.println("Selecting Flash Card from Mysql");
-		ArrayList<FlashCard> fcItems = mysqlFacade.selectFlashCard();
+		ArrayList<FlashCard> fcItems = mysqlFacade.selectFlashCard(subjectID);
 		
 		try{
 			System.out.println("Size ="+fcItems.size());
+			this.jsonItemArray = new JSONObject[fcItems.size()];
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}
 		
-		
-		
-		//this.flashcardItem.writeToJson(flashCard);
-	//	this.xmlFacade.setUrl(url.toString());
-	//	this.questionSet = this.xmlFacade.DeconstructXMLToPojo();
-/*
-		for (int x = 0; x < this.jsonItemArray.length; x++) {
-			this.flashCard = questionSet.getItem_list().get(x);
-			this.jsonItemArray[x] = this.jsonItem.writeToJson(this.flashCard);
+		for (int x = 0; x < fcItems.size(); x++) {
+			this.flashCard = fcItems.get(x);
+			System.out.println("Question "+x +" " +this.flashCard.getQuestion());
+			try{
+				//this.jsonItemArray[x] 
+				this.jsonItemArray[x]  = this.flashcardItem.writeToJson(this.flashCard);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 		}
-		*/
+		
 		return jsonItemArray;
 	}
 

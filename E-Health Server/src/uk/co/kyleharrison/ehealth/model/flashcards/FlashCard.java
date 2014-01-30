@@ -14,10 +14,13 @@ public class FlashCard {
 	public FlashCard() {
 		super();
 		this.cardID = 0;
-		this.cardSubject = null;
+		this.subjectID=0;
+		this.cardSubject = "";
+		this.yearStudied=0;
+		this.lectureNumber=0;
 		this.questionNumber = 0;
-		this.question = null;
-		this.answer = null;
+		this.question = "";
+		this.answer = "";
 	}
 	
 	public FlashCard(int cardID, int subjectID, String cardSubject,
