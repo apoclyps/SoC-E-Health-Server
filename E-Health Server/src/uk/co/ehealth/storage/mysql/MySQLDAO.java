@@ -423,17 +423,34 @@ public class MySQLDAO extends MySQLConnector {
 		return iOSIDs;
 	}
 
-	public void deleteTokenFromIOSTable(String token) throws SQLException {
+	public boolean deleteIOSKey(String token) throws SQLException {
 		if (this.checkConnection()) {
-		preparedStatement = connection
-				.prepareStatement("Delete from subs_ios where ID = ?");
-		preparedStatement.setString(1, token);
-		preparedStatement.executeUpdate();
-		System.out.println("Delete sucessfully!");
-		}
+			preparedStatement = connection
+					.prepareStatement("Delete FROM subs_ios"
+					+ "WHERE ID = '" + token +"'");
+					preparedStatement.executeQuery();
+					return true;
+	}
 		if (connection != null) {
 			connection.close();
+			return false;
 		}
+		return false;
+	}
+	
+	public boolean deleteAndroidKey(String token) throws SQLException {
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("Delete FROM subs_android"
+					+ "WHERE ID = '" + token +"'");
+					preparedStatement.executeQuery();
+					return true;
+	}
+		if (connection != null) {
+			connection.close();
+			return false;
+		}
+		return false;
 	}
 
 	public boolean isItemExist(String title, Date pudDate) throws SQLException {
@@ -444,7 +461,6 @@ public class MySQLDAO extends MySQLConnector {
 		preparedStatement.setTimestamp(2, new Timestamp(pudDate.getTime()));
 		ResultSet rs = preparedStatement.executeQuery();
 
-		System.out.println("row : " +rs.first());
 		return rs.first();
 		}
 		return false;

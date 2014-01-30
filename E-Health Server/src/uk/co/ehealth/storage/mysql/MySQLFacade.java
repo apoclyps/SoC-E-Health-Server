@@ -140,7 +140,7 @@ public class MySQLFacade implements MySQLInterface {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public ArrayList<String> getPhoneIDs(String phoneType) throws SQLException {
 		if (phoneType.equals("ios")) {
 			return connection.getIOSIDs();
@@ -150,6 +150,17 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
+	
+	public boolean deleteIOS(String key) throws SQLException
+	{
+		return connection.deleteIOSKey(key);
+	}
+
+	public boolean deleteAndroid(String key) throws SQLException
+	{
+		return connection.deleteAndroidKey(key);
+	}
+
 
 	public MySQLDAO getConnection() {
 		return connection;
