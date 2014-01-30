@@ -82,6 +82,12 @@ public class PushServer {
 	public boolean pushApns(String payload, ArrayList<String> recipients) {
 		System.out.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload, recipients);
+		
+		System.out.println("people:");
+		for(String value : recipients) {
+			System.out.println("LOOK! PEOPLE! " + value);
+		}
+		
 		return push.send();
 	}
 
