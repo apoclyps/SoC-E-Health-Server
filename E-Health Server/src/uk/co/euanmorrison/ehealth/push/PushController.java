@@ -1,4 +1,4 @@
-package co.uk.euanmorrison.ehealth.push;
+package uk.co.euanmorrison.ehealth.push;
 
 import java.io.BufferedReader;
 import java.io.IOException;
