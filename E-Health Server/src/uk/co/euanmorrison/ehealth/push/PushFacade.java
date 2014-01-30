@@ -1,5 +1,7 @@
 package uk.co.euanmorrison.ehealth.push;
 
+import java.util.ArrayList;
+
 public class PushFacade {
 
 	private PushServer ps;
@@ -20,6 +22,14 @@ public class PushFacade {
 
 	public void setPs(PushServer ps) {
 		this.ps = ps;
+	}
+	
+	public ArrayList<String> getSubsApns() {
+		return this.ps.getSubsApns();
+	}
+	
+	public ArrayList<String> getSubsGcm() {
+		return this.ps.getSubsGcm();
 	}
 	
 	public boolean deleteSubApns(String key) {

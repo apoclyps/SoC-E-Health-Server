@@ -104,6 +104,17 @@ public class PushPanel extends HttpServlet {
 				responseText = "Removal failed.";
 			}
 			break;
+		case "print_subs":
+			try {
+				PushFacade pf = new PushFacade();
+				//pf.
+			}
+			catch(Exception e) {
+				System.out.println(e.getMessage());
+				responseText = "Failed to return list of all subs to JSP UI.";
+			}
+			break;
+			
 		} // end switch
 		
 		PrintWriter pw = response.getWriter();
