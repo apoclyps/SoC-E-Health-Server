@@ -32,10 +32,6 @@ public class RequestController extends HttpServlet {
 		this.mysqlConnector.close();
 	}
 
-	private String[] getParameters(String requestPath) {
-		return requestPath.split("/");
-	}
-
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String pageID = "0";
@@ -43,9 +39,6 @@ public class RequestController extends HttpServlet {
 		String callback ="callback";
 		int fID = 0;
 		
-		String[] pathComponents = getParameters(request.getRequestURI());
-		//yearID = pathComponents[3];
-
 		try{
 			yearID=request.getParameter("year");
 		}catch(Exception e){
