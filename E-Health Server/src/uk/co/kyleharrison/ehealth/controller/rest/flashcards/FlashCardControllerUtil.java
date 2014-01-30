@@ -2,8 +2,7 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.ArrayList; 
 
 import javax.servlet.http.HttpServletResponse;
 
