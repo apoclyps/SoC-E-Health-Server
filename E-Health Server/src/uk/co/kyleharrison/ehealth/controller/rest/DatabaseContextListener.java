@@ -7,6 +7,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import uk.co.ehealth.storage.mysql.MySQLFacade;
+import uk.co.euanmorrison.ehealth.push.PushFacade;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
@@ -56,33 +57,58 @@ public class DatabaseContextListener implements ServletContextListener {
 
 			int count = 0;
 			// Compare model vs storage
-			System.out.println("For year " + year);
-			
-			
 			System.out.println("Size = "+rssItemsPersistent.size());
 			
-			
 			if (rssItemsPersistent.size() > 0) {
+				
 				for (int i = 0; i < rc.getItem_list().size(); i++) {
-					// compare each recordd
+					// compare each record
 					try {
-						if (!(rc.getItem_list().get(i).getTitle()
-								.equals(rssItemsPersistent.get(i).getTitle()))&&rssItemsPersistent.get(i).equals(null)) {
+						// if items from list == items from database
+						System.out.println("boolean "
+								+mysqlFacade.selectItemByTitleDate(rssItemsPersistent.get(i).getTitle(),rssItemsPersistent.get(i).getPubDate()));
+						
+						boolean insert = mysqlFacade.selectItemByTitleDate(rssItemsPersistent.get(i).getTitle(),rssItemsPersistent.get(i).getPubDate());
+						
+						if (!insert) {
+							
+							//Check if item exists in the database and if false then
+							System.out.println("boolean "
+									+mysqlFacade.selectItemByTitleDate(rssItemsPersistent.get(i).getTitle(),rssItemsPersistent.get(i).getPubDate()));
+							
 							count++;
 								mysqlFacade.insertItem(rc.getItem_list().get(i));
-								System.out.println("Inserted record : "+rc.getItem_list().get(i).getTitle());
+								System.out.println("\t DATABASE CONTEXT : Inserted record : "+rc.getItem_list().get(i).getTitle());
+								
+								/*
+								try{
+									PushFacade pf  = new PushFacade();	
+									pf.broadcast(rc.getItem_list().get(i).getTitle());
+								}catch(Exception e){
+									System.out.println("Exception in Database context listener");
+									e.printStackTrace();
+								}*/
+								System.out.println("\t DATABASE CONEXT : Trigger Push Notification : "+rc.getItem_list().get(i).getTitle());
 						}
 					} catch (IndexOutOfBoundsException e) {
 						System.out.println("Exception in Request Controller Service");
 						e.printStackTrace();
 					}
 				}
-				System.out.println("RC Service : Inserts Required : " + count);
+				System.out.println("RC Service : Inserts Required : " + count + "\n");
 			} else {
 				//System.out.println("Update Model with full RSS RC");
 				for(RSSItem ri : rc.getItem_list()){
 					mysqlFacade.insertItem(ri);
+					try{
+						PushFacade pf  = new PushFacade();	
+						pf.broadcast(ri.getTitle());
+					}catch(Exception e){
+						System.out.println("Exception in Database context listener");
+						e.printStackTrace();
+					}
 				}
+
 			}
 
 			// Wait time between requests

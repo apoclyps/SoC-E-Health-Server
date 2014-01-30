@@ -5,7 +5,9 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.mysql.jdbc.CommunicationsException;
 
@@ -146,11 +148,12 @@ public class MySQLDAO extends MySQLConnector {
 			// Parameters start with 1
 
 			// System.out.println("Insert succeed!");
-			ResultSet resultSet =null;
-			try{
+			ResultSet resultSet = null;
+			try {
 				resultSet = preparedStatement.executeQuery();
-			}catch(Exception e){
-				System.out.println("Problem with selecting all items from year");
+			} catch (Exception e) {
+				System.out
+						.println("Problem with selecting all items from year");
 				e.printStackTrace();
 			}
 			// Pulling data by resultset..
@@ -309,17 +312,17 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement = connection
 					.prepareStatement("SELECT * "
 							+ "FROM Flashcards INNER JOIN Subject ON Flashcards.SubjectID=Subject.SubjectID "
-							+ "WHERE Subject.SubjectID = " + subject +" "
+							+ "WHERE Subject.SubjectID = " + subject + " "
 							+ "ORDER BY Subject.SubjectID LIMIT 0,10;");
 
-			//preparedStatement.setString(0, subject);
+			// preparedStatement.setString(0, subject);
 			ResultSet rs = null;
-			try{
+			try {
 				rs = preparedStatement.executeQuery();
-			}catch(CommunicationsException e){
+			} catch (CommunicationsException e) {
 				e.printStackTrace();
 			}
-			
+
 			while (rs.next()) {
 				FlashCard card = new FlashCard();
 				card.setCardID(rs.getInt("CardID"));
@@ -329,7 +332,7 @@ public class MySQLDAO extends MySQLConnector {
 				card.setLectureNumber(rs.getInt("LectureNum"));
 				card.setQuestion(rs.getString("Question"));
 				card.setCardSubject(rs.getString("CardSubject"));
-				//card.setYearStudied(rs.getInt("YearStudied"));
+				// card.setYearStudied(rs.getInt("YearStudied"));
 
 				flashCardList.add(card);
 			}
@@ -352,10 +355,10 @@ public class MySQLDAO extends MySQLConnector {
 				connection.close();
 			}
 			return true;
-		}else{
-			
+		} else {
+
 		}
-			System.out.println("MYSQLDOA : Insert iOS Key : Connection Failed");
+		System.out.println("MYSQLDOA : Insert iOS Key : Connection Failed");
 		if (connection != null) {
 			connection.close();
 		}
@@ -374,10 +377,10 @@ public class MySQLDAO extends MySQLConnector {
 				connection.close();
 			}
 			return true;
-		}else{
-			
+		} else {
+
 		}
-			System.out.println("MYSQLDOA : Insert Android Key : Connection Failed");
+		System.out.println("MYSQLDOA : Insert Android Key : Connection Failed");
 		if (connection != null) {
 			connection.close();
 		}
@@ -417,7 +420,40 @@ public class MySQLDAO extends MySQLConnector {
 		if (connection != null) {
 			connection.close();
 		}
-
 		return iOSIDs;
+	}
+
+	public void deleteTokenFromIOSTable(String token) throws SQLException {
+		if (this.checkConnection()) {
+		preparedStatement = connection
+				.prepareStatement("Delete from subs_ios where ID = ?");
+		preparedStatement.setString(1, token);
+		preparedStatement.executeUpdate();
+		System.out.println("Delete sucessfully!");
+		}
+		if (connection != null) {
+			connection.close();
+		}
+	}
+
+	public boolean isItemExist(String title, Date pudDate) throws SQLException {
+		if (this.checkConnection()) {
+		preparedStatement = connection
+				.prepareStatement("SELECT Title,PubDate FROM Item WHERE Title = ? AND pubDate = ?;");
+		preparedStatement.setString(1, title);
+		preparedStatement.setTimestamp(2, new Timestamp(pudDate.getTime()));
+		ResultSet rs = preparedStatement.executeQuery();
+		System.out.println("row : " +rs.first());
+		return rs.first();
+		}
+		return false;
+		
+	}
+
+	public boolean removeTokenFromIOS(String token) {
+		if (this.checkConnection()) {
+		}
+		return true;
+
 	}
 }

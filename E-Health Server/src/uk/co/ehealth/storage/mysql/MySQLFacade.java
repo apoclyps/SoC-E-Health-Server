@@ -3,6 +3,7 @@ package uk.co.ehealth.storage.mysql;
 import java.net.MalformedURLException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
@@ -26,10 +27,7 @@ public class MySQLFacade implements MySQLInterface {
 	@Override
 	public boolean insertItem(RSSItem rssItem) {
 		try {
-			if (connection.insertItem(rssItem)) {
-				System.out.println("Inserted 1 Record " + rssItem.getTitle());
-			}
-
+			connection.insertItem(rssItem);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -168,5 +166,15 @@ public class MySQLFacade implements MySQLInterface {
 
 	public void closeConnection(){
 		this.connection.close();
+	}
+
+	public boolean selectItemByTitleDate(String title, Date pubDate) {
+		try {
+			return this.connection.isItemExist(title,pubDate);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

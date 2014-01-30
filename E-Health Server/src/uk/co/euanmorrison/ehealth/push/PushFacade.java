@@ -26,7 +26,7 @@ public class PushFacade {
 		this.ps.serverStop();
 	}
 	
-	protected void broadcast(String pushJson) {				
+	public void broadcast(String pushJson) {				
 		System.out.println("Broadcasting");
 		try {
 			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH
