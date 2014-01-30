@@ -48,7 +48,7 @@ public class RequestController extends HttpServlet {
 
 		try{
 			pageID = (String) request.getParameter("page");
-			try{
+			
 				if(Integer.parseInt(pageID)>0){
 					//int id = Integer.parseInt(pageID)-1;
 					int id = Integer.parseInt(pageID);
@@ -56,7 +56,7 @@ public class RequestController extends HttpServlet {
 				}else{
 					pageID="0";
 				}
-			}catch(NullPointerException npe){
+			}catch(Exception e){
 				System.out.println("page not set");
 				pageID="0";
 			}
@@ -72,11 +72,11 @@ public class RequestController extends HttpServlet {
 				callback="callback";
 			}
 			
-		}catch(Exception e){
-			e.printStackTrace();
-			pageID="0";
-			callback="callback";
-		}
+//		}catch(Exception e){
+//			e.printStackTrace();
+//			pageID="0";
+//			callback="callback";
+//		}
 
 		fID = rcu.ParseYearValue(yearID);
 		
