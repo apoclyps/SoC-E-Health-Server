@@ -188,4 +188,14 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return false;
 	}
+
+	public ArrayList<RSSItem> selectItemsFromSpecifiedYears(String [] years,
+			int limit, int offset) {
+
+		System.out.println("Limit"+limit + " : OFFSET :" +offset);
+	
+		return this.connection.selectItemsFromSpecificYears(years,limit, offset);
+	}
+
+
 }

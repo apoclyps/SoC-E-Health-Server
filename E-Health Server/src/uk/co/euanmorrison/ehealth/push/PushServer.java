@@ -164,6 +164,7 @@ public class PushServer {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	private boolean saveSubsGcm(String key) {
 		System.out.println(">> Method call PushServer.saveSubsGcm(String key)");
 		

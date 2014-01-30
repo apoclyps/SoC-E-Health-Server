@@ -427,9 +427,10 @@ public class MySQLDAO extends MySQLConnector {
 		if (this.checkConnection()) {
 
 			try {
-				System.out.println("TOKEN TO DELETE: "+token);
+				System.out.println("TOKEN TO DELETE: " + token);
 				preparedStatement = connection
-						.prepareStatement("Delete FROM subs_ios WHERE ID = '"+ token + "';");
+						.prepareStatement("Delete FROM subs_ios WHERE ID = '"
+								+ token + "';");
 				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
@@ -484,5 +485,65 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return true;
 
+	}
+
+	public ArrayList<RSSItem> selectItemsFromSpecificYears(String[] years,
+			int limit, int offset) {
+
+		String whereClause = "";
+		for (String year : years) {
+			whereClause = whereClause + "Item.Year = "+year+" OR ";
+		}
+		whereClause = whereClause.substring(0, whereClause.length() - 4);
+		System.out.println("Where Clause = "
+				+ "select * from mbchb.Item WHERE " + whereClause
+				+ " GROUP BY pubDate DESC limit " + offset + "," + limit + ";");
+
+		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
+
+		if (this.checkConnection()) {
+			try {
+				preparedStatement = connection
+						.prepareStatement("select * from mbchb.Item WHERE "
+								+ whereClause + " GROUP BY pubDate DESC limit "
+								+ offset + "," + limit + ";");
+
+				/*for (int i = 0; i < years.length; i++) {
+					preparedStatement.setInt(i + 1, Integer.parseInt(years[i]));
+				}*/
+
+				ResultSet rs = preparedStatement.executeQuery();
+
+				while (rs.next()) {
+					System.out.println("Line 3");
+					System.out.println("Item size : " + rs.toString());
+					RSSItem item = new RSSItem();
+					URL link = new URL(rs.getString("Link"));
+					item.setTitle(rs.getString("Title"));
+					item.setLink(link);
+					item.setSlashComments(rs.getInt("Comments"));
+					item.setPubDate(rs.getTimestamp("PubDate"));
+					item.setCreator(rs.getString("Creator"));
+					item.setCategory(rs.getString("Category"));
+					item.setDescription(rs.getString("Description"));
+					item.setYear(rs.getInt("Year"));
+					itemList.add(item);
+					System.out.println("Item size : " + item.getTitle());
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} catch (MalformedURLException e1) {
+				e1.printStackTrace();
+			}
+
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return itemList;
 	}
 }

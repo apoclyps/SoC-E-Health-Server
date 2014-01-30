@@ -154,6 +154,7 @@ public class RSSItem {
 		return pushJSON;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public String getPushString(){
 		JSONObject pushJSON = new JSONObject();
 		pushJSON.put("title", this.getTitle());

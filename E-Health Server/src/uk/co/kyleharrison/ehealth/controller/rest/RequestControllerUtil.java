@@ -18,10 +18,8 @@ import org.json.JSONObject;
 
 import uk.co.ehealth.storage.mysql.MySQLDAO;
 import uk.co.ehealth.storage.mysql.MySQLFacade;
-import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.model.JSONFlashCard;
 import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 

@@ -40,14 +40,10 @@ public class FlashCardController extends HttpServlet {
 		String callback = "callback";
 		int subjectID = 1;
 
-		String[] pathComponents = getParameters(request.getRequestURI());
-		//pageID = pathComponents[3];
-
 		try {
 			pageID = (String) request.getParameter("page");
 
 			if (Integer.parseInt(pageID) > 0) {
-				// int id = Integer.parseInt(pageID)-1;
 				int id = Integer.parseInt(pageID);
 				pageID = Integer.toString(id);
 			} else {
@@ -110,10 +106,6 @@ public class FlashCardController extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
-
-	private String[] getParameters(String requestPath) {
-		return requestPath.split("/");
 	}
 
 }

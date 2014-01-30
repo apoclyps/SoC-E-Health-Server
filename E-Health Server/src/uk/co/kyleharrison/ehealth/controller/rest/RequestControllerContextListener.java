@@ -1,23 +1,9 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestAttributeEvent;
-import javax.servlet.ServletRequestAttributeListener;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.ServletRequestListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionActivationListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-
 import uk.co.ehealth.storage.mysql.MySQLFacade;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
@@ -26,7 +12,6 @@ import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 @WebListener
 public class RequestControllerContextListener implements ServletContextListener {
 
-	private Thread myThread = null;
 	private XMLFacade xmlFacade;
 	private int[] years = { 1, 2, 3, 4, 5 };
 	private long delayBetweenRequests = 10000;
@@ -44,10 +29,7 @@ public class RequestControllerContextListener implements ServletContextListener 
 			public void run() {
 
 				// Selecting records from database for comparison
-				
-				Date date = new Date("Tue Jan 28 15:41:29 GMT 2014");
-				System.out.println(date.toGMTString());
-				
+							
 			//	ValidateRSSFeed();
 
 				try {

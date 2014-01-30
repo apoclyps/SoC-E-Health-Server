@@ -15,7 +15,6 @@ import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 @WebListener
 public class DatabaseContextListener implements ServletContextListener {
 
-	private Thread myThread = null;
 	private XMLFacade xmlFacade;
 	private int[] years = { 1, 2, 3, 4, 5 };
 	private long delayBetweenRequests = 10000;
