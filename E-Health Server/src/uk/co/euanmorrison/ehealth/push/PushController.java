@@ -62,7 +62,7 @@ public class PushController extends HttpServlet {
 		}
 		
 		if(type.equals("broadcast")){
-			System.out.println("Broadcasting");
+			/*System.out.println("Broadcasting");
 			try{
 				String pushJSON = (String) request.getAttribute("pushJSON");
 				System.out.println("PushJson"+pushJSON);
@@ -70,7 +70,9 @@ public class PushController extends HttpServlet {
 				
 			}catch(NullPointerException e){
 				e.printStackTrace();
-			}
+			}*/
+			PushFacade pf  = new PushFacade();
+			pf.broadcast("some text to push at your phone thing");
 		}else{
 			switch(params.get("platform")[0]) {
 			case "ios":
