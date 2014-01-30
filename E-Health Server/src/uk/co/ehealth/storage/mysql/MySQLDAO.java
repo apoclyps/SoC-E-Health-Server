@@ -443,6 +443,7 @@ public class MySQLDAO extends MySQLConnector {
 		preparedStatement.setString(1, title);
 		preparedStatement.setTimestamp(2, new Timestamp(pudDate.getTime()));
 		ResultSet rs = preparedStatement.executeQuery();
+
 		System.out.println("row : " +rs.first());
 		return rs.first();
 		}

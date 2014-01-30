@@ -65,11 +65,9 @@ public class DatabaseContextListener implements ServletContextListener {
 					// compare each record
 					try {
 						// if items from list == items from database
-						System.out.println("boolean "
-								+mysqlFacade.selectItemByTitleDate(rssItemsPersistent.get(i).getTitle(),rssItemsPersistent.get(i).getPubDate()));
-						
-						boolean insert = mysqlFacade.selectItemByTitleDate(rssItemsPersistent.get(i).getTitle(),rssItemsPersistent.get(i).getPubDate());
-						
+							
+						boolean insert = mysqlFacade.selectItemByTitleDate(rc.getItem_list().get(i).getTitle(),rc.getItem_list().get(i).getPubDate());
+						System.out.println("boolean "+insert);
 						if (!insert) {
 							
 							//Check if item exists in the database and if false then
