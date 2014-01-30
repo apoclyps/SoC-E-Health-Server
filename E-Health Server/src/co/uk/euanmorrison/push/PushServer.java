@@ -1,4 +1,4 @@
-package uk.co.euanmorrison.ehealth.push;
+package co.uk.euanmorrison.push;
 
 import java.io.IOException;
 import java.util.ArrayList;

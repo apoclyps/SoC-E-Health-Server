@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.CommunicationsException;
+
 import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
@@ -288,6 +290,9 @@ public class MySQLDAO extends MySQLConnector {
 				flashCardList.add(card);
 			}
 		}
+		if (connection != null) {
+			connection.close();
+		}
 		return flashCardList;
 	}
 
@@ -303,9 +308,13 @@ public class MySQLDAO extends MySQLConnector {
 							+ "ORDER BY Subject.SubjectID LIMIT 0,10;");
 
 			//preparedStatement.setString(0, subject);
-
-			ResultSet rs = preparedStatement.executeQuery();
-
+			ResultSet rs = null;
+			try{
+				rs = preparedStatement.executeQuery();
+			}catch(CommunicationsException e){
+				e.printStackTrace();
+			}
+			
 			while (rs.next()) {
 				FlashCard card = new FlashCard();
 				card.setCardID(rs.getInt("CardID"));
@@ -319,6 +328,9 @@ public class MySQLDAO extends MySQLConnector {
 
 				flashCardList.add(card);
 			}
+		}
+		if (connection != null) {
+			connection.close();
 		}
 		return flashCardList;
 	}
@@ -396,6 +408,9 @@ public class MySQLDAO extends MySQLConnector {
 				iOSIDs.add(ID);
 			}
 
+		}
+		if (connection != null) {
+			connection.close();
 		}
 
 		return iOSIDs;
