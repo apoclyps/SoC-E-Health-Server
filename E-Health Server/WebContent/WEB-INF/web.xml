@@ -21,7 +21,17 @@
 		<url-pattern>/feeds</url-pattern>
 		<url-pattern>/feeds/*</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>PushController</servlet-name>
+		<servlet-class>uk.co.euanmorrison.ehealth.push.PushController</servlet-class>
+	</servlet>
 
+	<servlet-mapping>
+		<servlet-name>PushController</servlet-name>
+		<url-pattern>/push</url-pattern>
+		<url-pattern>/push/*</url-pattern>
+	</servlet-mapping>
 
 	<servlet>
 		<servlet-name>FlashCardController</servlet-name>
