@@ -41,7 +41,7 @@ public class FlashCardController extends HttpServlet {
 		int subjectID = 1;
 
 		String[] pathComponents = getParameters(request.getRequestURI());
-		pageID = pathComponents[3];
+		//pageID = pathComponents[3];
 
 		try {
 			pageID = (String) request.getParameter("page");

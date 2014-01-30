@@ -148,8 +148,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		}
 	}
 	
-	public void DefaultResponseBuilder(String page, String callback,
-			HttpServletResponse response) {
+	public void DefaultResponseBuilder(String page, String callback,HttpServletResponse response) {
 		try {
 			// url = new
 			// URL("https://mbchb.dundee.ac.uk/category/all-years/feed/?paged="
@@ -158,6 +157,8 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		//	System.out.println("url" + url.toString());
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArrayFromMySQL();
+			
+			System.out.println("Collected Results : "+jsonItemsArray.length);
 
 			Date now = new Date();
 

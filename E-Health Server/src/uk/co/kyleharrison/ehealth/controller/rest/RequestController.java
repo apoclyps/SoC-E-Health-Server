@@ -44,8 +44,14 @@ public class RequestController extends HttpServlet {
 		int fID = 0;
 		
 		String[] pathComponents = getParameters(request.getRequestURI());
-		yearID = pathComponents[3];
+		//yearID = pathComponents[3];
 
+		try{
+			yearID=request.getParameter("year");
+		}catch(Exception e){
+			System.out.println("Error : Request Controller - Path COmponent year");
+		}
+		
 		try{
 			pageID = (String) request.getParameter("page");
 			

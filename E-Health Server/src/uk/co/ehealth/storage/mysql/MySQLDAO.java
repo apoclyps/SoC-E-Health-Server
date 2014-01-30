@@ -146,8 +146,13 @@ public class MySQLDAO extends MySQLConnector {
 			// Parameters start with 1
 
 			// System.out.println("Insert succeed!");
-			ResultSet resultSet = preparedStatement.executeQuery();
-
+			ResultSet resultSet =null;
+			try{
+				resultSet = preparedStatement.executeQuery();
+			}catch(Exception e){
+				System.out.println("Problem with selecting all items from year");
+				e.printStackTrace();
+			}
 			// Pulling data by resultset..
 
 			while (resultSet.next()) {

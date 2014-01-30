@@ -50,8 +50,6 @@ public class DatabaseContextListener implements ServletContextListener {
 			//Calls XML Facade and creates RSSChannel based on year provided.
 			CreateMBCHBModel(year);
 
-			
-
 			// Update storage model
 			ArrayList<RSSItem> rssItemsPersistent = mysqlFacade
 					.selectItemsFromYear(Integer.toString(year));
@@ -69,7 +67,7 @@ public class DatabaseContextListener implements ServletContextListener {
 					// compare each recordd
 					try {
 						if (!(rc.getItem_list().get(i).getTitle()
-								.equals(rssItemsPersistent.get(i).getTitle()))||rssItemsPersistent.get(i).equals(null)) {
+								.equals(rssItemsPersistent.get(i).getTitle()))&&rssItemsPersistent.get(i).equals(null)) {
 							count++;
 								mysqlFacade.insertItem(rc.getItem_list().get(i));
 								System.out.println("Inserted record : "+rc.getItem_list().get(i).getTitle());
