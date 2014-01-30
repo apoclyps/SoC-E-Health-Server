@@ -39,17 +39,10 @@ public class MySQLConnector {
 	}
 
 	public boolean checkConnection() {
-		Context initContext;
 		System.out.println("Connection Check");
 		try {
-			initContext = new InitialContext();
-			Context envContext = (Context) initContext.lookup("java:/comp/env");
-			datasource = (DataSource) envContext
-					.lookup("jdbc/" + database_name);
+			connection.close();
 			connection = datasource.getConnection();
-		} catch (NamingException e) {
-			e.printStackTrace();
-			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

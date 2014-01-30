@@ -1,7 +1,5 @@
 package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
-import java.net.URL;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONException;
