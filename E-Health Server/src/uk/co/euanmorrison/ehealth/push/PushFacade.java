@@ -22,6 +22,14 @@ public class PushFacade {
 		this.ps = ps;
 	}
 	
+	public boolean deleteSubApns(String key) {
+		return this.ps.deleteSubApns(key);
+	}
+	
+	public boolean deleteSubGcm(String key) {
+		return this.ps.deleteSubGcm(key);
+	}
+	
 	public void writeSubscriptions() {
 		this.ps.serverStop();
 	}

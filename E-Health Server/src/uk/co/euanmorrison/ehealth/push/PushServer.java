@@ -150,7 +150,7 @@ public class PushServer {
 	}
 
 	private boolean saveSubsApns(String key) {
-		System.out.println(">> Method call PushServer.saveSubsApns()");
+		System.out.println(">> Method call PushServer.saveSubsApns(String key)");
 
 		try {
 			MySQLFacade sql = new MySQLFacade();
@@ -160,12 +160,12 @@ public class PushServer {
 			System.out.println("ERROR: " + e.getMessage());
 			return false;
 		}
-		System.out.println("Wrote to file successfully");
+		System.out.println("Wrote to DB successfully");
 		return true;
 	}
 
 	private boolean saveSubsGcm(String key) {
-		System.out.println(">> Method call PushServer.saveSubsGcm()");
+		System.out.println(">> Method call PushServer.saveSubsGcm(String key)");
 		
 		try {
 			MySQLFacade sql = new MySQLFacade();
@@ -175,7 +175,39 @@ public class PushServer {
 			System.out.println("ERROR: " + e.getMessage());
 			return false;
 		}
-		System.out.println("Wrote to file successfully");
+		System.out.println("Wrote to DB successfully");
+		return true;
+	}
+	
+	public boolean deleteSubApns(String key) {
+		System.out.println(">> Method call PushServer.deleteSubApns(String key)");
+		
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			sql.deleteIOS(key);
+			this.subs_apns.remove(key);
+		}
+		catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
+			return false;
+		}
+		System.out.println("Removed Successfully");
+		return true;
+	}
+	
+	public boolean deleteSubGcm(String key) {
+		System.out.println(">> Method call PushServer.deleteSubApns(String key)");
+		
+		try {
+			MySQLFacade sql = new MySQLFacade();
+			sql.deleteAndroid(key);
+			this.subs_gcm.remove(key);
+		}
+		catch (Exception e) {
+			System.out.println("ERROR: " + e.getMessage());
+			return false;
+		}
+		System.out.println("Removed Successfully");
 		return true;
 	}
 
