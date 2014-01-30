@@ -8,8 +8,6 @@
 </head>
 <body>
 
-	<% request.setAttribute("empid", "1234"); %>
-	<jsp:include page="/servlet/MyServlet?user=Smith" flush="true"/>
 
 </body>
 </html>
