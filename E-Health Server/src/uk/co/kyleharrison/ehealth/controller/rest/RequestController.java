@@ -82,7 +82,8 @@ public class RequestController extends HttpServlet {
 		
 		switch (fID) {
 			case 0:
-				rcu.ResponseBuilder("all-years",pageID,callback,response);
+				//rcu.ResponseBuilder("all-years",pageID,callback,response);
+				rcu.DefaultResponseBuilder(pageID, callback, response);
 			break;
 			case 1:
 				rcu.ResponseBuilder("year1",pageID,callback,response);

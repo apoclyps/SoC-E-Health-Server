@@ -134,14 +134,14 @@ public class MySQLDAO extends MySQLConnector {
 		return channelList;
 	}
 
-	public ArrayList<RSSItem> selectItem() throws SQLException,
+	public ArrayList<RSSItem> selectItemAllYears() throws SQLException,
 			MalformedURLException {
 		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
 		if (this.checkConnection()) {
 			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
-					.prepareStatement("select * from mbchb.Item");
+					.prepareStatement("select * from mbchb.Item GROUP BY pubDate DESC limit 0,10");
 			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
 			// Parameters start with 1
 

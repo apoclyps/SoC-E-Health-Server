@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -16,8 +17,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.co.ehealth.storage.mysql.MySQLDAO;
+import uk.co.ehealth.storage.mysql.MySQLFacade;
+import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.service.jackson.model.JSONFlashCard;
 import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
 import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
 
@@ -31,6 +35,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	protected RSSItem rssItem;
 	protected JSONObject[] jsonItemArray;
 	protected URL url;
+	protected MySQLFacade mysqlFacade;
 
 	public JSONItem getItem() {
 		return jsonItem;
@@ -92,6 +97,7 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		this.rssItem = new RSSItem();
 		this.jsonItemArray = new JSONObject[10];
 		this.url = null;
+		this.mysqlFacade = new MySQLFacade();
 	}
 
 	public int ParseYearValue(String feedID) {
@@ -141,6 +147,37 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			e.printStackTrace();
 		}
 	}
+	
+	public void DefaultResponseBuilder(String page, String callback,
+			HttpServletResponse response) {
+		try {
+			// url = new
+			// URL("https://mbchb.dundee.ac.uk/category/all-years/feed/?paged="
+			// + page);
+
+		//	System.out.println("url" + url.toString());
+			JSONObject responseObject = new JSONObject();
+			JSONObject[] jsonItemsArray = ConstructJSONArrayFromMySQL();
+
+			Date now = new Date();
+
+			// Additional fields can only be added once RSS Channel has been
+			// updated "ConstructJsonArray"
+			responseObject.put("channel", this.rssChannel.getTitle());
+			responseObject.put("lastUpdated", now.toString());
+			responseObject.put("totalRecords", this.rssChannel.getItem_list()
+					.size());
+			responseObject.put("numberOfRecordsReturned", this.rssChannel
+					.getItem_list().size());
+
+			// Items array
+			responseObject.put("items", jsonItemsArray);
+
+			JSONResponse(response, responseObject, callback);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public JSONObject[] ConstructJSONArray(URL url) throws JSONException {
 		this.jsonItem = new JSONItem();
@@ -154,6 +191,37 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		}
 		return jsonItemArray;
 	}
+	
+	public JSONObject[] ConstructJSONArrayFromMySQL() throws JSONException {
+		this.jsonItem = new JSONItem();
+		
+		// get result set
+		System.out.println("Selecting Items from Mysql");
+		ArrayList<RSSItem> rssItems = mysqlFacade.selectItemsFromAllYear();
+		
+		try{
+			System.out.println("Size ="+rssItems.size());
+			this.jsonItemArray = new JSONObject[rssItems.size()];
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		for (int x = 0; x < rssItems.size(); x++) {
+			//jsonItemArray[x] = rssItems.get(x);
+		//	System.out.println("Question "+x +" " +this.jsonItem.getQuestion());
+			try{
+				//this.jsonItemArray[x] 
+				this.jsonItemArray[x]  = this.jsonItem.writeToJson(rssItems.get(x));
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		
+		return jsonItemArray;
+	}
+	
+	
+	
 
 	public void JSONResponse(HttpServletResponse response,
 			JSONObject jsonResponse,String callback) {

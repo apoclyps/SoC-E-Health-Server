@@ -75,7 +75,7 @@ public class MySQLFacade implements MySQLInterface {
 	public ArrayList<RSSItem> selectItems() {
 		// TODO Auto-generated method stub
 		try {
-			return connection.selectItem();
+			return connection.selectItemAllYears();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,6 +101,23 @@ public class MySQLFacade implements MySQLInterface {
 		}
 		return null;
 	}
+	
+	public ArrayList<RSSItem> selectItemsFromAllYear() {
+		// TODO Auto-generated method stub
+		try {
+			// return connection.selectItem();
+			return connection.selectItemAllYears();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	
 	public void insertIOSKey(String key)
 	{
