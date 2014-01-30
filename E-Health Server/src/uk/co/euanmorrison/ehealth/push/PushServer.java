@@ -10,15 +10,16 @@ public class PushServer {
 	ArrayList<String> subs_apns = new ArrayList<String>();
 	ArrayList<String> subs_gcm = new ArrayList<String>();
 	private MySQLFacade sql;
+	private final String API_KEY = "040815162342";
 
 	public PushServer() {
 		System.out.println(">> PushServer Constructor called");
 		this.sql =  new MySQLFacade();
 		serverSetup(); // on instantiation, set up server.
 
-		for (int i = 0; i < subs_apns.size(); i++) {
-			System.out.println(">> subs_apns(" + i + "): " + subs_apns.get(i));
-		}
+		//for (int i = 0; i < subs_apns.size(); i++) {
+		//	System.out.println(">> subs_apns(" + i + "): " + subs_apns.get(i));
+		//}
 	}
 
 	private boolean serverSetup() {
@@ -108,9 +109,9 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.loadSubs()");
 
 		if( loadSubsApns() && loadSubsGcm() ) {
-			for(int i=0; i< this.subs_apns.size(); i++) {
+			//for(int i=0; i< this.subs_apns.size(); i++) {
 				//System.out.println("TOKENS! "+this.subs_apns.get(i));
-			}
+			//}
 			return true;
 		}
 		else {
@@ -219,4 +220,7 @@ public class PushServer {
 		return subs_gcm;
 	}
 
+	public boolean checkApiKey(String key) {
+		return key.equals(API_KEY);
+	}
 }
