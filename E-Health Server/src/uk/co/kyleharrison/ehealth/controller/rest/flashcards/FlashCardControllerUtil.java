@@ -2,7 +2,7 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,15 +10,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import uk.co.ehealth.storage.mysql.MySQLFacade;
-import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
-import uk.co.kyleharrison.ehealth.model.flashcards.QuestionSet;
-import uk.co.kyleharrison.ehealth.service.jackson.model.JSONFlashCard;
+import uk.co.kyleharrison.ehealth.model.inmemory.flashcards.FlashCard;
+import uk.co.kyleharrison.ehealth.model.inmemory.flashcards.QuestionSet;
+import uk.co.kyleharrison.ehealth.model.json.JSONFlashCard;
 
-public class FlashCardControllerUtil extends FlashCardController implements FlashCardInterface  {
+public class FlashCardControllerUtil extends FlashCardController implements
+		FlashCardInterface {
 
 	private static final long serialVersionUID = 1L;
 
-	protected JSONFlashCard flashcardItem;
+	protected uk.co.kyleharrison.ehealth.model.json.JSONFlashCard flashcardItem;
 	protected QuestionSet questionSet;
 	protected FlashCard flashCard;
 	protected JSONObject[] jsonItemArray;
@@ -29,34 +30,32 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 		this.flashcardItem = new JSONFlashCard();
 		this.questionSet = new QuestionSet();
 		this.flashCard = new FlashCard();
-		this.mysqlFacade= new MySQLFacade();
+		this.mysqlFacade = new MySQLFacade();
 		this.jsonItemArray = new JSONObject[10];
 	}
-	
-	public FlashCardControllerUtil(JSONFlashCard flashcardItem, QuestionSet questionSet,
-			FlashCard flashCard, JSONObject[] jsonItemArray) {
+
+	public FlashCardControllerUtil(JSONFlashCard flashcardItem,
+			QuestionSet questionSet, FlashCard flashCard,
+			JSONObject[] jsonItemArray) {
 		super();
 		this.flashcardItem = flashcardItem;
 		this.questionSet = questionSet;
 		this.flashCard = flashCard;
 		this.jsonItemArray = jsonItemArray;
-		this.mysqlFacade= new MySQLFacade();
+		this.mysqlFacade = new MySQLFacade();
 	}
 
-	public void ResponseBuilder(String year, String page,String callback, int subjectID,
-			HttpServletResponse response) {
-		try {	
+	public void ResponseBuilder(String year, String page, String callback,
+			int subjectID, HttpServletResponse response) {
+		try {
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArray(subjectID);
 
-			// Additional fields can only be added once RSS Channel has been
-			// updated "ConstructJsonArray"
-			responseObject.put("quantity", this.questionSet.getQuestionSet().size());
-
-			// Items array
+			responseObject.put("quantity", this.questionSet.getQuestionSet()
+					.size());
 			responseObject.put("items", jsonItemsArray);
 
-			JSONResponse(response, responseObject,callback);
+			JSONResponse(response, responseObject, callback);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -64,34 +63,30 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 
 	public JSONObject[] ConstructJSONArray(int subjectID) throws JSONException {
 		this.flashcardItem = new JSONFlashCard();
-		
-		// get result set
-		System.out.println("Selecting Flash Card from Mysql");
+
 		ArrayList<FlashCard> fcItems = mysqlFacade.selectFlashCard(subjectID);
-		
-		try{
-			System.out.println("Size ="+fcItems.size());
+
+		try {
 			this.jsonItemArray = new JSONObject[fcItems.size()];
-		}catch(NullPointerException e){
+		} catch (NullPointerException e) {
 			e.printStackTrace();
 		}
-		
+
 		for (int x = 0; x < fcItems.size(); x++) {
 			this.flashCard = fcItems.get(x);
-			System.out.println("Question "+x +" " +this.flashCard.getQuestion());
-			try{
-				//this.jsonItemArray[x] 
-				this.jsonItemArray[x]  = this.flashcardItem.writeToJson(this.flashCard);
-			}catch(Exception e){
+			try {
+				this.jsonItemArray[x] = this.flashcardItem
+						.writeToJson(this.flashCard);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return jsonItemArray;
 	}
 
 	public void JSONResponse(HttpServletResponse response,
-			JSONObject jsonResponse,String callback) {
+			JSONObject jsonResponse, String callback) {
 		if (jsonResponse != null) {
 			response.setContentType("text/x-json;charset=UTF-8");
 			response.setHeader("Cache-Control", "no-cache");
@@ -101,16 +96,12 @@ public class FlashCardControllerUtil extends FlashCardController implements Flas
 
 			try {
 				out = response.getWriter();
-			//	out.print(jsonResponse);
-				out.print(callback+"(" + jsonResponse+ ");");
+				out.print(callback + "(" + jsonResponse + ");");
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("JSON Response Returned");
 	}
-
-	
 
 }

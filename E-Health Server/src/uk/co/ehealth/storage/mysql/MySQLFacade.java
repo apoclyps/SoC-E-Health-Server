@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 
-import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.model.inmemory.flashcards.FlashCard;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
 
 public class MySQLFacade implements MySQLInterface {
 
@@ -168,7 +168,7 @@ public class MySQLFacade implements MySQLInterface {
 
 	public void setConnection(MySQLDAO connection) {
 		try{
-			closeConnection();
+			connection.close();
 		}catch(NullPointerException e){
 			System.out.println("Connection closing problem");
 		}
@@ -192,8 +192,6 @@ public class MySQLFacade implements MySQLInterface {
 	public ArrayList<RSSItem> selectItemsFromSpecifiedYears(String [] years,
 			int limit, int offset) {
 
-		System.out.println("Limit"+limit + " : OFFSET :" +offset);
-	
 		return this.connection.selectItemsFromSpecificYears(years,limit, offset);
 	}
 

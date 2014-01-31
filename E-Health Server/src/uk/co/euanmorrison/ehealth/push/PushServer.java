@@ -16,20 +16,15 @@ public class PushServer {
 		System.out.println(">> PushServer Constructor called");
 		this.sql =  new MySQLFacade();
 		serverSetup(); // on instantiation, set up server.
-
-		//for (int i = 0; i < subs_apns.size(); i++) {
-		//	System.out.println(">> subs_apns(" + i + "): " + subs_apns.get(i));
-		//}
 	}
 
 	private boolean serverSetup() {
 		System.out.println(">> Method call PushServer.serverSetup()");
 		if (loadSubs()) {
-			// success
+			return true;
 		} else {
 			return false;
 		}
-		return true;
 	}
 
 	public boolean serverStop() {
@@ -61,7 +56,7 @@ public class PushServer {
 				this.subs_gcm.add(token);
 				saveSubsApns(token);
 			} catch (Exception e) {
-				System.out.println("ERROR: " + e.getMessage());
+				e.printStackTrace();
 				return false;
 			}
 		}
@@ -73,24 +68,21 @@ public class PushServer {
 		
 		// HANDLE POTENTIAL EXCEPTIONS WITH EACH SERVICE
 		if( pushGcm(payload, recipients_ios) && pushApns(payload,recipients_android ) ) {
-			// yay, everyone is happy!
+			return true;
 		}
 		else {
 			return false;
 		}
-		
-		return true;
 	}
 
 	public boolean pushApns(String payload, ArrayList<String> recipients) {
 		System.out.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload, recipients);
-		
-		System.out.println("people:");
+	
+		/*System.out.println("people:");
 		for(String value : recipients) {
 			System.out.println("LOOK! PEOPLE! " + value);
-		}
-		
+		}*/
 		return push.send();
 	}
 
@@ -109,9 +101,6 @@ public class PushServer {
 		System.out.println(">> Method call PushServer.loadSubs()");
 
 		if( loadSubsApns() && loadSubsGcm() ) {
-			//for(int i=0; i< this.subs_apns.size(); i++) {
-				//System.out.println("TOKENS! "+this.subs_apns.get(i));
-			//}
 			return true;
 		}
 		else {
@@ -124,7 +113,6 @@ public class PushServer {
 
 		try {
 			this.subs_apns = sql.getPhoneIDs("ios");
-			//System.out.println(this.subs_apns.toString());
 		}
 		catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());

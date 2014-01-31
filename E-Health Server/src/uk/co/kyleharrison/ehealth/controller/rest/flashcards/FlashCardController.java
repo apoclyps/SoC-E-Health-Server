@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class FlashCardController extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("Request Controller Initialised");
+		System.out.println("Flash Card Controller Created : "+new Date().toString());
 		this.fcu = new FlashCardControllerUtil();
 		this.mysqlConnector = new MySQLDAO();
 	}
@@ -35,7 +36,7 @@ public class FlashCardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("Flash Card servlet hit");
+		System.out.println("Flash Card Controller Accessed :"+new Date().toString());
 		String pageID = "0";
 		String callback = "callback";
 		int subjectID = 1;
@@ -50,7 +51,6 @@ public class FlashCardController extends HttpServlet {
 				pageID = "0";
 			}
 		} catch (Exception e) {
-			System.out.println("page not set");
 			pageID = "0";
 		}
 		try {
@@ -70,7 +70,7 @@ public class FlashCardController extends HttpServlet {
 				subjectID = request.getIntHeader("subjectID");
 			}
 		} catch (NullPointerException npe) {
-			System.out.println("callback not set");
+			//System.out.println("callback not set");
 			subjectID=1;
 		}
 

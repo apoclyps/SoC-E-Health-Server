@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 
 import javax.naming.InitialContext;
 import javax.naming.NameNotFoundException;
@@ -20,7 +21,7 @@ public class MySQLConnector {
 	private String database_name = "mbchb";
 
 	public MySQLConnector() {
-		System.out.println("Connection Opened");
+		System.out.println("MySQL Connection Opened : " +new Date().toString());
 		try {
 			datasource = (DataSource) new InitialContext()
 					.lookup("java:/comp/env/jdbc/" + database_name);
@@ -38,7 +39,6 @@ public class MySQLConnector {
 	}
 
 	public boolean checkConnection() {
-		System.out.println("Connection Check");
 		try {
 			connection.close();
 			connection = datasource.getConnection();
@@ -60,7 +60,7 @@ public class MySQLConnector {
 			}
 
 			if (connection != null) {
-				System.out.println("Connection Closed");
+				//System.out.println("Connection Closed");
 				connection.close();
 			}
 		} catch (Exception e) {

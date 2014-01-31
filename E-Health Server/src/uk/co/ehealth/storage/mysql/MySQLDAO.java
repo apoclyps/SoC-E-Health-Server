@@ -11,9 +11,9 @@ import java.util.Date;
 
 import com.mysql.jdbc.CommunicationsException;
 
-import uk.co.kyleharrison.ehealth.model.flashcards.FlashCard;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.model.inmemory.flashcards.FlashCard;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
 
 public class MySQLDAO extends MySQLConnector {
 
@@ -42,7 +42,6 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setInt(7, rssChannel.getUpdateFrequency());
 			preparedStatement
 					.setString(8, rssChannel.getGenerator().toString());
-			System.out.println("Insert succeed!");
 			preparedStatement.executeUpdate();
 		} else {
 			System.out.println("MYSQLDOA : Insert Channel : Connection Failed");
@@ -53,7 +52,6 @@ public class MySQLDAO extends MySQLConnector {
 	}
 
 	public boolean insertItem(RSSItem rssItem) throws SQLException {
-		// note that Channel would be the ChannelID that contain this item
 		if (this.checkConnection()) {
 
 			preparedStatement = connection
@@ -63,8 +61,6 @@ public class MySQLDAO extends MySQLConnector {
 
 			preparedStatement.setString(1, rssItem.getTitle());
 			preparedStatement.setString(2, rssItem.getLink().toString());
-			// preparedStatement.setInt(3, rssItem.getSlashComments());
-			// preparedStatement.setString(3, rssItem.getPubDate().toString());
 			preparedStatement.setTimestamp(3, new java.sql.Timestamp(rssItem
 					.getPubDate().getTime()));
 			preparedStatement.setString(4, rssItem.getCreator());
@@ -72,9 +68,7 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setString(6, rssItem.getDescription());
 			preparedStatement.setString(7, rssItem.getComments().toString());
 			preparedStatement.setInt(8, rssItem.getYear());
-			// preparedStatement.setDate(8, new
-			// java.sql.Date(rssItem.getCreationDate().getTime()));
-			// System.out.println("Insert succeed!"+ rssItem.getYear());
+
 			preparedStatement.executeUpdate();
 
 			if (connection != null) {
@@ -82,7 +76,6 @@ public class MySQLDAO extends MySQLConnector {
 			}
 			return true;
 		} else {
-			System.out.println("MYSQLDOA : Insert item : Connection Failed");
 			if (connection != null) {
 				connection.close();
 			}
@@ -96,23 +89,13 @@ public class MySQLDAO extends MySQLConnector {
 		ArrayList<RSSChannel> channelList = new ArrayList<RSSChannel>();
 
 		if (this.checkConnection()) {
-			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
 					.prepareStatement("select * from mbchb.Channel");
-			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-			// Parameters start with 1
-
-			// System.out.println("Insert succeed!");
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			// Pulling data by resultset..
-
 			while (resultSet.next()) {
-				// Getting data...
 				RSSChannel channel = new RSSChannel();
 				URL url = new URL(resultSet.getString("Link"));
-				// DateFormat lastBuildDate = new
-				// Date(resultSet.getString("LastBuild"));
 				URL generator = new URL(resultSet.getString("URLGenerator"));
 				String channelId = resultSet.getString("ChannelID");
 				channel.setTitle(resultSet.getString("Title"));
@@ -125,7 +108,6 @@ public class MySQLDAO extends MySQLConnector {
 				channel.setUpdateFrequency(resultSet.getInt("UpdateFrequency"));
 				channel.setGenerator(generator);
 
-				System.out.println("Channel ID : " + channelId);
 				channelList.add(channel);
 			}
 
@@ -141,13 +123,8 @@ public class MySQLDAO extends MySQLConnector {
 		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
 		if (this.checkConnection()) {
-			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
 					.prepareStatement("select * from mbchb.Item GROUP BY pubDate DESC limit 0,10");
-			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-			// Parameters start with 1
-
-			// System.out.println("Insert succeed!");
 			ResultSet resultSet = null;
 			try {
 				resultSet = preparedStatement.executeQuery();
@@ -156,15 +133,9 @@ public class MySQLDAO extends MySQLConnector {
 						.println("Problem with selecting all items from year");
 				e.printStackTrace();
 			}
-			// Pulling data by resultset..
-
 			while (resultSet.next()) {
-				// Getting data...
-				// String itemID = resultSet.getString("ID");
 				RSSItem item = new RSSItem();
 				URL link = new URL(resultSet.getString("Link"));
-				// URL commentRss = new URL(resultSet.getString("CommentRSS"));
-
 				item.setTitle(resultSet.getString("Title"));
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
@@ -173,7 +144,6 @@ public class MySQLDAO extends MySQLConnector {
 				item.setCategory(resultSet.getString("Category"));
 				item.setDescription(resultSet.getString("Description"));
 				item.setYear(resultSet.getInt("Year"));
-				// item.setCommentRss(commentRss);
 				itemList.add(item);
 			}
 			if (connection != null) {
@@ -188,35 +158,24 @@ public class MySQLDAO extends MySQLConnector {
 		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
 		if (this.checkConnection()) {
-			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
 					.prepareStatement("select * from mbchb.Item WHERE Year = '"
 							+ yearID + "'");
-			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-			// Parameters start with 1
 
-			// System.out.println("Insert succeed!");
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			// Pulling data by resultset..
-
 			while (resultSet.next()) {
-				// Getting data...
-				// String itemID = resultSet.getString("ID");
 				RSSItem item = new RSSItem();
 				URL link = new URL(resultSet.getString("Link"));
-				// URL commentRss = new URL(resultSet.getString("CommentRSS"));
 
 				item.setTitle(resultSet.getString("Title"));
 				item.setLink(link);
 				item.setSlashComments(resultSet.getInt("Comments"));
-				// System.out.println("MYSQLDAO pub date needs fixed");
 				item.setPubDate(resultSet.getTimestamp("PubDate"));
 				item.setCreator(resultSet.getString("Creator"));
 				item.setCategory(resultSet.getString("Category"));
 				item.setDescription(resultSet.getString("Description"));
 				item.setYear(resultSet.getInt("Year"));
-				// item.setCommentRss(commentRss);
 				itemList.add(item);
 			}
 			if (connection != null) {
@@ -230,19 +189,17 @@ public class MySQLDAO extends MySQLConnector {
 			int questionNumber, String question, String answer)
 			throws SQLException {
 		if (this.checkConnection()) {
-			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
 					.prepareStatement("insert into mbchb.FlashCards"
 							+ "(CardID, SubjectID, QuestionNum,Question, Answer)"
 							+ " values  (?,?,?,?,?)");
-			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-			// Parameters start with 1
+
 			preparedStatement.setInt(1, cardID);
 			preparedStatement.setInt(2, subjectID);
 			preparedStatement.setInt(3, questionNumber);
 			preparedStatement.setString(4, question);
 			preparedStatement.setString(5, answer);
-			System.out.println("Insert succeed!");
+
 			preparedStatement.executeUpdate();
 		}
 		if (connection != null) {
@@ -261,7 +218,7 @@ public class MySQLDAO extends MySQLConnector {
 			preparedStatement.setInt(1, subjectID);
 			preparedStatement.setString(2, cardSubject);
 			preparedStatement.setInt(3, yearStudied);
-			System.out.println("Insert succeed!");
+
 			preparedStatement.executeUpdate();
 		}
 		if (connection != null) {
@@ -315,7 +272,6 @@ public class MySQLDAO extends MySQLConnector {
 							+ "WHERE Subject.SubjectID = " + subject + " "
 							+ "ORDER BY Subject.SubjectID LIMIT 0,10;");
 
-			// preparedStatement.setString(0, subject);
 			ResultSet rs = null;
 			try {
 				rs = preparedStatement.executeQuery();
@@ -332,7 +288,6 @@ public class MySQLDAO extends MySQLConnector {
 				card.setLectureNumber(rs.getInt("LectureNum"));
 				card.setQuestion(rs.getString("Question"));
 				card.setCardSubject(rs.getString("CardSubject"));
-				// card.setYearStudied(rs.getInt("YearStudied"));
 
 				flashCardList.add(card);
 			}
@@ -355,10 +310,8 @@ public class MySQLDAO extends MySQLConnector {
 				connection.close();
 			}
 			return true;
-		} else {
-
 		}
-		System.out.println("MYSQLDOA : Insert iOS Key : Connection Failed");
+
 		if (connection != null) {
 			connection.close();
 		}
@@ -377,10 +330,8 @@ public class MySQLDAO extends MySQLConnector {
 				connection.close();
 			}
 			return true;
-		} else {
-
 		}
-		System.out.println("MYSQLDOA : Insert Android Key : Connection Failed");
+
 		if (connection != null) {
 			connection.close();
 		}
@@ -427,22 +378,19 @@ public class MySQLDAO extends MySQLConnector {
 		if (this.checkConnection()) {
 
 			try {
-				System.out.println("TOKEN TO DELETE: " + token);
 				preparedStatement = connection
 						.prepareStatement("Delete FROM subs_ios WHERE ID = '"
 								+ token + "';");
 				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} finally {
 				if (connection != null) {
 					try {
 						connection.close();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						// e.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 			}
@@ -491,13 +439,10 @@ public class MySQLDAO extends MySQLConnector {
 			int limit, int offset) {
 
 		String whereClause = "";
-		for (String year : years) {
-			whereClause = whereClause + "Item.Year = "+year+" OR ";
+		for (int i = 0; i < years.length; i++) {
+			whereClause = whereClause + "Item.Year = ? OR ";
 		}
 		whereClause = whereClause.substring(0, whereClause.length() - 4);
-		System.out.println("Where Clause = "
-				+ "select * from mbchb.Item WHERE " + whereClause
-				+ " GROUP BY pubDate DESC limit " + offset + "," + limit + ";");
 
 		ArrayList<RSSItem> itemList = new ArrayList<RSSItem>();
 
@@ -508,15 +453,13 @@ public class MySQLDAO extends MySQLConnector {
 								+ whereClause + " GROUP BY pubDate DESC limit "
 								+ offset + "," + limit + ";");
 
-				/*for (int i = 0; i < years.length; i++) {
+				for (int i = 0; i < years.length; i++) {
 					preparedStatement.setInt(i + 1, Integer.parseInt(years[i]));
-				}*/
+				}
 
 				ResultSet rs = preparedStatement.executeQuery();
 
 				while (rs.next()) {
-					System.out.println("Line 3");
-					System.out.println("Item size : " + rs.toString());
 					RSSItem item = new RSSItem();
 					URL link = new URL(rs.getString("Link"));
 					item.setTitle(rs.getString("Title"));
@@ -528,7 +471,6 @@ public class MySQLDAO extends MySQLConnector {
 					item.setDescription(rs.getString("Description"));
 					item.setYear(rs.getInt("Year"));
 					itemList.add(item);
-					System.out.println("Item size : " + item.getTitle());
 				}
 			} catch (SQLException e1) {
 				e1.printStackTrace();

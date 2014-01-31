@@ -18,10 +18,10 @@ import org.json.JSONObject;
 
 import uk.co.ehealth.storage.mysql.MySQLDAO;
 import uk.co.ehealth.storage.mysql.MySQLFacade;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
-import uk.co.kyleharrison.ehealth.service.jackson.model.JSONItem;
-import uk.co.kyleharrison.ehealth.service.xml.XMLFacade;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
+import uk.co.kyleharrison.ehealth.model.json.JSONItem;
+import uk.co.kyleharrison.ehealth.model.xml.XMLFacade;
 
 public class RequestControllerUtil extends RequestController implements RequestControllerInterface {
 
@@ -151,14 +151,8 @@ public class RequestControllerUtil extends RequestController implements RequestC
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArrayFromMySQL();
 			
-			System.out.println("Collected Results : "+jsonItemsArray.length);
-
-			Date now = new Date();
-
-			// Additional fields can only be added once RSS Channel has been
-			// updated "ConstructJsonArray"
 			responseObject.put("channel", this.rssChannel.getTitle());
-			responseObject.put("lastUpdated", now.toString());
+			responseObject.put("lastUpdated", new Date().toString());
 			responseObject.put("totalRecords", this.rssChannel.getItem_list()
 					.size());
 			responseObject.put("numberOfRecordsReturned", this.rssChannel
@@ -188,22 +182,16 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	public JSONObject[] ConstructJSONArrayFromMySQL() throws JSONException {
 		this.jsonItem = new JSONItem();
 		
-		// get result set
-		System.out.println("Selecting Items from Mysql");
 		ArrayList<RSSItem> rssItems = mysqlFacade.selectItemsFromAllYear();
 		
 		try{
-			System.out.println("Size ="+rssItems.size());
 			this.jsonItemArray = new JSONObject[rssItems.size()];
 		}catch(NullPointerException e){
 			e.printStackTrace();
 		}
 		
 		for (int x = 0; x < rssItems.size(); x++) {
-			//jsonItemArray[x] = rssItems.get(x);
-		//	System.out.println("Question "+x +" " +this.jsonItem.getQuestion());
 			try{
-				//this.jsonItemArray[x] 
 				this.jsonItemArray[x]  = this.jsonItem.writeToJson(rssItems.get(x));
 			}catch(Exception e){
 				e.printStackTrace();
@@ -223,14 +211,12 @@ public class RequestControllerUtil extends RequestController implements RequestC
 
 			try {
 				out = response.getWriter();
-			//	out.print(jsonResponse);
 				out.print(callback+"(" + jsonResponse+ ");");
 				out.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("JSON Response Returned");
 	}
 
 	public void ResponsePresistentStorage(String yearID, String pageID) {
@@ -268,12 +254,6 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		
 		int page = Integer.getInteger(endID)/ Integer.getInteger(startID);
 
-		System.out.println("PageID "+pageID + " page" + page);
-		System.out.println("startID "+startID);
-		System.out.println("endID "+endID);
-		
-		// calculate return
-		
 	}catch(NullPointerException e){
 		System.out.println("RC : Parameter exception");
 	}
@@ -286,7 +266,4 @@ public class RequestControllerUtil extends RequestController implements RequestC
 	    RequestDispatcher rd = request.getRequestDispatcher("/PushController/");
 		rd.forward(request, response);
 	}
-
-
-
 }

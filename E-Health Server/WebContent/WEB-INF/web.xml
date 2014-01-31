@@ -5,7 +5,7 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   <listener>
-    <listener-class>uk.co.kyleharrison.ehealth.controller.rest.DatabaseContextListener</listener-class>
+    <listener-class>uk.co.kyleharrison.ehealth.service.DatabaseContextListener</listener-class>
   </listener>
   <servlet>
     <servlet-name>RequestController</servlet-name>
@@ -18,7 +18,7 @@
   </servlet-mapping>
     <servlet>
     <servlet-name>ItemFeedController</servlet-name>
-    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.ItemFeedController</servlet-class>
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.itemfeed.ItemFeedController</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>ItemFeedController</servlet-name>

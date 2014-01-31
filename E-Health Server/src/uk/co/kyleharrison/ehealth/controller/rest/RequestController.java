@@ -1,6 +1,7 @@
 package uk.co.kyleharrison.ehealth.controller.rest;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class RequestController extends HttpServlet {
 	}
 
 	public void init(ServletConfig config) throws ServletException {
-		System.out.println("Request Controller Initialised");
+		System.out.println("Request Controller Initialised : "+new Date().toString());
 		this.rcu = new RequestControllerUtil();
 		this.mysqlConnector = new MySQLDAO();
 	}
@@ -42,7 +43,7 @@ public class RequestController extends HttpServlet {
 		try{
 			yearID=request.getParameter("year");
 		}catch(Exception e){
-			System.out.println("Error : Request Controller - Path COmponent year");
+			System.out.println("Error : Request Controller - Path Component year");
 		}
 		
 		try{
@@ -56,7 +57,6 @@ public class RequestController extends HttpServlet {
 					pageID="0";
 				}
 			}catch(Exception e){
-				System.out.println("page not set");
 				pageID="0";
 			}
 			

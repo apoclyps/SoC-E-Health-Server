@@ -1,8 +1,8 @@
 package uk.co.ehealth.storage.mysql;
 import java.util.ArrayList;
 
-import uk.co.kyleharrison.ehealth.model.pojo.RSSChannel;
-import uk.co.kyleharrison.ehealth.model.pojo.RSSItem;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSChannel;
+import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
 
 public interface MySQLInterface {
 
