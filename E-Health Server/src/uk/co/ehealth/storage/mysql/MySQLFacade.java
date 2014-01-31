@@ -194,6 +194,15 @@ public class MySQLFacade implements MySQLInterface {
 
 		return this.connection.selectItemsFromSpecificYears(years,limit, offset);
 	}
+	
+	public FlashCard selectRandomFlashCardBySubject(int subjectID){
+		try {
+			return this.connection.selectRandomFlashCardBySubject(subjectID);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 
 }

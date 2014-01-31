@@ -25,13 +25,11 @@ public class MySQLDAO extends MySQLConnector {
 
 	public void insertChannel(RSSChannel rssChannel) throws SQLException {
 		if (this.checkConnection()) {
-			// PreparedStatements can use variables and are more efficient
 			preparedStatement = connection
 					.prepareStatement("insert into mbchb.Channel"
 							+ "(Title, Link, Description, LastBuild, Language, UpdatePeriod, UpdateFrequency, URLGenerator)"
 							+ " values  (?,?,?,?,?,?,?,?)");
-			// "myuser, webpage, datum, summary, COMMENTS from FEEDBACK.COMMENTS");
-			// Parameters start with 1
+
 			preparedStatement.setString(1, rssChannel.getTitle());
 			preparedStatement.setString(2, rssChannel.getLink().toString());
 			preparedStatement.setString(3, rssChannel.getDescription());
@@ -81,7 +79,6 @@ public class MySQLDAO extends MySQLConnector {
 			}
 			return false;
 		}
-
 	}
 
 	public ArrayList<RSSChannel> selectChannel() throws SQLException,
@@ -299,6 +296,40 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return flashCardList;
 	}
+	
+	public FlashCard selectRandomFlashCardBySubject(int subject)
+			throws SQLException {
+		FlashCard card = null;
+		if (this.checkConnection()) {
+			preparedStatement = connection
+					.prepareStatement("SELECT * "
+							+ "FROM Flashcards INNER JOIN Subject ON Flashcards.SubjectID=Subject.SubjectID "
+							+ "WHERE Subject.SubjectID = " + subject + " "
+							+ "ORDER BY RAND() LIMIT 1;");
+
+			ResultSet rs = null;
+			try {
+				rs = preparedStatement.executeQuery();
+			} catch (CommunicationsException e) {
+				e.printStackTrace();
+			}
+
+			while (rs.next()) {
+				card = new FlashCard();
+				card.setCardID(rs.getInt("CardID"));
+				card.setSubjectID(rs.getInt("SubjectID"));
+				card.setAnswer(rs.getString("Answer"));
+				card.setCardSubject(rs.getString("CardSubject"));
+				card.setLectureNumber(rs.getInt("LectureNum"));
+				card.setQuestion(rs.getString("Question"));
+				card.setCardSubject(rs.getString("CardSubject"));
+			}
+		}
+		if (connection != null) {
+			connection.close();
+		}
+		return card;
+	}
 
 	public boolean addiosKey(String key) throws SQLException {
 		if (this.checkConnection()) {
@@ -458,7 +489,6 @@ public class MySQLDAO extends MySQLConnector {
 				for (int i = 0; i < years.length; i++) {
 					preparedStatement.setInt(i + 1, Integer.parseInt(years[i]));
 				}
-
 				ResultSet rs = preparedStatement.executeQuery();
 
 				while (rs.next()) {
@@ -490,4 +520,5 @@ public class MySQLDAO extends MySQLConnector {
 		}
 		return itemList;
 	}
+	
 }
