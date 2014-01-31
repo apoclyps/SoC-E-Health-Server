@@ -34,7 +34,7 @@ public class ItemFeedController extends HttpServlet {
 		int limit = 0;
 		
 		try{
-			years = request.getParameterValues("years");
+			years = request.getParameter("years").split("x");
 			callback = request.getParameter("callback");
 		}catch(Exception e){
 			e.printStackTrace();

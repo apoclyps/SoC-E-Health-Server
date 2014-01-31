@@ -162,6 +162,7 @@ public class MySQLDAO extends MySQLConnector {
 					.prepareStatement("select * from mbchb.Item WHERE Year = '"
 							+ yearID + "'");
 
+			try{
 			ResultSet resultSet = preparedStatement.executeQuery();
 
 			while (resultSet.next()) {
@@ -177,6 +178,9 @@ public class MySQLDAO extends MySQLConnector {
 				item.setDescription(resultSet.getString("Description"));
 				item.setYear(resultSet.getInt("Year"));
 				itemList.add(item);
+			}
+			}catch(CommunicationsException e){
+				e.printStackTrace();
 			}
 			if (connection != null) {
 				connection.close();
