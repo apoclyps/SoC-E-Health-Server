@@ -37,7 +37,7 @@ public class AnnouncementController extends HttpServlet {
 			years = request.getParameter("years").split("x");
 		}catch(Exception e){
 			System.out.println("Announcements Exception for years: "+new Date().toString());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		try{
