@@ -18,10 +18,12 @@ public class PushGCM {
 	private final String GCM_CONTENT = "application/x-www-form-urlencoded;charset=UTF-8";
 			// Content-Type: application/json for JSON; application/x-www-form-urlencoded;charset=UTF-8 for plain text.
 	private String payload = "";
-	private JSONObject payloadJson;
+	private JSONObject payloadJson = new JSONObject();
 	private String[] ids;
 	
 	public PushGCM(String payload, ArrayList<String> recipients) {
+		
+		System.out.println("LOADED GCM METHOD");
 		
 		this.payload = payload;
 		this.ids = recipients.toArray(new String[recipients.size()]);
@@ -30,6 +32,7 @@ public class PushGCM {
 			this.payloadJson = buildBody();
 		} catch (JSONException e) {
 			e.printStackTrace();
+			System.out.println("broken");
 		} 
 		
 	}
@@ -64,6 +67,7 @@ public class PushGCM {
 			
 			if(responseCode==200) {
 				// success, do nothing
+				System.out.println("RESPONSE CODE 200: SUCCESS (GCM)");
 			}
 			else {
 				System.out.println("Error on Push: "+responseCode);
@@ -77,18 +81,26 @@ public class PushGCM {
 	}
 	
 	private JSONObject buildBody() throws JSONException {
-		JSONObject payloadJson = new JSONObject(this.payload);
+		System.out.println("payload: "+this.payload);
+
 		
-		JSONObject body = new JSONObject();
-		JSONObject data = new JSONObject();
+		String bigUglyString = "{ \"data\": " + payloadJson.toString() + ", \"registration_ids\": [";
 		
-		data.put("year", payloadJson.get("year"));
-		data.put("title", payloadJson.get("title"));
+		for(int i=0; i<ids.length; i++) {
+			if(i==0) {
+				bigUglyString.concat("\"" + ids[i] + "\"");
+			}
+			
+			else {
+				bigUglyString.concat(",\"" + ids[i] + "\"");
+			}
+		}
 		
-		JSONArray registration_ids = new JSONArray(this.ids);
+		bigUglyString.concat("]}");
 		
-		body.put("data", data);
-		body.put("registration_ids", registration_ids);
+		System.out.println("biguglystring: " +bigUglyString);
+		
+		JSONObject body = new JSONObject(bigUglyString);
 		
 		return body;
 	}
