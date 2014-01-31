@@ -100,7 +100,7 @@ public class AnnouncementControllerUtil {
 			responseObject.put("numberOfRecordsReturned", this.rssChannel
 					.getItem_list().size());
 
-			responseObject.put("flashcards", jsonFlashCardArray);
+			responseObject.put("announcements", jsonFlashCardArray);
 
 			JSONResponse(response, responseObject, callback);
 		} catch (JSONException e) {
