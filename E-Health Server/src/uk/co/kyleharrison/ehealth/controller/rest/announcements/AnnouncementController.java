@@ -38,6 +38,8 @@ public class AnnouncementController extends HttpServlet {
 		}catch(Exception e){
 			System.out.println("Announcements Exception for years: "+new Date().toString());
 			//e.printStackTrace();
+			String [] defaultYears = {"1", "2", "3","4","5"};
+			years = defaultYears;
 		}
 		
 		try{

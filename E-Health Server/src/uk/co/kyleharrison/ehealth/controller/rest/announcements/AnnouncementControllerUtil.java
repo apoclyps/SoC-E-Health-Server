@@ -72,13 +72,16 @@ public class AnnouncementControllerUtil {
 			e.printStackTrace();
 		}
 		
-		for (int x = 0; x < rssItems.size(); x++) {
-			try{
-				this.jsonItemArray[x]  = this.jsonItem.writeToJson(rssItems.get(x));
-			}catch(Exception e){
-				e.printStackTrace();
+		if(rssItems.size()>0){
+			for (int x = 0; x < rssItems.size(); x++) {
+				try{
+					this.jsonItemArray[x]  = this.jsonItem.writeToJson(rssItems.get(x));
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		}
+
 		
 		return jsonItemArray;
 	}

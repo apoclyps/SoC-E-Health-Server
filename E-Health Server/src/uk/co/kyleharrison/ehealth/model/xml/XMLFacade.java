@@ -77,6 +77,9 @@ public class XMLFacade {
 		} catch (IOException e) {
 			System.out.println("Exception in XMLFacade trying to DeconstructXMLToPojo whilst reading XML from URL");
 			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
+			this.response=null;
 		}
 
 		// Creating Document from XML Data
