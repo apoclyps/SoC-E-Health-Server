@@ -60,8 +60,9 @@ public class FlashCardController extends HttpServlet {
 				callback = request.getParameter("callback");
 			}
 		} catch (NullPointerException npe) {
-			System.out.println("callback not set");
 			callback = "callback";
+			System.out.println("Flash Card Exception for Callback ID : "+new Date().toString());
+			npe.getStackTrace();
 		}
 		try {
 			if (request.getParameter("subjectID") == null) {
@@ -71,6 +72,8 @@ public class FlashCardController extends HttpServlet {
 			}
 		} catch (NullPointerException npe) {
 			subjectID=1;
+			System.out.println("Flash Card Exception for Subject ID : "+new Date().toString());
+			npe.getStackTrace();
 		}
 
 		switch (subjectID) {

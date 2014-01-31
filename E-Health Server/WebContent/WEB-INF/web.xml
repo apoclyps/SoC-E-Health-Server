@@ -17,11 +17,11 @@
     <url-pattern>/feeds/*</url-pattern>
   </servlet-mapping>
     <servlet>
-    <servlet-name>ItemFeedController</servlet-name>
-    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.itemfeed.ItemFeedController</servlet-class>
+    <servlet-name>AnnouncementController</servlet-name>
+    <servlet-class>uk.co.kyleharrison.ehealth.controller.rest.announcements.AnnouncementController</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>ItemFeedController</servlet-name>
+    <servlet-name>AnnouncementController</servlet-name>
     <url-pattern>/announcements</url-pattern>
     <url-pattern>/announcements/*</url-pattern>
   </servlet-mapping>

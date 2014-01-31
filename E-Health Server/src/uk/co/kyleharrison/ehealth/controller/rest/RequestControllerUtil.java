@@ -246,20 +246,6 @@ public class RequestControllerUtil extends RequestController implements RequestC
 		return (this.rssChannel.getLastBuildDate().equals(rssChannelMemory.getLastBuildDate()));
 	}
 	
-	public boolean pagingCheck(HttpServletRequest request){
-	try{
-		String startID = request.getParameter("start");
-		String endID = request.getParameter("end");
-		String pageID = request.getParameter("page");
-		
-		int page = Integer.getInteger(endID)/ Integer.getInteger(startID);
-
-	}catch(NullPointerException e){
-		System.out.println("RC : Parameter exception");
-	}
-	return false;
-	}
-
 	public void PushNotification(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("type", "broadcast");
 		request.setAttribute("pushJSON", this.rssChannel.getItem_list().get(0).getPushString());

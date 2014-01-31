@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.controller.rest.itemfeed;
+package uk.co.kyleharrison.ehealth.controller.rest.announcements;
 
 import java.io.IOException;
 import java.util.Date;
@@ -11,17 +11,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import uk.co.ehealth.storage.mysql.MySQLDAO;
 
-@WebServlet("/ItemFeedController")
-public class ItemFeedController extends HttpServlet {
+@WebServlet("/AnnouncementController")
+public class AnnouncementController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private ItemFeedControllerUtil ifcu;
+	private AnnouncementControllerUtil ifcu;
 	protected MySQLDAO mysqlConnector;
 	
-    public ItemFeedController() {
+    public AnnouncementController() {
         super();
-        System.out.println("Item Feed Controller Created : "+ new Date().toString());
-        this.ifcu = new ItemFeedControllerUtil();
+        System.out.println("Announcement Controller Created : "+ new Date().toString());
+        this.ifcu = new AnnouncementControllerUtil();
         this.mysqlConnector = new MySQLDAO();
     }
 
@@ -35,8 +35,15 @@ public class ItemFeedController extends HttpServlet {
 		
 		try{
 			years = request.getParameter("years").split("x");
+		}catch(Exception e){
+			System.out.println("Announcements Exception for years: "+new Date().toString());
+			e.printStackTrace();
+		}
+		
+		try{
 			callback = request.getParameter("callback");
 		}catch(Exception e){
+			System.out.println("Announcements Exception for callback: "+new Date().toString());
 			e.printStackTrace();
 			callback="callback";
 		}
@@ -44,13 +51,16 @@ public class ItemFeedController extends HttpServlet {
 		try{
 			offset = Integer.parseInt(request.getParameter("offset"));
 		}catch(NumberFormatException nfe){
-			//nfe.getMessage();
+			System.out.println("Announcements Exception for offset: "+new Date().toString());
+			nfe.printStackTrace();
 			offset=0;
 		}
 		
 		try{
 			limit = Integer.parseInt(request.getParameter("limit"));
 		}catch(NumberFormatException nfe){
+			System.out.println("Announcements Exception for limit: "+new Date().toString());
+			nfe.printStackTrace();
 			limit=10;
 		}
 

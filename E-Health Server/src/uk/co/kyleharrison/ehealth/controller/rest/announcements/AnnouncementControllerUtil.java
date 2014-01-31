@@ -1,4 +1,4 @@
-package uk.co.kyleharrison.ehealth.controller.rest.itemfeed;
+package uk.co.kyleharrison.ehealth.controller.rest.announcements;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,7 +16,7 @@ import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
 import uk.co.kyleharrison.ehealth.model.json.JSONItem;
 import uk.co.kyleharrison.ehealth.model.xml.XMLFacade;
 
-public class ItemFeedControllerUtil {
+public class AnnouncementControllerUtil {
 
 	protected JSONItem jsonItem;
 	protected XMLFacade xmlFacade;
@@ -25,7 +25,7 @@ public class ItemFeedControllerUtil {
 	protected JSONObject[] jsonItemArray;
 	protected MySQLFacade mysqlFacade;
 	
-	public ItemFeedControllerUtil() {
+	public AnnouncementControllerUtil() {
 		super();
 		this.jsonItem = new JSONItem();
 		this.xmlFacade = new XMLFacade();

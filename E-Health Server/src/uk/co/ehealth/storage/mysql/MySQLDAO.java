@@ -97,9 +97,7 @@ public class MySQLDAO extends MySQLConnector {
 				RSSChannel channel = new RSSChannel();
 				URL url = new URL(resultSet.getString("Link"));
 				URL generator = new URL(resultSet.getString("URLGenerator"));
-				String channelId = resultSet.getString("ChannelID");
 				channel.setTitle(resultSet.getString("Title"));
-
 				channel.setLink(url);
 				channel.setDescription(resultSet.getString("Description"));
 				channel.setLastBuildDate(resultSet.getTimestamp("LastBuild"));

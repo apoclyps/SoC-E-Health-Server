@@ -2,7 +2,6 @@ package uk.co.euanmorrison.ehealth.push;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.ServletException;
