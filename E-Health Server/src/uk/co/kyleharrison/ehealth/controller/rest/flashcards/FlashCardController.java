@@ -2,8 +2,6 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.Random;
-
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
