@@ -83,6 +83,8 @@ public class PushServer {
 
 	public boolean pushGcm(String payload, ArrayList<String> recipients) {
 		System.out.println(">> Method call PushServer.pushGcm(String payload, ArrayList<String> recipients)");
+		
+		System.out.println("ABOUT TO PUSH TO GCM: "+payload.toString());
 		PushGCM push = new PushGCM(payload, recipients);
 		
 		return push.send();

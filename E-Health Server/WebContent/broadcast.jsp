@@ -12,7 +12,7 @@
 
 	<form method="post" action="pushpanel">
 		<input type="hidden" name="function" value="broadcast">
-		<input type="text" name="pushText" />
+		<input type="text" name="pushText" placeholder='{"title":"mytitle","year":"myyear"}' />
 		<input type="submit" value="send!" />
 	</form>
 	
