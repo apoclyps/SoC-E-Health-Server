@@ -70,9 +70,11 @@ public class PushFacade {
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
-		// SEND TO GCM
+		/*// SEND TO GCM
 		try {
 			if (ps.pushGcm(pushJson, ps.getSubsGcm())) {
 				System.out.println("Successfully pushed to GCM "+pushJson);
@@ -82,7 +84,7 @@ public class PushFacade {
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 }
