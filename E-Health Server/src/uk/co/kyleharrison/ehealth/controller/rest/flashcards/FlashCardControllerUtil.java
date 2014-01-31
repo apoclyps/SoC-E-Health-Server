@@ -45,14 +45,12 @@ public class FlashCardControllerUtil extends FlashCardController implements
 		this.mysqlFacade = new MySQLFacade();
 	}
 
-	public void ResponseBuilder(String year, String page, String callback,
-			int subjectID, HttpServletResponse response) {
+	public void ResponseBuilder(String callback,int subjectID, HttpServletResponse response) {
 		try {
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonItemsArray = ConstructJSONArray(subjectID);
 
-			responseObject.put("quantity", this.questionSet.getQuestionSet()
-					.size());
+			responseObject.put("quantity", this.questionSet.getQuestionSet().size());
 			responseObject.put("items", jsonItemsArray);
 
 			JSONResponse(response, responseObject, callback);
@@ -64,7 +62,7 @@ public class FlashCardControllerUtil extends FlashCardController implements
 	public JSONObject[] ConstructJSONArray(int subjectID) throws JSONException {
 		this.flashcardItem = new JSONFlashCard();
 
-		ArrayList<FlashCard> fcItems = mysqlFacade.selectFlashCard(subjectID);
+		ArrayList<FlashCard> fcItems = mysqlFacade.selectRandomFlashCardBySubject(subjectID);
 
 		try {
 			this.jsonItemArray = new JSONObject[fcItems.size()];

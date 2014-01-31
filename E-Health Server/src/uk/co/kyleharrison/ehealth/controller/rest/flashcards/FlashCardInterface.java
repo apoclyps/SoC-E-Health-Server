@@ -8,5 +8,5 @@ import org.json.JSONObject;
 public interface FlashCardInterface {
 	public void JSONResponse(HttpServletResponse response, JSONObject jsonResponse,String callback);
 	public JSONObject[] ConstructJSONArray(int subjectID) throws JSONException;
-	public void ResponseBuilder(String yearID,String pageID,String callback, int subjectID,HttpServletResponse response);
+	public void ResponseBuilder(String callback, int subjectID,HttpServletResponse response);
 }

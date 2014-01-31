@@ -2,6 +2,7 @@ package uk.co.kyleharrison.ehealth.controller.rest.flashcards;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Random;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -37,22 +38,27 @@ public class FlashCardController extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 
 		System.out.println("Flash Card Controller Accessed :"+new Date().toString());
-		String pageID = "0";
 		String callback = "callback";
 		int subjectID = 1;
-
-		try {
-			pageID = (String) request.getParameter("page");
-
-			if (Integer.parseInt(pageID) > 0) {
-				int id = Integer.parseInt(pageID);
-				pageID = Integer.toString(id);
-			} else {
-				pageID = "0";
+		
+		try{
+			try{
+				String [] years = request.getParameter("years").split("x");
+				if(years.length==1){
+					subjectID = Integer.parseInt(request.getParameter("years"));
+				}else if (years.length>1){
+					subjectID = (int) (Math.random()*years.length);
+					subjectID = subjectID +2;
+				}
+			}catch(NullPointerException npe){
+				subjectID = (int) (Math.random()*5)+1;
 			}
-		} catch (Exception e) {
-			pageID = "0";
+
+		}catch(Exception e){
+			System.out.println("Announcements Exception for years: "+new Date().toString());
+			e.printStackTrace();
 		}
+
 		try {
 			if (request.getParameter("callback") == null) {
 				callback = "callback";
@@ -64,43 +70,8 @@ public class FlashCardController extends HttpServlet {
 			System.out.println("Flash Card Exception for Callback ID : "+new Date().toString());
 			npe.getStackTrace();
 		}
-		try {
-			if (request.getParameter("subjectID") == null) {
-				subjectID=1;
-			} else {
-				subjectID = request.getIntHeader("subjectID");
-			}
-		} catch (NullPointerException npe) {
-			subjectID=1;
-			System.out.println("Flash Card Exception for Subject ID : "+new Date().toString());
-			npe.getStackTrace();
-		}
-
-		switch (subjectID) {
-		case 0:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-		break;
-		case 1:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			break;
-		case 2:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			break;
-		case 3:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			break;
-		case 4:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			break;
-		case 5:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			break;
-		case 6 :
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-		default:
-			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
-			
-		}
+		
+		fcu.ResponseBuilder(callback, subjectID, response);
 	}
 
 	protected void doPost(HttpServletRequest request,
