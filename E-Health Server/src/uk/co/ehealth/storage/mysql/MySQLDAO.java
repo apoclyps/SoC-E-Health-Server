@@ -297,9 +297,9 @@ public class MySQLDAO extends MySQLConnector {
 		return flashCardList;
 	}
 	
-	public FlashCard selectRandomFlashCardBySubject(int subject)
+	public ArrayList<FlashCard> selectRandomFlashCardBySubject(int subject)
 			throws SQLException {
-		FlashCard card = null;
+		ArrayList<FlashCard> cardList = new ArrayList<FlashCard>();
 		if (this.checkConnection()) {
 			preparedStatement = connection
 					.prepareStatement("SELECT * "
@@ -315,7 +315,7 @@ public class MySQLDAO extends MySQLConnector {
 			}
 
 			while (rs.next()) {
-				card = new FlashCard();
+				FlashCard card = new FlashCard();
 				card.setCardID(rs.getInt("CardID"));
 				card.setSubjectID(rs.getInt("SubjectID"));
 				card.setAnswer(rs.getString("Answer"));
@@ -323,12 +323,13 @@ public class MySQLDAO extends MySQLConnector {
 				card.setLectureNumber(rs.getInt("LectureNum"));
 				card.setQuestion(rs.getString("Question"));
 				card.setCardSubject(rs.getString("CardSubject"));
+				cardList.add(card);
 			}
 		}
 		if (connection != null) {
 			connection.close();
 		}
-		return card;
+		return cardList;
 	}
 
 	public boolean addiosKey(String key) throws SQLException {
@@ -434,8 +435,7 @@ public class MySQLDAO extends MySQLConnector {
 	public boolean deleteAndroidKey(String token) throws SQLException {
 		if (this.checkConnection()) {
 			preparedStatement = connection
-					.prepareStatement("Delete FROM subs_android"
-							+ "WHERE ID = '" + token + "'");
+					.prepareStatement("Delete FROM subs_android WHERE ID = '" + token + "';");
 			preparedStatement.execute();
 			return true;
 		}
