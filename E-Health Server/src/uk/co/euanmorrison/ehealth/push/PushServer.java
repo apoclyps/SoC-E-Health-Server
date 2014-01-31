@@ -1,6 +1,5 @@
 package uk.co.euanmorrison.ehealth.push;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import uk.co.ehealth.storage.mysql.MySQLFacade;
@@ -54,7 +53,7 @@ public class PushServer {
 		} else {
 			try {
 				this.subs_gcm.add(token);
-				saveSubsApns(token);
+				saveSubsGcm(token);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
@@ -78,23 +77,15 @@ public class PushServer {
 	public boolean pushApns(String payload, ArrayList<String> recipients) {
 		System.out.println(">> Method call PushServer.pushApns(String payload, ArrayList<String> recipients)");
 		PushIOS push = new PushIOS(payload, recipients);
-	
-		/*System.out.println("people:");
-		for(String value : recipients) {
-			System.out.println("LOOK! PEOPLE! " + value);
-		}*/
+
 		return push.send();
 	}
 
 	public boolean pushGcm(String payload, ArrayList<String> recipients) {
 		System.out.println(">> Method call PushServer.pushGcm(String payload, ArrayList<String> recipients)");
 		PushGCM push = new PushGCM(payload, recipients);
-		try {
-			push.send();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		return true;
+		
+		return push.send();
 	}
 
 	private boolean loadSubs() {
@@ -152,7 +143,6 @@ public class PushServer {
 		return true;
 	}
 
-	@SuppressWarnings("unused")
 	private boolean saveSubsGcm(String key) {
 		System.out.println(">> Method call PushServer.saveSubsGcm(String key)");
 		

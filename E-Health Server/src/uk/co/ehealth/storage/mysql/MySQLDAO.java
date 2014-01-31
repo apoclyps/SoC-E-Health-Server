@@ -432,16 +432,28 @@ public class MySQLDAO extends MySQLConnector {
 		return false;
 	}
 
-	public boolean deleteAndroidKey(String token) throws SQLException {
+	public boolean deleteAndroidKey(String token) {
 		if (this.checkConnection()) {
-			preparedStatement = connection
-					.prepareStatement("Delete FROM subs_android WHERE ID = '" + token + "';");
-			preparedStatement.execute();
-			return true;
-		}
-		if (connection != null) {
-			connection.close();
-			return false;
+			
+			System.out.println("token: "+token);
+
+			try {
+				preparedStatement = connection
+						.prepareStatement("Delete FROM subs_android WHERE ID = '"
+								+ token + "';");
+				preparedStatement.execute();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (connection != null) {
+					try {
+						connection.close();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 		return false;
 	}

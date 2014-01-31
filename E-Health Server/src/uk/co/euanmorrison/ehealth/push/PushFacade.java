@@ -60,11 +60,24 @@ public class PushFacade {
 			return;
 		}
 		
+		// SEND TO APNS
 		try {
-			if (ps.pushApns(pushJson, ps.getSubsApns())) {	// CHANGE ME TO PUSH TO BOTH 
-				System.out.println("successfully pushed to APNS "+pushJson);
+			if (ps.pushApns(pushJson, ps.getSubsApns())) {
+				System.out.println("Successfully pushed to APNS "+pushJson);
 			} else {
 				System.out.println("Failed to push to APNS");
+			}
+		}
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
+		
+		// SEND TO GCM
+		try {
+			if (ps.pushGcm(pushJson, ps.getSubsGcm())) {
+				System.out.println("Successfully pushed to GCM "+pushJson);
+			} else {
+				System.out.println("Failed to push to GCM");
 			}
 		}
 		catch(NullPointerException e) {
