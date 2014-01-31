@@ -44,7 +44,7 @@ public class AnnouncementController extends HttpServlet {
 			callback = request.getParameter("callback");
 		}catch(Exception e){
 			System.out.println("Announcements Exception for callback: "+new Date().toString());
-			e.printStackTrace();
+		//	e.printStackTrace();
 			callback="callback";
 		}
 		
@@ -52,7 +52,7 @@ public class AnnouncementController extends HttpServlet {
 			offset = Integer.parseInt(request.getParameter("offset"));
 		}catch(NumberFormatException nfe){
 			System.out.println("Announcements Exception for offset: "+new Date().toString());
-			nfe.printStackTrace();
+		//	nfe.printStackTrace();
 			offset=0;
 		}
 		
@@ -60,7 +60,7 @@ public class AnnouncementController extends HttpServlet {
 			limit = Integer.parseInt(request.getParameter("limit"));
 		}catch(NumberFormatException nfe){
 			System.out.println("Announcements Exception for limit: "+new Date().toString());
-			nfe.printStackTrace();
+		//	nfe.printStackTrace();
 			limit=10;
 		}
 
