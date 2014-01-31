@@ -43,14 +43,15 @@ public class ItemFeedController extends HttpServlet {
 		
 		try{
 			offset = Integer.parseInt(request.getParameter("offset"));
-			limit = Integer.parseInt(request.getParameter("limit"));
 		}catch(NumberFormatException nfe){
 			//nfe.getMessage();
 			offset=0;
-			limit=10;
 		}
-		catch(Exception e){
-			e.printStackTrace();
+		
+		try{
+			limit = Integer.parseInt(request.getParameter("limit"));
+		}catch(NumberFormatException nfe){
+			limit=10;
 		}
 
 		ifcu.SpecificYearsResponseBuilder(callback, years, offset, limit, response);

@@ -70,7 +70,6 @@ public class FlashCardController extends HttpServlet {
 				subjectID = request.getIntHeader("subjectID");
 			}
 		} catch (NullPointerException npe) {
-			//System.out.println("callback not set");
 			subjectID=1;
 		}
 
@@ -99,8 +98,6 @@ public class FlashCardController extends HttpServlet {
 			fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
 			
 		}
-
-		fcu.ResponseBuilder("all-years", pageID, callback, subjectID, response);
 	}
 
 	protected void doPost(HttpServletRequest request,

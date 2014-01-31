@@ -159,8 +159,8 @@ public class MySQLDAO extends MySQLConnector {
 
 		if (this.checkConnection()) {
 			preparedStatement = connection
-					.prepareStatement("select * from mbchb.Item WHERE Year = '"
-							+ yearID + "'");
+					.prepareStatement("select * from mbchb.Item WHERE Year = "
+							+ yearID + ";");
 
 			try{
 			ResultSet resultSet = preparedStatement.executeQuery();
