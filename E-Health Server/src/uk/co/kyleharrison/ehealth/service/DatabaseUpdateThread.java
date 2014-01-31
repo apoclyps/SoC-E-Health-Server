@@ -3,6 +3,7 @@ package uk.co.kyleharrison.ehealth.service;
 import java.util.ArrayList;
 
 import uk.co.ehealth.storage.mysql.MySQLFacade;
+import uk.co.euanmorrison.ehealth.push.PushFacade;
 import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSChannel;
 import uk.co.kyleharrison.ehealth.model.inmemory.rss.RSSItem;
 import uk.co.kyleharrison.ehealth.model.xml.XMLFacade;
@@ -15,22 +16,24 @@ public class DatabaseUpdateThread extends Thread {
 	private int[] years = { 1, 2, 3, 4, 5 };
 	private MySQLFacade mysqlFacade = new MySQLFacade();
 	protected RSSChannel rc;
+	private PushFacade pf;
 
 	public DatabaseUpdateThread() {
 		this.setDelayBetweenRequests(1000);
-		this.waitTime = 60000;
+		this.waitTime = 60000*3;
+		pf = new PushFacade();
 	}
 
 	public DatabaseUpdateThread(long delayBetweenRequests, long waitTime) {
 		this.setDelayBetweenRequests(delayBetweenRequests);
 		this.setWaitTime(waitTime);
+		pf = new PushFacade();
 	}
 
 	@Override
 	public void run() {
 		InsertRSSFeed();
 		try {
-			// Thread.sleep(waitTime);
 			DatabaseUpdateThread.sleep(waitTime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -55,15 +58,12 @@ public class DatabaseUpdateThread extends Thread {
 	}
 
 	protected void InsertRSSFeed() {
-		// TODO Auto-generated method stub
 		// Creating Model of RSS items for last 10 posts.
 		for (int year : years) {
 			// Calls XML Facade and creates RSSChannel based on year provided.
 			CreateMBCHBModel(year);
-
 			// Update storage model
-			ArrayList<RSSItem> rssItemsPersistent = mysqlFacade
-					.selectItemsFromYear(Integer.toString(year));
+			ArrayList<RSSItem> rssItemsPersistent = mysqlFacade.selectItemsFromYear(Integer.toString(year));
 
 			int count = 0;
 			if (rssItemsPersistent.size() > 0) {
@@ -72,7 +72,6 @@ public class DatabaseUpdateThread extends Thread {
 					// compare each record
 					try {
 						// if items from list == items from database
-
 						boolean insert = mysqlFacade.selectItemByTitleDate(rc
 								.getItem_list().get(i).getTitle(), rc
 								.getItem_list().get(i).getPubDate());
@@ -101,8 +100,8 @@ public class DatabaseUpdateThread extends Thread {
 				for (RSSItem ri : rc.getItem_list()) {
 					mysqlFacade.insertItem(ri);
 					try {
-						// PushFacade pf = new PushFacade();
-						// pf.broadcast(ri.getTitle());
+						// BROADCAST PUSH
+						 pf.broadcast(ri.getPushJSON().toJSONString());
 					} catch (Exception e) {
 						System.out
 								.println("Exception in Database context listener");
@@ -119,7 +118,6 @@ public class DatabaseUpdateThread extends Thread {
 			}
 			mysqlFacade.closeConnection();
 		}
-
 	}
 
 	private void CreateMBCHBModel(int year) {

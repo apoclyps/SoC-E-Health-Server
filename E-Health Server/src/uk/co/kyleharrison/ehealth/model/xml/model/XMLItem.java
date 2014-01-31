@@ -38,21 +38,26 @@ public class XMLItem extends XMlDocumentBuilder {
 		
 		System.out.println("Accessing RSS Feed XML : "+ new Date().toString());
 		
-		for (int i = 0; i < nList2.getLength(); i++) {
-			Node node = nList2.item(i);
-			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				Element eElement = (Element) node;
-				for(int j=0; j<tags.length; j++){
-					try{
-						results[j] = getTagValue(tags[j], eElement);	
-					}catch(NullPointerException e){
-						e.getMessage();
+		try{
+			for (int i = 0; i < nList2.getLength(); i++) {
+				Node node = nList2.item(i);
+				if (node.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) node;
+					for(int j=0; j<tags.length; j++){
+						try{
+							results[j] = getTagValue(tags[j], eElement);	
+						}catch(NullPointerException e){
+							e.getMessage();
+						}
 					}
+					RSSItem nRI = MapToPojo(results[0],results[1],results[2],results[3],results[4],results[5],results[6],
+							results[7],results[8],results[9]);
+					rssIA.add(nRI);
 				}
-				RSSItem nRI = MapToPojo(results[0],results[1],results[2],results[3],results[4],results[5],results[6],
-						results[7],results[8],results[9]);
-				rssIA.add(nRI);
 			}
+		}catch(Exception e){
+			System.out.println("XMLItem Crash");
+			e.printStackTrace();
 		}
 	}
 	

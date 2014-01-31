@@ -81,8 +81,6 @@ public class AnnouncementControllerUtil {
 				}
 			}
 		}
-
-		
 		return jsonItemArray;
 	}
 	
@@ -93,21 +91,18 @@ public class AnnouncementControllerUtil {
 			JSONObject responseObject = new JSONObject();
 			JSONObject[] jsonFlashCardArray = ConstructYearSpecificJSONArrayFromMySQL(years,limit,offset);
 			
-
 			Date now = new Date();
 
-			responseObject.put("channel", this.rssChannel.getTitle());
 			responseObject.put("lastUpdated", now.toString());
-			responseObject.put("totalRecords", this.rssChannel.getItem_list()
-					.size());
-			responseObject.put("numberOfRecordsReturned", this.rssChannel
-					.getItem_list().size());
+			responseObject.put("numberOfRecordsReturned", jsonFlashCardArray.length);
 
 			responseObject.put("announcements", jsonFlashCardArray);
 
 			JSONResponse(response, responseObject, callback);
 		} catch (JSONException e) {
 			e.printStackTrace();
+		} catch(Exception e){
+			System.out.println("Exception in SpecificYearsResponseBuilder : "+ new Date().toString());
 		}
 	}
 	

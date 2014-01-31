@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Date;
 
 public class URLReader {
 
@@ -44,17 +46,22 @@ public class URLReader {
 	}
 
 	public String readxmlFromUrl() throws IOException {
-		
-		InputStream is = new URL(this.url).openStream();
-
+		InputStream is = null;
 		try {
+			is = new URL(this.url).openStream();
+			
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is,Charset.forName("UTF-8")));
 			this.response = readAll(rd);
-
-			return this.response;
-		} finally {
 			is.close();
+			return this.response;
+		}catch ( IOException e1) {
+			e1.printStackTrace();
+		}catch(Exception e){
+			System.out.println("URL Reader Error : "+new Date().toString());
+			e.printStackTrace();
 		}
+		is.close();
+		return null;
 	}
 	
 	public void resetURLReader(){

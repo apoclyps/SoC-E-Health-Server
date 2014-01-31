@@ -27,7 +27,7 @@ public class AnnouncementController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		System.out.println("Item Feed Controller Accessed : "+ new Date().toString());
+		System.out.println("Announcements Controller Accessed : "+ new Date().toString());
 		String[] years = null ;
 		String callback = null;
 		int offset = 0;
@@ -46,7 +46,6 @@ public class AnnouncementController extends HttpServlet {
 			callback = request.getParameter("callback");
 		}catch(Exception e){
 			System.out.println("Announcements Exception for callback: "+new Date().toString());
-		//	e.printStackTrace();
 			callback="callback";
 		}
 		
@@ -66,7 +65,11 @@ public class AnnouncementController extends HttpServlet {
 			limit=10;
 		}
 
-		ifcu.SpecificYearsResponseBuilder(callback, years, offset, limit, response);
+		try{
+			ifcu.SpecificYearsResponseBuilder(callback, years, offset, limit, response);
+		}catch(Exception e){
+			System.out.println("Exception in Announcements : "+ new Date().toString());
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
