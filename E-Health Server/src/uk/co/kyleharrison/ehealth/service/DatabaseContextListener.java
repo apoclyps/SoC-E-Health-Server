@@ -87,8 +87,8 @@ public class DatabaseContextListener implements ServletContextListener {
 				for(RSSItem ri : rc.getItem_list()){
 					mysqlFacade.insertItem(ri);
 					try{
-						PushFacade pf  = new PushFacade();	
-						pf.broadcast(ri.getTitle());
+						//PushFacade pf  = new PushFacade();	
+						//pf.broadcast(ri.getTitle());
 					}catch(Exception e){
 						System.out.println("Exception in Database context listener");
 						e.printStackTrace();
