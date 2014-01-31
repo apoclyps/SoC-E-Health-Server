@@ -41,19 +41,19 @@ public class FlashCardController extends HttpServlet {
 		
 		try{
 			try{
-				String [] years = request.getParameter("years").split("x");
-				if(years.length==1){
-					subjectID = Integer.parseInt(request.getParameter("years"));
-				}else if (years.length>1){
-					subjectID = (int) (Math.random()*years.length);
-					subjectID = subjectID +2;
+				String [] subjects = request.getParameter("subjects").split("x");
+				if(subjects.length==1){
+					subjectID = Integer.parseInt(request.getParameter("subjects"));
+				}else if (subjects.length>1){
+					subjectID = (int) (Math.random()*subjects.length);
+					subjectID = Integer.parseInt(subjects[subjectID]);
 				}
 			}catch(NullPointerException npe){
 				subjectID = (int) (Math.random()*5)+1;
 			}
 
 		}catch(Exception e){
-			System.out.println("Announcements Exception for years: "+new Date().toString());
+			System.out.println("Announcements Exception for subjects: "+new Date().toString());
 			e.printStackTrace();
 		}
 
