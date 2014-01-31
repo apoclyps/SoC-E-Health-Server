@@ -2,6 +2,7 @@ package uk.co.euanmorrison.ehealth.push;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -29,15 +30,13 @@ public class PushPanel extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		String responseText = "";
 		
 		Map<String,String[]> args = request.getParameterMap();
@@ -102,16 +101,6 @@ public class PushPanel extends HttpServlet {
 			catch (Exception e) {
 				System.out.println(e.getMessage());
 				responseText = "Removal failed.";
-			}
-			break;
-		case "print_subs":
-			try {
-				PushFacade pf = new PushFacade();
-				//pf.
-			}
-			catch(Exception e) {
-				System.out.println(e.getMessage());
-				responseText = "Failed to return list of all subs to JSP UI.";
 			}
 			break;
 			

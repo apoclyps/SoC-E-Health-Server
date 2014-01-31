@@ -37,6 +37,10 @@
 		Token: <input type="text" name="token" />
 		<input type="submit" value="remove!" />
 	</form>
+	
+	<hr>
+	
+	
 
 </body>
 </html>
