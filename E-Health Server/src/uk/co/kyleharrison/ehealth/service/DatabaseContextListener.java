@@ -14,7 +14,7 @@ public class DatabaseContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0) {
     	System.out.println("Database context listener Created : "+new Date().toString());
     	databaseThread = new DatabaseUpdateThread();
-    	databaseThread.start();
+    	//databaseThread.start();
     }
 
     public void contextDestroyed(ServletContextEvent arg0) {

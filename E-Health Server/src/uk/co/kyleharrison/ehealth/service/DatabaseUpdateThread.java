@@ -21,13 +21,13 @@ public class DatabaseUpdateThread extends Thread {
 	public DatabaseUpdateThread() {
 		this.setDelayBetweenRequests(1000);
 		this.waitTime = 60000*3;
-		pf = new PushFacade();
+	//	pf = new PushFacade();
 	}
 
 	public DatabaseUpdateThread(long delayBetweenRequests, long waitTime) {
 		this.setDelayBetweenRequests(delayBetweenRequests);
 		this.setWaitTime(waitTime);
-		pf = new PushFacade();
+	//	pf = new PushFacade();
 	}
 
 	@Override

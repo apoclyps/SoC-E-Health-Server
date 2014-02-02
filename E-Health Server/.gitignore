@@ -1,6 +1,11 @@
 *target*
 *.jar
-
+subs_apns.txt
+subs_gcm.txt
+Certificates.p12
+test.xml
+*.war
+*.p12
 *.ear
 *.class
 
